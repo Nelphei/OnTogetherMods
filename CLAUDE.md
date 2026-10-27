@@ -21,6 +21,16 @@ BepInEx 5 plugins for On-Together (GigaPuff), a Unity 6 (6000.0.60) **Mono** gam
 - Close the game before deploying a mod it has already loaded, because the DLL is locked.
 - Logs: `<GameDir>\BepInEx\LogOutput.log` and `%USERPROFILE%\AppData\LocalLow\GigaPuff\On-Together\Player.log`. The BepInEx console window is enabled.
 
+## Game notes (learned while building PhotoMode)
+- Searching `reference/`: shell `grep pattern *.cs` breaks, because the file `-PrivateImplementationDetails-.cs` is read as an option. Use the Grep tool, or `grep -- pattern *.cs`.
+- Singletons: `MonoSingleton<T>.I` / `NetworkSingleton<T>.I` call `FindAnyObjectByType` whenever the instance is missing (null on the main menu). Don't call them every frame outside a lobby.
+- Input: `InputManager` reads the legacy `UnityEngine.Input` and exposes properties. Patching `TaskManager.IsCancelInputs` to return true zeroes all of them (chat uses this). Enter still gets through and opens chat.
+- Camera: Cinemachine 2 (`using Cinemachine`). Disabling the `CinemachineBrain` on `Camera.main` gives you manual control (`SwanController` does this). `PlayerMovementController.SetScreenCameraRotation` handles right-click look, scroll zoom and cursor unlocking.
+- Window modes: only `OverlayManager.ResolutionMode == Normal` renders the world directly to the screen. Landscape, Portrait and Desk render into a texture behind UI masks.
+- `SettingsController` uses its Canvas `enabled` flag to mean the menu is open, so don't toggle it.
+- Name tags and chat bubbles: `TextBubbleController._textBubbleCanvas`.
+- Hotkeys: the game uses no F keys. BlueSage uses F8 and Steam screenshots use F12. PhotoMode uses F9 and F1.
+
 ## Paths
 - Game: `C:\Program Files (x86)\Steam\steamapps\common\On-Together\On-Together`
 - Game DLLs: `...\OnTogether_Data\Managed`
