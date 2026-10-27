@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "detail": "Build every mod into its bin\\ folder. Does not touch the game.",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/OnTogetherMods.sln"],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "deploy to game",
+      "detail": "Build every mod and copy it into the game's BepInEx\\plugins folder. Close the game first.",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/OnTogetherMods.sln", "-p:DeployToGame=true"],
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    }
+  ]
+}

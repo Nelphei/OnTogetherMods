@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloTogether", "HelloTogether\HelloTogether.csproj", "{1D50E86D-860A-4F37-9667-BDE42DBD5CE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMode", "PhotoMode\PhotoMode.csproj", "{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D50E86D-860A-4F37-9667-BDE42DBD5CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D50E86D-860A-4F37-9667-BDE42DBD5CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D50E86D-860A-4F37-9667-BDE42DBD5CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D50E86D-860A-4F37-9667-BDE42DBD5CE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

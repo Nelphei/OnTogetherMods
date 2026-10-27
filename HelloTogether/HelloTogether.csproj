@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references, target framework and auto-deploy come from ..\Directory.Build.props/.targets. -->
+  <PropertyGroup>
+    <AssemblyName>HelloTogether</AssemblyName>
+    <RootNamespace>HelloTogether</RootNamespace>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,7 @@
+bin/
+obj/
+.vs/
+*.user
+
+# Decompiled game code: GigaPuff's property, keep it local and never publish it.
+reference/
