@@ -29,6 +29,7 @@ BepInEx 5 plugins for On-Together (GigaPuff), a Unity 6 (6000.0.60) **Mono** gam
 - Window modes: only `OverlayManager.ResolutionMode == Normal` renders the world directly to the screen. Landscape, Portrait and Desk render into a texture behind UI masks.
 - `SettingsController` uses its Canvas `enabled` flag to mean the menu is open, so don't toggle it.
 - Name tags and chat bubbles: `TextBubbleController._textBubbleCanvas`.
+- Chat box: not its own canvas. It's several `UIManager` objects (`_messagePanelParent` is the draggable container) on the main UI canvas. `IsMessagePanelHidden` is true when the player has minimised chat. PhotoMode shows it alone by turning the canvas back on and adding switched-off Canvas components to every non-chat sibling.
 - Hotkeys: the game uses no F keys. BlueSage uses F8 and Steam screenshots use F12. PhotoMode uses F9 and F1.
 
 ## Paths

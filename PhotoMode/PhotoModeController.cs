@@ -91,6 +91,10 @@ namespace PhotoMode
                 _ui.SetNameTagsHidden(!_ui.NameTagsHidden);
                 Toast(_ui.NameTagsHidden ? "Name tags hidden" : "Name tags shown");
             }
+            if (Input.GetKeyDown(S.ChatKey.Value))
+            {
+                SetChatShown(!_ui.ChatShown, quiet: false);
+            }
             if (Input.GetKeyDown(S.HelpKey.Value))
             {
                 _showHelp = !_showHelp;
@@ -205,8 +209,37 @@ namespace PhotoMode
             _refreshTimer = RefreshInterval;
             IsActive = true;
             _ui.Hide(S.HideNameTags.Value);
+            if (S.ShowChat.Value)
+            {
+                SetChatShown(true, quiet: true);
+            }
 
             Plugin.Log.LogInfo("Photo mode on.");
+        }
+
+        private void SetChatShown(bool shown, bool quiet)
+        {
+            // When chat is minimised in the game, its objects are switched off, so showing
+            // them would show nothing. Say so instead of silently doing nothing.
+            UIManager ui = MonoSingleton<UIManager>.I;
+            if (shown && ui != null && ui.IsMessagePanelHidden)
+            {
+                if (!quiet)
+                {
+                    Toast("Chat is minimised. Open it in the game first, then start photo mode.");
+                }
+                return;
+            }
+
+            if (!_ui.SetChatShown(shown))
+            {
+                Toast("Couldn't find the chat box. See the BepInEx log.");
+                return;
+            }
+            if (!quiet)
+            {
+                Toast(shown ? "Chat shown" : "Chat hidden");
+            }
         }
 
         private void Exit()
@@ -488,7 +521,7 @@ namespace PhotoMode
                     "Hold right mouse: look      WASD: move      Q / E: down / up\n" +
                     "Shift: faster      Ctrl: slower      Scroll: zoom\n" +
                     $"{S.CaptureKey.Value}: take photo      {S.NameTagsKey.Value}: name tags      " +
-                    $"{S.ResetKey.Value}: reset camera\n" +
+                    $"{S.ChatKey.Value}: chat      {S.ResetKey.Value}: reset camera\n" +
                     $"{S.HelpKey.Value}: hide this panel      {S.ToggleKey.Value} or Esc: exit";
                 Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
                 GUI.Box(new Rect(20f, 1080f - size.y - 20f, size.x, size.y), text, _panelStyle);

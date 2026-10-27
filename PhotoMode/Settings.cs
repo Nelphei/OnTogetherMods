@@ -9,6 +9,7 @@ namespace PhotoMode
         public readonly ConfigEntry<KeyCode> ToggleKey;
         public readonly ConfigEntry<KeyCode> CaptureKey;
         public readonly ConfigEntry<KeyCode> NameTagsKey;
+        public readonly ConfigEntry<KeyCode> ChatKey;
         public readonly ConfigEntry<KeyCode> ResetKey;
         public readonly ConfigEntry<KeyCode> HelpKey;
 
@@ -19,6 +20,7 @@ namespace PhotoMode
         public readonly ConfigEntry<float> MaxDistance;
 
         public readonly ConfigEntry<bool> HideNameTags;
+        public readonly ConfigEntry<bool> ShowChat;
         public readonly ConfigEntry<bool> ShowHelp;
         public readonly ConfigEntry<bool> ShutterSound;
         public readonly ConfigEntry<int> ResolutionMultiplier;
@@ -32,6 +34,8 @@ namespace PhotoMode
                 "Takes a photo. Only works while photo mode is on.");
             NameTagsKey = config.Bind("Keys", "NameTagsKey", KeyCode.H,
                 "Shows or hides name tags and chat bubbles while photo mode is on.");
+            ChatKey = config.Bind("Keys", "ChatKey", KeyCode.T,
+                "Shows or hides the chat box while photo mode is on. You can read it but not type.");
             ResetKey = config.Bind("Keys", "ResetKey", KeyCode.R,
                 "Moves the camera back to where photo mode started.");
             HelpKey = config.Bind("Keys", "HelpKey", KeyCode.F1,
@@ -55,6 +59,8 @@ namespace PhotoMode
 
             HideNameTags = config.Bind("Photos", "HideNameTagsByDefault", true,
                 "Hide name tags and chat bubbles when photo mode starts. Toggle with NameTagsKey.");
+            ShowChat = config.Bind("Photos", "ShowChatByDefault", false,
+                "Keep the chat box visible when photo mode starts. Toggle with ChatKey. When shown, it appears in photos too.");
             ShowHelp = config.Bind("Photos", "ShowHelpByDefault", true,
                 "Show the controls panel when photo mode starts. It is never included in photos.");
             ShutterSound = config.Bind("Photos", "ShutterSound", true,
