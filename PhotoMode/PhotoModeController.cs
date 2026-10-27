@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 using Cinemachine;
+using OnTogetherMods.Shared;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
@@ -361,8 +362,10 @@ namespace PhotoMode
         private IEnumerator Capture()
         {
             // While _capturing is set, OnGUI draws nothing, so the help panel and toasts
-            // stay out of the photo. Also catch any UI that popped up since the last refresh.
+            // stay out of the photo. Other mods' windows hide too (PanelStack).
+            // Also catch any UI that popped up since the last refresh.
             _capturing = true;
+            PanelStack.HideForCapture();
             _ui.Refresh();
 
             // Wait until this frame has finished drawing, then grab it.
@@ -497,22 +500,11 @@ namespace PhotoMode
 
             if (_panelStyle == null)
             {
-                _panelStyle = new GUIStyle(GUI.skin.box)
-                {
-                    alignment = TextAnchor.UpperLeft,
-                    fontSize = 15,
-                    richText = true,
-                    wordWrap = false,
-                    padding = new RectOffset(12, 12, 10, 10),
-                };
-                _panelStyle.normal.textColor = Color.white;
+                _panelStyle = PanelStack.MakeStyle(TextAnchor.UpperLeft);
             }
 
             // Lay out at 1080p and scale to the real screen, so text isn't tiny on 4K.
-            float scale = Screen.height / 1080f;
-            Matrix4x4 previous = GUI.matrix;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-            float width = Screen.width / scale;
+            Matrix4x4 previous = PanelStack.Begin(out float width);
 
             if (help)
             {
@@ -524,7 +516,8 @@ namespace PhotoMode
                     $"{S.ChatKey.Value}: chat      {S.ResetKey.Value}: reset camera\n" +
                     $"{S.HelpKey.Value}: hide this panel      {S.ToggleKey.Value} or Esc: exit";
                 Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
-                GUI.Box(new Rect(20f, 1080f - size.y - 20f, size.x, size.y), text, _panelStyle);
+                // Bottom-left, with other mods' windows (like Emote Sync's) stacked above.
+                GUI.Box(PanelStack.Place("PhotoMode", PanelStack.PhotoModeOrder, size), text, _panelStyle);
             }
 
             if (toast)
@@ -533,7 +526,7 @@ namespace PhotoMode
                 GUI.Box(new Rect((width - size.x) / 2f, 40f, size.x, size.y), _toastText, _panelStyle);
             }
 
-            GUI.matrix = previous;
+            PanelStack.End(previous);
         }
     }
 }

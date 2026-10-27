@@ -4,6 +4,11 @@
   <PropertyGroup>
     <AssemblyName>PhotoMode</AssemblyName>
     <RootNamespace>PhotoMode</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Stacks this mod's window with other mods' windows. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+  </ItemGroup>
 </Project>

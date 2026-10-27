@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloTogether", "HelloToget
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMode", "PhotoMode\PhotoMode.csproj", "{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmoteSync", "EmoteSync\EmoteSync.csproj", "{F900A152-EB5B-41BD-AC40-9479E32975BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D65DDF7D-E149-4B62-82B7-A9D60FEB66D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
