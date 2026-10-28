@@ -41,7 +41,12 @@ namespace TraceOverlay
             string folder = ImageFolder.Value;
             if (string.IsNullOrWhiteSpace(folder))
             {
-                folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "On-Together", "Trace");
+                string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                if (string.IsNullOrEmpty(pictures))
+                {
+                    pictures = UnityEngine.Application.persistentDataPath;
+                }
+                folder = Path.Combine(pictures, "On-Together", "Trace");
             }
             return folder;
         }
