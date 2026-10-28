@@ -4,7 +4,7 @@ Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the 
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
-> **Early days.** Photo Mode, Teleport Spots, Song Player and Trace Overlay have been tried in the game. Emote Sync hasn't been tested yet, and none of the 0.1.0 mods have had a full test in a real lobby with other players, so expect rough edges.
+> **Early days.** Photo Mode, Teleport Spots, Song Player and Trace Overlay have been tried in the game. Emote Sync and Focus Anywhere haven't been tested yet, and none of the 0.1.0 mods have had a full test in a real lobby with other players, so expect rough edges.
 
 ## The mods
 
@@ -15,6 +15,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Teleport Spots](#teleport-spots) | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
+| [Focus Anywhere](#focus-anywhere) | The game's focus key | Focus on any ground, with every activity in the game | Only you (others see your activity without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys.
 
@@ -53,6 +54,18 @@ Everyone nearby hears the song, with or without the mod. Click **Stop**, or stan
 ### Trace Overlay
 
 Put `.png` or `.jpg` files in `Pictures\On-Together\Trace`, then start drawing on a chalkboard or whiteboard. The window opens by itself. Click an image to lay it over the board, set how see-through it is, and trace over it with chalk. Only you can see the picture.
+
+### Focus Anywhere
+
+Press the game's usual focus key wherever you are: on grass, on rocks, at the music hill, or next to a seat someone else is using. The focus menu also lists every activity in the game, not just the ones for where you're standing:
+
+- The water activities work on land, and the land ones work in water. On land, floater activities bring out your floater.
+- A new **Play** category has the play tower activities.
+- Activities from seat spots, like the tree hanger, the waterfall pit and the bean bag, work anywhere.
+
+Seat spots that are free (benches, desks, the swan...) still open their own menu and sit you down on the seat. Seat poses done on open ground sit on thin air, and other players see that too. Summer DLC activities stay hidden unless you own the DLC, and the basketball court stays off limits. Focus time counts the same as normal focus.
+
+`AllActivities` and `AnyGround` in the settings file turn each half off.
 
 ## Installing
 
@@ -109,5 +122,5 @@ Add a project name to build or deploy just one mod, like `dotnet build PhotoMode
 
 - `HelloTogether/` is a minimal starter mod: a plugin that logs a message and one Harmony patch. Copy the folder, change the GUID and names in `Plugin.cs`, and add it with `dotnet sln add`.
 - `Shared/` holds code used by more than one mod. `PanelStack.cs` stacks each mod's window along the bottom, right edges lined up 15% in from the right (clear of the chat box) so they don't overlap, and `ClickBlocker.cs` stops clicks on a mod window from reaching the game.
-- [CLAUDE.md](CLAUDE.md) has notes on how the game works inside (camera, input, animations, networking, instruments, drawing) that were learned while building these mods.
+- [CLAUDE.md](CLAUDE.md) has notes on how the game works inside (camera, input, animations, focus, networking, instruments, drawing) that were learned while building these mods.
 - To read the game's code, decompile it with [ILSpy](https://github.com/icsharpcode/ILSpy). The decompiled code is GigaPuff's, so keep it out of anything you publish. This repo ignores a local `reference/` folder for it.

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongPlayer", "SongPlayer\So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraceOverlay", "TraceOverlay\TraceOverlay.csproj", "{BAC9F3CC-C04A-49A8-B474-CDABAAA10E40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusAnywhere", "FocusAnywhere\FocusAnywhere.csproj", "{49AF2BAB-B755-4EB9-BB87-B89A20C51257}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{BAC9F3CC-C04A-49A8-B474-CDABAAA10E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAC9F3CC-C04A-49A8-B474-CDABAAA10E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAC9F3CC-C04A-49A8-B474-CDABAAA10E40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49AF2BAB-B755-4EB9-BB87-B89A20C51257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49AF2BAB-B755-4EB9-BB87-B89A20C51257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AF2BAB-B755-4EB9-BB87-B89A20C51257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49AF2BAB-B755-4EB9-BB87-B89A20C51257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
