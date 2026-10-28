@@ -168,7 +168,15 @@ namespace SongPlayer
             try
             {
                 Directory.CreateDirectory(folder);
-                Process.Start("explorer.exe", "\"" + folder + "\"");
+                if (Application.platform == RuntimePlatform.WindowsPlayer)
+                {
+                    Process.Start("explorer.exe", "\"" + folder + "\"");
+                }
+                else
+                {
+                    // Opens Finder on a Mac.
+                    Application.OpenURL(new Uri(folder).AbsoluteUri);
+                }
             }
             catch (Exception e)
             {

@@ -32,7 +32,12 @@ namespace SongPlayer
             string folder = SongFolder.Value;
             if (string.IsNullOrWhiteSpace(folder))
             {
-                folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "On-Together");
+                string music = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                if (string.IsNullOrEmpty(music))
+                {
+                    music = UnityEngine.Application.persistentDataPath;
+                }
+                folder = Path.Combine(music, "On-Together");
             }
             return folder;
         }
