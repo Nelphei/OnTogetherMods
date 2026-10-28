@@ -20,6 +20,8 @@ namespace OnTogetherMods.Shared
         public const int PhotoModeOrder = 0;
         public const int EmoteSyncOrder = 10;
         public const int TeleportSpotsOrder = 20;
+        public const int SongPlayerOrder = 30;
+        public const int TraceOverlayOrder = 40;
 
         // True while Photo Mode is taking a photo. Mods draw nothing then, so they stay out of it.
         public static bool Hidden =>
