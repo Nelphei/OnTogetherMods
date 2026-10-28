@@ -56,11 +56,23 @@ Put `.png` or `.jpg` files in `Pictures\On-Together\Trace`, then start drawing o
 
 ## Installing
 
-There are no ready-made downloads yet, so for now you'll need to [build the mods](#building) yourself.
+Download a mod's zip from the [Releases](https://github.com/Nelphei/OnTogetherMods/releases) page. Each mod is a single DLL, and the same download works on Windows and Mac.
 
-1. Install **BepInEx 5** (the x64 build for Windows) into the game folder, next to `On-Together.exe`, and start the game once so it sets itself up.
-2. Copy the mod folders (for example `PhotoMode`, holding `PhotoMode.dll`) into `BepInEx\plugins`.
+### Windows
+
+1. Install [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) (the `win_x64` zip) into the game folder, next to `On-Together.exe`, and start the game once so it sets itself up.
+2. Unzip the mod into the game folder. It puts the DLL in `BepInEx\plugins\<mod>\`.
 3. Start the game. Each mod writes a line to the BepInEx console when it loads.
+
+### Mac
+
+The Mac version of the game runs on Apple Silicon, where plain BepInEx can't load mods yet. [r2modmac](https://github.com/Zard-Studios/r2modmac) sets BepInEx up so it works.
+
+1. Add On-Together in r2modmac and launch the game through it once, so BepInEx is installed.
+2. Unzip the mod and copy its folder (for example `PhotoMode`) into the `BepInEx/plugins` folder of your r2modmac profile, next to your other mods.
+3. Launch the game through r2modmac.
+
+The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brightness and volume, so hold **Fn** with the mod keys (for example Fn + F9).
 
 ## Settings
 
