@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoMode", "PhotoMode\Phot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmoteSync", "EmoteSync\EmoteSync.csproj", "{F900A152-EB5B-41BD-AC40-9479E32975BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleportSpots", "TeleportSpots\TeleportSpots.csproj", "{8F38761A-43A9-4E46-BFDC-E2686900F43F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F900A152-EB5B-41BD-AC40-9479E32975BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F38761A-43A9-4E46-BFDC-E2686900F43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F38761A-43A9-4E46-BFDC-E2686900F43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F38761A-43A9-4E46-BFDC-E2686900F43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F38761A-43A9-4E46-BFDC-E2686900F43F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

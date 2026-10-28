@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references and target framework come from ..\Directory.Build.props.
+       Deploying to the game is opt-in: see ..\Directory.Build.targets. -->
+  <PropertyGroup>
+    <AssemblyName>TeleportSpots</AssemblyName>
+    <RootNamespace>TeleportSpots</RootNamespace>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Stacks this mod's window with other mods' windows. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+  </ItemGroup>
+</Project>

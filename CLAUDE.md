@@ -8,6 +8,7 @@ BepInEx 5 plugins for On-Together (GigaPuff), a Unity 6 (6000.0.60) **Mono** gam
 - `HelloTogether/`: starter mod (a logging plugin plus one Harmony postfix). Copy it to start a new mod, change the GUID and names, then `dotnet sln add`.
 - `PhotoMode/`: free camera, UI hiding and PNG screenshots (F9 to toggle). Works only in the Normal window mode.
 - `EmoteSync/`: players who turn it on (F7) start emotes together on the same network tick, and join each other's free-focus activities with loops kept in step. Every player in the group needs the mod.
+- `TeleportSpots/`: a window (F5) where you save the spot you're standing on and click a name to teleport back there. Spots are saved in `BepInEx\config\TeleportSpots.json`. Only you need the mod.
 - `Shared/`: source files compiled into more than one mod, each project adding them with `<Compile Include="..\Shared\X.cs" Link="Shared\X.cs" />`. `PanelStack.cs` stacks each mod's window in the bottom-left corner. Call `PanelStack.Place(id, order, size)` every OnGUI, skip drawing while `PanelStack.Hidden` is true (Photo Mode is taking a photo), and add an order constant for each new mod.
 - `reference/Assembly-CSharp/`: the game's code decompiled with ilspycmd, one file per class. It's gitignored and must never be published. Re-generate after a game update:
   `dotnet ilspycmd -p -o reference/Assembly-CSharp -r "<Managed dir>" "<Managed dir>/Assembly-CSharp.dll"`, then delete the generated `.csproj`.
@@ -32,10 +33,12 @@ BepInEx 5 plugins for On-Together (GigaPuff), a Unity 6 (6000.0.60) **Mono** gam
 - `SettingsController` uses its Canvas `enabled` flag to mean the menu is open, so don't toggle it.
 - Name tags and chat bubbles: `TextBubbleController._textBubbleCanvas`.
 - Chat box: not its own canvas. It's several `UIManager` objects (`_messagePanelParent` is the draggable container) on the main UI canvas. `IsMessagePanelHidden` is true when the player has minimised chat. PhotoMode shows it alone by turning the canvas back on and adding switched-off Canvas components to every non-chat sibling.
-- Hotkeys: the game uses no F keys. BlueSage uses F8 and Steam screenshots use F12. PhotoMode uses F9 and F1. EmoteSync uses F7 and F6.
+- Hotkeys: the game uses no F keys. BlueSage uses F8 and Steam screenshots use F12. PhotoMode uses F9 and F1. EmoteSync uses F7 and F6. TeleportSpots uses F5.
 - Animations: every player animation is one networked animator int, `AnimState`, set through `PlayerAnimationController` (owner only, via PurrNet `NetworkAnimator`, sent once per tick). Emotes: `EmoteController.SetEmoteAnim(index)`, with the anim value in `GameSettings.EmoteAnimStates`. Focus: `PlayerFocusController.SetFocus` also handles props, desk, camera, timer and seats.
 - Mod-to-mod messages: the game never uses Steam lobby chat (`SendLobbyChatMsg` / `LobbyChatMsg_t`), so EmoteSync uses it as a channel that unmodded players never see. Don't use lobby member data for this: changing it makes PurrLobby refresh the whole lobby. The lobby ID is `MultiplayerManager.LobbyCode`.
 - Shared clock: `PurrNet.NetworkManager.main.tickModule.syncedPreciseTick`. The host counts ticks and clients re-sync to it using their ping.
+- Moving the player: the owner sets `transform.position` (the game does this when you fall off the world). Keep the `CharacterController` on and call `Physics.SyncTransforms()`, because a disabled collider never fires `OnTriggerExit` for area triggers. The player's `NetworkTransform` is owner-controlled: `ForceSync()` makes other players jump there instead of sliding. The camera follows `MainSceneManager.PlayerFollower`, whose Y rotation is the camera's turn; set `PlayerVCamera.PreviousStateIsValid = false` to cut instead of glide.
+- Clickable mod windows (IMGUI) don't block the game. TeleportSpots puts an invisible uGUI `Image` on a top canvas under its window, which stops clicks on game UI and scroll zoom (`PlayerMovementController.Zoom` skips when `InputManager.MouseOverUIObject` is set). It also clears `InputManager.IsMouseButton0Down` so world clicks (`ClickManager`, fishing) don't go through.
 
 ## Paths
 - Game: `C:\Program Files (x86)\Steam\steamapps\common\On-Together\On-Together`
