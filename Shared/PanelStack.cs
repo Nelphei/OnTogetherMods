@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace OnTogetherMods.Shared
 {
-    // Lets each mod draw its own small window in the bottom-left corner, stacked so they never
-    // overlap. Every mod compiles its own copy of this file (see the <Compile Include> in each
-    // .csproj), so the shared state is kept in AppDomain data, which all copies can see.
+    // Lets each mod draw its own small window along the bottom of the screen, stacked so they
+    // never overlap. The windows' right edges line up 15% of the screen in from the right, which
+    // keeps them clear of the chat box in the bottom-left corner.
+    //
+    // Every mod compiles its own copy of this file (see the <Compile Include> in each .csproj),
+    // so the shared state is kept in AppDomain data, which all copies can see.
     //
     // Layout is in 1080p units: draw inside Begin()/End(), which scales to the real screen.
     internal static class PanelStack
@@ -14,6 +17,8 @@ namespace OnTogetherMods.Shared
         private const string TableKey = "OnTogetherMods.PanelStack.Panels";
         private const string HiddenKey = "OnTogetherMods.PanelStack.Hidden";
         private const float Margin = 20f;
+        // How far in from the right edge the windows' right edges sit, as a share of screen width.
+        private const float FromRight = 0.15f;
         private const float Gap = 10f;
 
         // Stack order, bottom first. Leave gaps for future mods.
@@ -44,6 +49,10 @@ namespace OnTogetherMods.Shared
             // Only built-in types go in the table: each mod's copy of this file is its own type.
             panels[id] = new double[] { order, size.y, frame };
 
+            // Screen width in the same 1080p units the windows are laid out in.
+            float width = Screen.width * 1080f / Screen.height;
+            // Never pushed off the left edge, even on a narrow screen.
+            float x = Mathf.Max(Margin, width * (1f - FromRight) - size.x);
             float y = 1080f - Margin - size.y;
             foreach (DictionaryEntry entry in panels)
             {
@@ -56,7 +65,7 @@ namespace OnTogetherMods.Shared
                     y -= (float)value[1] + Gap;
                 }
             }
-            return new Rect(Margin, y, size.x, size.y);
+            return new Rect(x, y, size.x, size.y);
         }
 
         // Scales GUI drawing from 1080p to the real screen. Returns the old matrix for End().

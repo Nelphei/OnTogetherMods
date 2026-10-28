@@ -9,7 +9,7 @@ using UnityEngine;
 namespace TraceOverlay
 {
     // The image list. It appears while you draw on a chalkboard or whiteboard and goes away when
-    // you step back. It sits in the bottom-left window stack (Shared/PanelStack.cs) and is drawn
+    // you step back. It sits in the bottom window stack (Shared/PanelStack.cs) and is drawn
     // with Unity's immediate-mode GUI, laid out at 1080p and scaled to the screen.
     internal sealed class TraceWindow : MonoBehaviour
     {

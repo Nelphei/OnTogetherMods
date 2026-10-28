@@ -37,7 +37,7 @@ namespace EmoteSync
 
             ShowPanel = config.Bind("Display", "ShowPanelByDefault", true,
                 "Show the sync window (who's in your group, and the keys) when you turn sync on. Toggle with PanelKey. " +
-                "It sits in the bottom-left corner, above Photo Mode's controls when both are open, and is never in photos.");
+                "It sits at the bottom of the screen, above Photo Mode's controls when both are open, and is never in photos.");
             ShowNotices = config.Bind("Display", "ShowNotices", true,
                 "Show short messages at the top of the screen, like who has emote sync on.");
             DebugLog = config.Bind("Debug", "DebugLog", false,

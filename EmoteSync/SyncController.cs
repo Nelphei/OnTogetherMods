@@ -473,7 +473,7 @@ namespace EmoteSync
             {
                 string text = PanelText();
                 Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
-                // Bottom-left, stacked above Photo Mode's controls when that's open.
+                // In the bottom window stack, above Photo Mode's controls when that's open.
                 GUI.Box(PanelStack.Place("EmoteSync", PanelStack.EmoteSyncOrder, size), text, _panelStyle);
             }
 

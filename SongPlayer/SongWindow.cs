@@ -10,7 +10,7 @@ using UnityEngine;
 namespace SongPlayer
 {
     // The song list. It appears while you sit at an instrument and goes away when you stand up.
-    // It sits in the bottom-left window stack (Shared/PanelStack.cs) and is drawn with Unity's
+    // It sits in the bottom window stack (Shared/PanelStack.cs) and is drawn with Unity's
     // immediate-mode GUI, laid out at 1080p and scaled to the screen.
     internal sealed class SongWindow : MonoBehaviour
     {

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace TeleportSpots
 {
     // The teleport window: save where you're standing, then click a name to go back there.
-    // It sits in the bottom-left window stack (Shared/PanelStack.cs) and is drawn with Unity's
+    // It sits in the bottom window stack (Shared/PanelStack.cs) and is drawn with Unity's
     // immediate-mode GUI, laid out at 1080p and scaled to the screen.
     internal sealed class SpotsWindow : MonoBehaviour
     {

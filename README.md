@@ -4,7 +4,7 @@ Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the 
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
-> **Early days.** Photo Mode has been tested in the game. The others are version 0.1.0 and haven't had a full test in a real lobby yet, so expect rough edges.
+> **Early days.** Photo Mode, Teleport Spots, Song Player and Trace Overlay have been tried in the game. Emote Sync hasn't been tested yet, and none of the 0.1.0 mods have had a full test in a real lobby with other players, so expect rough edges.
 
 ## The mods
 
@@ -96,6 +96,6 @@ Add a project name to build or deploy just one mod, like `dotnet build PhotoMode
 ## Making your own mod
 
 - `HelloTogether/` is a minimal starter mod: a plugin that logs a message and one Harmony patch. Copy the folder, change the GUID and names in `Plugin.cs`, and add it with `dotnet sln add`.
-- `Shared/` holds code used by more than one mod. `PanelStack.cs` stacks each mod's window in the bottom-left corner so they don't overlap, and `ClickBlocker.cs` stops clicks on a mod window from reaching the game.
+- `Shared/` holds code used by more than one mod. `PanelStack.cs` stacks each mod's window along the bottom, right edges lined up 15% in from the right (clear of the chat box) so they don't overlap, and `ClickBlocker.cs` stops clicks on a mod window from reaching the game.
 - [CLAUDE.md](CLAUDE.md) has notes on how the game works inside (camera, input, animations, networking, instruments, drawing) that were learned while building these mods.
 - To read the game's code, decompile it with [ILSpy](https://github.com/icsharpcode/ILSpy). The decompiled code is GigaPuff's, so keep it out of anything you publish. This repo ignores a local `reference/` folder for it.

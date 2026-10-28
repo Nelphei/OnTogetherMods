@@ -516,7 +516,7 @@ namespace PhotoMode
                     $"{S.ChatKey.Value}: chat      {S.ResetKey.Value}: reset camera\n" +
                     $"{S.HelpKey.Value}: hide this panel      {S.ToggleKey.Value} or Esc: exit";
                 Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
-                // Bottom-left, with other mods' windows (like Emote Sync's) stacked above.
+                // In the bottom window stack, with other mods' windows (like Emote Sync's) stacked above.
                 GUI.Box(PanelStack.Place("PhotoMode", PanelStack.PhotoModeOrder, size), text, _panelStyle);
             }
 
