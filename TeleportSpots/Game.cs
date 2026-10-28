@@ -1,3 +1,4 @@
+using EZhex1991.EZSoftBone;
 using PurrNet;
 using UnityEngine;
 
@@ -87,6 +88,7 @@ namespace TeleportSpots
             Transform player = move.transform;
             player.SetPositionAndRotation(spot.Position, Quaternion.Euler(0f, spot.Facing, 0f));
             Physics.SyncTransforms();
+            ResetTail(move);
 
             // The camera follows an invisible "follower" object that copies your position every frame
             // and holds the camera's turn. Move it now, then tell Cinemachine to cut to the new place
@@ -117,6 +119,26 @@ namespace TeleportSpots
             if (net != null)
             {
                 net.ForceSync();
+            }
+        }
+
+        // The tail is a chain of floppy bones (EZSoftBone) that remember where they were on the map.
+        // After a jump they'd still be at the old spot, and the physics would read the gap as a huge
+        // speed that flings the tail around. SetRestState puts each bone where it is now and stops it.
+        // The game adds the tail physics to the tail mesh's parent (PlayerCustomizationController.CreateTailModel).
+        // Other players still see the whip: their game runs its own copy of your tail.
+        private static void ResetTail(PlayerMovementController move)
+        {
+            PlayerCustomizationController looks = move.GetComponent<PlayerCustomizationController>();
+            if (looks == null || !looks.OutfitMeshRenderers.TryGetValue(OutfitType.Tail, out SkinnedMeshRenderer tail)
+                || tail == null || tail.transform.parent == null)
+            {
+                return;
+            }
+            EZSoftBone bones = tail.transform.parent.GetComponent<EZSoftBone>();
+            if (bones != null)
+            {
+                bones.SetRestState();
             }
         }
 
