@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PurrNet.Modules;
 using OnTogetherMods.Shared;
 using Steamworks;
+using TMPro;
 using UnityEngine;
 
 namespace EmoteSync
@@ -63,8 +64,10 @@ namespace EmoteSync
         private bool _on;
         private bool _firing;
 
-        private GUIStyle _noticeStyle;
-        private GUIStyle _panelStyle;
+        // Drawn with TextMeshPro, so names keep the styling they have on name tags.
+        private readonly TextBox _panelBox = new TextBox("EmoteSync Panel", TextAlignmentOptions.TopLeft);
+        private readonly TextBox _promptBox = new TextBox("EmoteSync Prompt", TextAlignmentOptions.Center);
+        private readonly TextBox _noticeBox = new TextBox("EmoteSync Notice", TextAlignmentOptions.Center);
         private GUIStyle _buttonStyle;
         private ClickBlocker _blocker;
         private Rect _promptScreenRect;
@@ -93,6 +96,9 @@ namespace EmoteSync
                 IsMouseOverPrompt = false;
             }
             _blocker?.Destroy();
+            _panelBox.Destroy();
+            _promptBox.Destroy();
+            _noticeBox.Destroy();
         }
 
         private void Update()
@@ -127,6 +133,10 @@ namespace EmoteSync
 
         private void LateUpdate()
         {
+            _panelBox.LateUpdate();
+            _promptBox.LateUpdate();
+            _noticeBox.LateUpdate();
+
             try
             {
                 _aligner.Update(Game.Ticks);
@@ -223,7 +233,7 @@ namespace EmoteSync
         {
             if (_group.Remove(id.m_SteamID) && _on)
             {
-                Notice($"{LobbyChannel.NameOf(id)} left. {GroupText()}");
+                Notice($"{Game.PlayerName(id)} left. {GroupText()}");
             }
         }
 
@@ -253,7 +263,7 @@ namespace EmoteSync
                 case "OFF":
                     if (_group.Remove(sender.m_SteamID) && _on)
                     {
-                        Notice($"{LobbyChannel.NameOf(sender)} turned emote sync off. {GroupText()}");
+                        Notice($"{Game.PlayerName(sender)} turned emote sync off. {GroupText()}");
                     }
                     break;
 
@@ -314,7 +324,7 @@ namespace EmoteSync
 
         private void ReceiveFocus(CSteamID sender, int anim, FocusType type)
         {
-            string name = SafeName(sender);
+            string name = Game.PlayerName(sender);
             string activity = Game.FocusName(type);
             // A newer pick replaces one we were waiting on.
             _waitingFocus = null;
@@ -341,7 +351,7 @@ namespace EmoteSync
             }
             if (S.DebugLog.Value)
             {
-                Plugin.Log.LogInfo($"Focus {type} (anim {anim}) from {name}: {result}" + (why != null ? $" ({why})." : "."));
+                Plugin.Log.LogInfo($"Focus {type} (anim {anim}) from {LobbyChannel.NameOf(sender)}: {result}" + (why != null ? $" ({why})." : "."));
             }
         }
 
@@ -442,17 +452,11 @@ namespace EmoteSync
             return $"Joining {waiting.Name} ({waiting.Activity}) when {waiting.WaitingFor} ({Mathf.CeilToInt(left)}s)";
         }
 
-        // A player's name, kept from being read as formatting tags.
-        private static string SafeName(CSteamID id)
-        {
-            return LobbyChannel.NameOf(id).Replace("<", "‹");
-        }
-
         private void AddToGroup(CSteamID id)
         {
             if (_group.Add(id.m_SteamID) && _on)
             {
-                Notice($"{LobbyChannel.NameOf(id)} has emote sync on");
+                Notice($"{Game.PlayerName(id)} has emote sync on");
             }
         }
 
@@ -485,7 +489,7 @@ namespace EmoteSync
             {
                 return;
             }
-            Notice($"{LobbyChannel.NameOf(sender)} started a synced emote");
+            Notice($"{Game.PlayerName(sender)} started a synced emote");
             if (S.DebugLog.Value)
             {
                 Plugin.Log.LogInfo($"Emote {emote} from {LobbyChannel.NameOf(sender)} for tick {tick}, " +
@@ -632,10 +636,8 @@ namespace EmoteSync
                 return;
             }
 
-            if (_panelStyle == null)
+            if (_buttonStyle == null)
             {
-                _panelStyle = PanelStack.MakeStyle(TextAnchor.UpperLeft);
-                _noticeStyle = PanelStack.MakeStyle(TextAnchor.MiddleCenter);
                 _buttonStyle = new GUIStyle(GUI.skin.button)
                 {
                     fontSize = 15,
@@ -650,9 +652,9 @@ namespace EmoteSync
             if (panel)
             {
                 string text = PanelText();
-                Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
+                Vector2 size = _panelBox.Measure(text);
                 // In the bottom window stack, above Photo Mode's controls when that's open.
-                GUI.Box(PanelStack.Place("EmoteSync", PanelStack.EmoteSyncOrder, size), text, _panelStyle);
+                _panelBox.Draw(PanelStack.Place("EmoteSync", PanelStack.EmoteSyncOrder, size), text);
             }
 
             // Below Photo Mode's messages (y = 40), so both can show at once.
@@ -663,8 +665,8 @@ namespace EmoteSync
             }
             if (notice)
             {
-                Vector2 size = _noticeStyle.CalcSize(new GUIContent(_notice));
-                GUI.Box(new Rect((width - size.x) / 2f, y, size.x, size.y), _notice, _noticeStyle);
+                Vector2 size = _noticeBox.Measure(_notice);
+                _noticeBox.Draw(new Rect((width - size.x) / 2f, y, size.x, size.y), _notice);
             }
 
             PanelStack.End(previous);
@@ -676,12 +678,12 @@ namespace EmoteSync
             bool button = _waitingFocus is WaitingFocus waiting && waiting.CanClear;
             const string label = "Join now";
             const float gap = 6f;
-            Vector2 textSize = _noticeStyle.CalcSize(new GUIContent(text));
+            Vector2 textSize = _promptBox.Measure(text);
             float buttonWidth = button ? _buttonStyle.CalcSize(new GUIContent(label)).x : 0f;
             float total = textSize.x + (button ? gap + buttonWidth : 0f);
 
             var textRect = new Rect((width - total) / 2f, y, textSize.x, textSize.y);
-            GUI.Box(textRect, text, _noticeStyle);
+            _promptBox.Draw(textRect, text);
             Rect whole = textRect;
             if (button)
             {
@@ -745,10 +747,10 @@ namespace EmoteSync
                 var names = new List<string>();
                 foreach (ulong id in _group)
                 {
-                    // Keep names from being read as formatting tags.
-                    names.Add(SafeName(new CSteamID(id)));
+                    names.Add(Game.PlayerName(new CSteamID(id)));
                 }
-                names.Sort(StringComparer.OrdinalIgnoreCase);
+                // In order of what the names say, not their styling tags.
+                names.Sort((a, b) => StringComparer.OrdinalIgnoreCase.Compare(PlayerNames.WithoutTags(a), PlayerNames.WithoutTags(b)));
                 _groupNames = string.Join(", ", names);
                 _groupNamesAt = Time.unscaledTime;
             }

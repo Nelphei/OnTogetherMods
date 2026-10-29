@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using OnTogetherMods.Shared;
+using TMPro;
 using UnityEngine;
 
 namespace DeskSnap
@@ -42,7 +44,10 @@ namespace DeskSnap
         // When each other desk first showed up on your screen since you sat down.
         private readonly Dictionary<PlayerFocusController, float> _firstSeen = new Dictionary<PlayerFocusController, float>();
 
-        private readonly TopNotice _notice = new TopNotice();
+        // Drawn with TextMeshPro, so names keep the styling they have on name tags.
+        private readonly TextBox _noticeBox = new TextBox("DeskSnap Notice", TextAlignmentOptions.Center);
+        private string _notice;
+        private float _noticeUntil;
 
         private void Awake()
         {
@@ -51,7 +56,7 @@ namespace DeskSnap
 
         private void OnDestroy()
         {
-            _notice.Destroy();
+            _noticeBox.Destroy();
             if (Instance == this)
             {
                 Instance = null;
@@ -103,9 +108,13 @@ namespace DeskSnap
             }
         }
 
+        private void LateUpdate()
+        {
+            _noticeBox.LateUpdate();
+        }
+
         private void Update()
         {
-            _notice.Update();
             if (Input.GetKeyDown(S.ToggleKey.Value) && !IsTyping())
             {
                 Toggle();
@@ -233,7 +242,7 @@ namespace DeskSnap
 
             if (!Row.TryPlace(target, side, mine, hover, seats, S.Gap.Value, out Placement place, out string why))
             {
-                message = $"No room next to {TopNotice.Name(target.Name)}'s desk: {why}";
+                message = $"No room next to {PlayerNames.ForText(target.Name)}'s desk: {why}";
                 Plugin.Log.LogInfo($"No room next to {target.Name}'s desk: {why}.");
                 return SnapResult.NoRoom;
             }
@@ -258,7 +267,7 @@ namespace DeskSnap
             _nextCheck = Time.unscaledTime + CheckEvery;
 
             string name = place.Neighbour.Name;
-            message = $"Snapped next to {TopNotice.Name(name)}'s desk. Press {S.ToggleKey.Value} to turn snapping off.";
+            message = $"Snapped next to {PlayerNames.ForText(name)}'s desk. Press {S.ToggleKey.Value} to turn snapping off.";
             Plugin.Log.LogInfo($"Snapped next to {name}'s desk (moved {moved:0.00} m).");
             return SnapResult.Snapped;
         }
@@ -318,13 +327,20 @@ namespace DeskSnap
             {
                 return;
             }
-            // Every name tag uses the same font. It covers the game's fallback fonts for other alphabets too.
-            _notice.Show(text, Game.NameTagFont(_neighbour) ?? Game.NameTagFont(_me));
+            _notice = text;
+            _noticeUntil = Time.unscaledTime + 3f;
         }
 
         private void OnGUI()
         {
-            _notice.CopyBoxLook();
+            // Hidden while Photo Mode takes a photo.
+            if (_notice == null || Time.unscaledTime >= _noticeUntil || PanelStack.Hidden)
+            {
+                return;
+            }
+            // Below Photo Mode's (y = 40) and Emote Sync's (y = 90) messages, so they can all show at once.
+            Vector2 size = _noticeBox.Measure(_notice);
+            _noticeBox.Draw(new Rect((PanelStack.Width - size.x) / 2f, 140f, size.x, size.y), _notice);
         }
     }
 }

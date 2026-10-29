@@ -28,6 +28,25 @@ namespace OnTogetherMods.Shared
         public const int SongPlayerOrder = 30;
         public const int TraceOverlayOrder = 40;
 
+        // Screen width in the same 1080p units the windows are laid out in.
+        public static float Width => Screen.width * 1080f / Screen.height;
+
+        // Mods' own screen canvases (TextBox) are named with this. Photo Mode leaves them alone when
+        // it hides the game's UI, so they keep showing alongside the mods' other windows. Like those,
+        // they hide themselves while a photo is taken.
+        public const string CanvasPrefix = "OnTogetherMods ";
+
+        public static bool IsModCanvas(Canvas canvas)
+        {
+            Canvas root = canvas;
+            for (Transform t = canvas.transform.parent; t != null; t = t.parent)
+            {
+                Canvas above = t.GetComponent<Canvas>();
+                root = above != null ? above : root;
+            }
+            return root.gameObject.name.StartsWith(CanvasPrefix, StringComparison.Ordinal);
+        }
+
         // True while Photo Mode is taking a photo. Mods draw nothing then, so they stay out of it.
         public static bool Hidden =>
             AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until;
@@ -49,8 +68,7 @@ namespace OnTogetherMods.Shared
             // Only built-in types go in the table: each mod's copy of this file is its own type.
             panels[id] = new double[] { order, size.y, frame };
 
-            // Screen width in the same 1080p units the windows are laid out in.
-            float width = Screen.width * 1080f / Screen.height;
+            float width = Width;
             // Never pushed off the left edge, even on a narrow screen.
             float x = Mathf.Max(Margin, width * (1f - FromRight) - size.x);
             float y = 1080f - Margin - size.y;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using OnTogetherMods.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -139,6 +140,11 @@ namespace PhotoMode
                 // Skip canvases the game has already switched off (the settings menu uses this
                 // to mean "closed"), and in-world canvases like chalkboards and signs.
                 if (!canvas.enabled || IsInWorld(canvas))
+                {
+                    continue;
+                }
+                // Other mods' text boxes stay, like their windows, and hide themselves for the photo.
+                if (PanelStack.IsModCanvas(canvas))
                 {
                     continue;
                 }

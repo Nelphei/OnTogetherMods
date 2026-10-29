@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using OnTogetherMods.Shared;
 using PurrNet;
 using PurrNet.Modules;
+using Steamworks;
 using UnityEngine;
 
 namespace EmoteSync
@@ -17,6 +19,35 @@ namespace EmoteSync
 
         private static readonly AccessTools.FieldRef<PlayerAnimationController, Animator> AnimatorField =
             AccessTools.FieldRefAccess<PlayerAnimationController, Animator>("_animator");
+
+        // The last name seen on each player's name tag, so it still shows after they leave.
+        private static readonly Dictionary<ulong, string> NameTags = new Dictionary<ulong, string>();
+
+        // The name on this player's name tag, with its colours and other styling, ready to go in
+        // text drawn with TextBox. Falls back to their Steam name, shown as typed.
+        // The game keeps each player's Steam ID next to their name tag (PlayerPanelController).
+        public static string PlayerName(CSteamID id)
+        {
+            try
+            {
+                PlayerPanelController panel = NetworkSingleton<PlayerPanelController>.I;
+                if (panel != null && panel.PlayerSteamIDs != null && panel.PlayerControllers != null)
+                {
+                    int i = panel.PlayerSteamIDs.IndexOf(id.ToString());
+                    string name = i >= 0 && i < panel.PlayerControllers.Count ? PlayerNames.Of(panel.PlayerControllers[i]) : null;
+                    if (name != null)
+                    {
+                        NameTags[id.m_SteamID] = name;
+                        return name;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // No player list yet.
+            }
+            return NameTags.TryGetValue(id.m_SteamID, out string seen) ? seen : PlayerNames.Plain(LobbyChannel.NameOf(id));
+        }
 
         private static readonly AccessTools.FieldRef<PlayerAnimationController, NetworkAnimator> NetAnimatorField =
             AccessTools.FieldRefAccess<PlayerAnimationController, NetworkAnimator>("_networkAnimator");

@@ -4,11 +4,14 @@
   <PropertyGroup>
     <AssemblyName>DeskSnap</AssemblyName>
     <RootNamespace>DeskSnap</RootNamespace>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- For hiding the notice while Photo Mode takes a photo. -->
+    <!-- The notice: drawn with TextMeshPro so styled player names show properly, and hidden
+         while Photo Mode takes a photo. -->
     <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <Compile Include="..\Shared\TextBox.cs" Link="Shared\TextBox.cs" />
+    <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
   </ItemGroup>
 </Project>
