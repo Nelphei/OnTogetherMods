@@ -4,7 +4,7 @@ Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the 
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
-> **Early days.** Photo Mode, Teleport Spots, Song Player and Trace Overlay have been tried in the game. Emote Sync and Focus Anywhere haven't been tested yet, and none of the 0.1.0 mods have had a full test in a real lobby with other players, so expect rough edges.
+> **Early days.** Photo Mode, Teleport Spots, Song Player, Trace Overlay and Focus Anywhere have been tried in the game. Emote Sync hasn't been tested yet, and apart from Photo Mode, none of the mods have had a full test in a real lobby with other players, so expect rough edges.
 
 ## The mods
 
