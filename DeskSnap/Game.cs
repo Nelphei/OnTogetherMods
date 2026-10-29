@@ -6,6 +6,7 @@ using BepInEx.Bootstrap;
 using EZhex1991.EZSoftBone;
 using HarmonyLib;
 using PurrNet;
+using TMPro;
 using UnityEngine;
 
 namespace DeskSnap
@@ -111,6 +112,17 @@ namespace DeskSnap
             PlayerController pc = player.GetComponent<PlayerController>();
             string name = pc != null && pc.PlayerNameText != null ? pc.PlayerNameText.text : null;
             return string.IsNullOrWhiteSpace(name) ? "your friend" : name.Trim();
+        }
+
+        // The font the player's name tag is drawn with (null if there's no name tag).
+        public static TMP_FontAsset NameTagFont(PlayerFocusController player)
+        {
+            if (player == null)
+            {
+                return null;
+            }
+            PlayerController pc = player.GetComponent<PlayerController>();
+            return pc != null && pc.PlayerNameText != null ? pc.PlayerNameText.font : null;
         }
 
         // PurrNet's player number. Every game in the lobby sees the same number for the same player.
