@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using BepInEx;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace TeleportSpots
 {
-    [Serializable]
     internal sealed class Spot
     {
         public string Name;
@@ -23,11 +23,28 @@ namespace TeleportSpots
     {
         public const int MaxNameLength = 32;
 
-        [Serializable]
+        // The file's layout. Saved with Json.NET because Unity's JsonUtility leaves out lists of a
+        // mod's own classes (it only wrote "Version"). Json.NET can't write a Vector3 by itself,
+        // so the position is stored as plain numbers.
         private sealed class SpotFile
         {
             public int Version = 1;
-            public List<Spot> Spots = new List<Spot>();
+            public List<SavedSpot> Spots = new List<SavedSpot>();
+        }
+
+        private sealed class SavedSpot
+        {
+            public string Name;
+            public SavedPosition Position;
+            public float Facing;
+            public float CameraYaw;
+        }
+
+        private sealed class SavedPosition
+        {
+            public float x;
+            public float y;
+            public float z;
         }
 
         public readonly List<Spot> Spots = new List<Spot>();
@@ -44,22 +61,30 @@ namespace TeleportSpots
 
             try
             {
-                SpotFile file = JsonUtility.FromJson<SpotFile>(File.ReadAllText(FilePath));
+                SpotFile file = JsonConvert.DeserializeObject<SpotFile>(File.ReadAllText(FilePath));
                 if (file?.Spots == null)
                 {
                     return;
                 }
-                foreach (Spot spot in file.Spots)
+                foreach (SavedSpot saved in file.Spots)
                 {
-                    if (spot != null)
+                    // Without a position there's nowhere to go.
+                    if (saved?.Position == null)
                     {
-                        spot.Name = CleanName(spot.Name);
-                        if (spot.Name.Length == 0)
-                        {
-                            spot.Name = NextDefaultName();
-                        }
-                        Spots.Add(spot);
+                        continue;
                     }
+                    var spot = new Spot
+                    {
+                        Name = CleanName(saved.Name),
+                        Position = new Vector3(saved.Position.x, saved.Position.y, saved.Position.z),
+                        Facing = saved.Facing,
+                        CameraYaw = saved.CameraYaw,
+                    };
+                    if (spot.Name.Length == 0)
+                    {
+                        spot.Name = NextDefaultName();
+                    }
+                    Spots.Add(spot);
                 }
                 Plugin.Log.LogInfo($"Loaded {Spots.Count} teleport spots.");
             }
@@ -83,8 +108,18 @@ namespace TeleportSpots
         {
             try
             {
-                var file = new SpotFile { Spots = Spots };
-                File.WriteAllText(FilePath, JsonUtility.ToJson(file, prettyPrint: true));
+                var file = new SpotFile();
+                foreach (Spot spot in Spots)
+                {
+                    file.Spots.Add(new SavedSpot
+                    {
+                        Name = spot.Name,
+                        Position = new SavedPosition { x = spot.Position.x, y = spot.Position.y, z = spot.Position.z },
+                        Facing = spot.Facing,
+                        CameraYaw = spot.CameraYaw,
+                    });
+                }
+                File.WriteAllText(FilePath, JsonConvert.SerializeObject(file, Formatting.Indented));
                 return true;
             }
             catch (Exception e)

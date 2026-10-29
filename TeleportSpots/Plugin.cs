@@ -10,7 +10,7 @@ namespace TeleportSpots
     {
         public const string PluginGuid = "nelphei.ontogether.teleportspots";
         public const string PluginName = "Teleport Spots";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
