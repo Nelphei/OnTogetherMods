@@ -4,7 +4,7 @@ Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the 
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
-> **Early days.** Every mod here has been tried in the game, and Emote Sync has been tried with a friend. Apart from Photo Mode and Emote Sync, none of the mods have had a full test in a real lobby with other players, so expect rough edges.
+> **Early days.** Every mod here except Desk Snap has been tried in the game, and Emote Sync has been tried with a friend. Desk Snap is new and hasn't been tried yet. Apart from Photo Mode and Emote Sync, none of the mods have had a full test in a real lobby with other players, so expect rough edges.
 
 ## The mods
 
@@ -16,6 +16,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Song Player](#song-player) | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | The game's focus key | Focus on any ground, with every activity in the game | Only you (others see your activity without the mod) |
+| [Desk Snap](#desk-snap) | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys.
 
@@ -66,6 +67,14 @@ Press the game's usual focus key wherever you are: on grass, on rocks, at the mu
 Seat spots that are free (benches, desks, the swan...) still open their own menu and sit you down on the seat. Seat poses done on open ground sit on thin air, and other players see that too. Summer DLC activities stay hidden unless you own the DLC, and the basketball court stays off limits. Focus time counts the same as normal focus.
 
 `AllActivities` and `AnyGround` in the settings file turn each half off.
+
+### Desk Snap
+
+Sit down at your desk within 3 m of someone who's already at theirs, and you move into line beside them, facing the same way, with a small gap between the desks. You go to whichever side you were closer to, and if someone's already there, to the end of the row. The mod measures each desk, so desks of every shape and size line up.
+
+It also works when [Emote Sync](#emote-sync) starts your activity because a friend picked it.
+
+**F3** turns snapping on or off (it starts on, and the game remembers your choice). If you're sitting at your desk when you press it, it snaps you right away, or moves you back to where you sat down. It won't put you on a slope, over water, through a wall or next to a classroom desk. `Gap` and `Range` in the settings file change the space between desks and how close you need to sit.
 
 ## Installing
 
