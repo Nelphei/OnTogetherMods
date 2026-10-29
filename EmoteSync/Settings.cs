@@ -12,6 +12,7 @@ namespace EmoteSync
         public readonly ConfigEntry<float> LeadTime;
         public readonly ConfigEntry<bool> AlignOthers;
         public readonly ConfigEntry<bool> SyncFocus;
+        public readonly ConfigEntry<float> JoinWaitSeconds;
         public readonly ConfigEntry<bool> ShowNotices;
         public readonly ConfigEntry<bool> DebugLog;
 
@@ -34,6 +35,13 @@ namespace EmoteSync
                 "Focus together while emote sync is on. When someone in the group picks a focus activity, you start or " +
                 "switch to the same one if you can, and yours are shared with them. Focus loops are also kept in step, " +
                 "so everyone doing the same activity moves together. Set to false to only sync emotes.");
+            JoinWaitSeconds = config.Bind("Sync", "JoinWaitSeconds", 30f,
+                new ConfigDescription(
+                    "When someone in the group picks a focus activity while you're busy (typing, a window open, " +
+                    "mid-emote, in the air...), you join it as soon as you're free, if that's within this many seconds. " +
+                    "Nothing is closed or stopped for you, but a \"Join now\" button does that when you click it. " +
+                    "Set to 0 to only join when you're free right away.",
+                    new AcceptableValueRange<float>(0f, 120f)));
 
             ShowPanel = config.Bind("Display", "ShowPanelByDefault", true,
                 "Show the sync window (who's in your group, and the keys) when you turn sync on. Toggle with PanelKey. " +

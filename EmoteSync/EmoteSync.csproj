@@ -4,11 +4,13 @@
   <PropertyGroup>
     <AssemblyName>EmoteSync</AssemblyName>
     <RootNamespace>EmoteSync</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Stacks this mod's window with other mods' windows. -->
     <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- Keeps clicks on the "Join now" button from reaching the game's UI. -->
+    <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
   </ItemGroup>
 </Project>

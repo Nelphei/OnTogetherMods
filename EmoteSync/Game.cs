@@ -75,6 +75,25 @@ namespace EmoteSync
 
         public static void SetEmoteAnim(EmoteController controller, int emoteIndex) => SetEmoteAnimMethod(controller, emoteIndex);
 
+        // A focus category's name as the game's menu shows it, in the player's language.
+        public static string FocusName(FocusType type)
+        {
+            try
+            {
+                int index = ScriptableSingleton<GameSettings>.I.FocusTypesForNames.IndexOf(type);
+                List<string> names = MonoSingleton<SettingsController>.I.FocusNamesStrings;
+                if (index >= 0 && index < names.Count && !string.IsNullOrEmpty(names[index]))
+                {
+                    return names[index];
+                }
+            }
+            catch (Exception)
+            {
+                // Fall back to the English name below.
+            }
+            return type.ToString();
+        }
+
         public static int EmoteCount => ScriptableSingleton<GameSettings>.I.EmoteAnimStates.Count;
 
         public static int EmoteAnimState(int emoteIndex) => ScriptableSingleton<GameSettings>.I.EmoteAnimStates[emoteIndex];

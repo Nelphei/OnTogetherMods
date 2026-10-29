@@ -1,7 +1,27 @@
+using System;
 using HarmonyLib;
 
 namespace EmoteSync
 {
+    // A click on the "Join now" prompt shouldn't also click the world behind it (players, pets).
+    // Only the press is hidden, so a click that started outside still ends.
+    // Game UI behind the prompt is covered by its ClickBlocker instead.
+    [HarmonyPatch(typeof(InputManager), "Update")]
+    internal static class InputPatch
+    {
+        private static readonly Action<InputManager, bool> SetMouse0Down =
+            (Action<InputManager, bool>)Delegate.CreateDelegate(typeof(Action<InputManager, bool>),
+                AccessTools.PropertySetter(typeof(InputManager), nameof(InputManager.IsMouseButton0Down)));
+
+        private static void Postfix(InputManager __instance)
+        {
+            if (SyncController.IsMouseOverPrompt)
+            {
+                SetMouse0Down(__instance, false);
+            }
+        }
+    }
+
     // Both ways of emoting end here: clicking an emote on the wheel, and tapping the emote key to
     // repeat the last one. When sync is on, hold the emote back so everyone can start it together.
     // See reference/Assembly-CSharp/EmoteController.cs.

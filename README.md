@@ -4,7 +4,7 @@ Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the 
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
-> **Early days.** Photo Mode, Teleport Spots, Song Player, Trace Overlay and Focus Anywhere have been tried in the game. Emote Sync hasn't been tested yet, and apart from Photo Mode, none of the mods have had a full test in a real lobby with other players, so expect rough edges.
+> **Early days.** Every mod here has been tried in the game, and Emote Sync has been tried with a friend. Apart from Photo Mode and Emote Sync, none of the mods have had a full test in a real lobby with other players, so expect rough edges.
 
 ## The mods
 
@@ -32,7 +32,7 @@ Photos are saved to `Pictures\On-Together`. You can save them bigger than your s
 
 ### Emote Sync
 
-Everyone who wants to sync presses **F7**. After that, when anyone in the group picks an emote, it starts for the whole group on the same network tick, so you all wave or dance at the same moment. Focus activities are shared too: when one of you starts one, the others join it (if they can), and the looping animations stay in step.
+Everyone who wants to sync presses **F7**. After that, when anyone in the group picks an emote, it starts for the whole group on the same network tick, so you all wave or dance at the same moment. Focus activities are shared too: when one of you starts one, the others join it, and the looping animations stay in step. If you're busy when someone picks one (typing, a window open, mid-emote, in the air), you join as soon as you're free, for up to 30 seconds. Nothing is closed or stopped for you, but a **Join now** button at the top of the screen closes the window, leaves the chat box or stops the emote and joins straight away. Players sitting at a seat spot (bench, classroom desk...) stay where they are. With [Focus Anywhere](#focus-anywhere) installed, you can join on any ground.
 
 **F6** shows or hides the window listing who's in your group. Every player in the group needs the mod. Players without it don't see anything different.
 

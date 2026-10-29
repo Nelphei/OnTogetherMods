@@ -15,8 +15,10 @@ namespace EmoteSync
     // 3. Every player in the group, including the sender, plays the emote when the shared PurrNet
     //    tick reaches that number, so they all start together.
     // 4. Focus: picking a focus activity sends "FOCUS <anim> <type>", and the others start or switch
-    //    to it right away (FocusJoin.cs). Focus animations loop, so instead of a start tick,
-    //    FocusLocker.cs ties every loop to the shared clock to keep them in step.
+    //    to it (FocusJoin.cs). Anyone busy (typing, a window open, mid-emote...) joins once they're
+    //    free, for up to JoinWaitSeconds. Standing up sends "UNFOCUS", so nobody waits to join an
+    //    activity that's over. Focus animations loop, so instead of a start tick, FocusLocker.cs
+    //    ties every loop to the shared clock to keep them in step.
     // Each player only ever animates their own character.
     internal sealed class SyncController : MonoBehaviour
     {
@@ -31,7 +33,23 @@ namespace EmoteSync
             public ulong Sender;
         }
 
+        // Someone's focus pick that arrived while we were busy.
+        private struct WaitingFocus
+        {
+            public ulong Sender;
+            public string Name;
+            public string Activity;
+            public int Anim;
+            public FocusType Type;
+            public float Until;
+            public string WaitingFor;
+            public bool CanClear;   // "Join now" can clear what's in the way
+        }
+
         public static SyncController Instance { get; private set; }
+
+        // True while the mouse is over the "Join now" prompt, so the click doesn't reach the world (Patches.cs).
+        public static bool IsMouseOverPrompt { get; private set; }
 
         private static Settings S => Plugin.Settings;
 
@@ -40,11 +58,18 @@ namespace EmoteSync
         private readonly FocusLocker _focusLocker = new FocusLocker();
         private readonly HashSet<ulong> _group = new HashSet<ulong>();
         private Pending? _pending;
+        private WaitingFocus? _waitingFocus;
+        private bool _wasFocusing;
         private bool _on;
         private bool _firing;
 
         private GUIStyle _noticeStyle;
         private GUIStyle _panelStyle;
+        private GUIStyle _buttonStyle;
+        private ClickBlocker _blocker;
+        private Rect _promptScreenRect;
+        private int _promptDrawnFrame = -100;
+        private bool _joinNowClicked;
         private string _notice;
         private float _noticeUntil;
         private bool _showPanel;
@@ -54,6 +79,7 @@ namespace EmoteSync
         private void Awake()
         {
             Instance = this;
+            _blocker = new ClickBlocker("EmoteSync ClickBlocker");
             _lobby.MessageReceived += OnMessage;
             _lobby.MemberLeft += OnMemberLeft;
             _lobby.LobbyChanged += OnLobbyChanged;
@@ -64,7 +90,9 @@ namespace EmoteSync
             if (Instance == this)
             {
                 Instance = null;
+                IsMouseOverPrompt = false;
             }
+            _blocker?.Destroy();
         }
 
         private void Update()
@@ -82,12 +110,19 @@ namespace EmoteSync
 
                 _lobby.Poll();
                 UpdatePending();
+                UpdateFocus();
             }
             catch (Exception e)
             {
                 Plugin.Log.LogError(e);
                 _pending = null;
+                _waitingFocus = null;
             }
+
+            // The prompt's click blocker follows where OnGUI last drew it.
+            bool promptShown = _waitingFocus != null && Time.frameCount - _promptDrawnFrame <= 2;
+            IsMouseOverPrompt = promptShown && ClickBlocker.MouseIn(_promptScreenRect);
+            _blocker?.Update(promptShown, _promptScreenRect);
         }
 
         private void LateUpdate()
@@ -162,6 +197,7 @@ namespace EmoteSync
             {
                 _lobby.Send("OFF");
                 _pending = null;
+                _waitingFocus = null;
                 _aligner.Stop();
                 _focusLocker.Reset();
                 Notice("Sync OFF");
@@ -173,6 +209,8 @@ namespace EmoteSync
         {
             _group.Clear();
             _pending = null;
+            _waitingFocus = null;
+            _wasFocusing = false;
             _aligner.Stop();
             _focusLocker.Reset();
             if (_on && _lobby.InLobby)
@@ -238,12 +276,25 @@ namespace EmoteSync
                         ReceiveFocus(sender, anim, (FocusType)type);
                     }
                     break;
+
+                // Someone stood up. Stop waiting to join their activity, since it's over.
+                case "UNFOCUS":
+                    AddToGroup(sender);
+                    if (_waitingFocus is WaitingFocus waiting && waiting.Sender == sender.m_SteamID)
+                    {
+                        _waitingFocus = null;
+                        Notice($"{waiting.Name} stopped focusing, so you won't join");
+                    }
+                    break;
             }
         }
 
         // Called by the patch on PlayerFocusController.SetFocus after this player picks an activity.
         public void OnLocalFocusPicked(PlayerFocusController focus)
         {
+            // You picked your own activity, so don't switch you to someone else's later.
+            _waitingFocus = null;
+
             if (!_on || !S.SyncFocus.Value || _group.Count == 0 || !_lobby.InLobby)
             {
                 return;
@@ -263,20 +314,138 @@ namespace EmoteSync
 
         private void ReceiveFocus(CSteamID sender, int anim, FocusType type)
         {
-            string name = LobbyChannel.NameOf(sender);
-            string why = FocusJoin.TryJoin(anim, type);
-            if (why == null)
+            string name = SafeName(sender);
+            string activity = Game.FocusName(type);
+            // A newer pick replaces one we were waiting on.
+            _waitingFocus = null;
+
+            JoinResult result = FocusJoin.TryJoin(anim, type, out string why, out bool canClear);
+            if (result == JoinResult.Wait && S.JoinWaitSeconds.Value > 0f)
             {
-                Notice($"Focusing with {name}");
+                _waitingFocus = new WaitingFocus
+                {
+                    Sender = sender.m_SteamID,
+                    Name = name,
+                    Activity = activity,
+                    Anim = anim,
+                    Type = type,
+                    Until = Time.unscaledTime + S.JoinWaitSeconds.Value,
+                    WaitingFor = why,
+                    CanClear = canClear,
+                };
+                _joinNowClicked = false;
             }
             else
             {
-                Notice($"Couldn't join {name}'s focus: {why}");
+                ReportJoin(name, activity, result, why);
             }
             if (S.DebugLog.Value)
             {
-                Plugin.Log.LogInfo($"Focus {type} (anim {anim}) from {name}: " + (why ?? "joined") + ".");
+                Plugin.Log.LogInfo($"Focus {type} (anim {anim}) from {name}: {result}" + (why != null ? $" ({why})." : "."));
             }
+        }
+
+        // Runs every frame. Tells the group when we stand up, and joins a focus we're waiting on
+        // as soon as we're free.
+        private void UpdateFocus()
+        {
+            if (!_on || !S.SyncFocus.Value || !_lobby.InLobby)
+            {
+                _waitingFocus = null;
+                _wasFocusing = false;
+                return;
+            }
+
+            TextChannelManager channel = NetworkSingleton<TextChannelManager>.I;
+            PlayerFocusController focus = channel != null ? channel.MainFocusController : null;
+            bool focusing = focus != null && focus.IsFocus;
+            if (_wasFocusing && !focusing)
+            {
+                // Anyone waiting to join us stops waiting. And if we were waiting to switch to someone
+                // else's activity, standing up means we've chosen not to.
+                if (_group.Count > 0)
+                {
+                    _lobby.Send("UNFOCUS");
+                }
+                _waitingFocus = null;
+            }
+            _wasFocusing = focusing;
+
+            bool joinNow = _joinNowClicked;
+            _joinNowClicked = false;
+            if (!(_waitingFocus is WaitingFocus waiting))
+            {
+                return;
+            }
+            if (Time.unscaledTime > waiting.Until)
+            {
+                _waitingFocus = null;
+                Notice($"Stopped waiting to join {waiting.Name} ({waiting.Activity})");
+                if (S.DebugLog.Value)
+                {
+                    Plugin.Log.LogInfo($"Gave up joining {waiting.Name}'s focus, still waiting until {waiting.WaitingFor}.");
+                }
+                return;
+            }
+
+            JoinResult result = FocusJoin.TryJoin(waiting.Anim, waiting.Type, out string why, out bool canClear);
+            if (result == JoinResult.Wait && joinNow && canClear)
+            {
+                // "Join now" was clicked: close the window, leave the chat box or stop the emote, then join.
+                FocusJoin.ClearWay();
+                result = FocusJoin.TryJoin(waiting.Anim, waiting.Type, out why, out canClear);
+            }
+            if (result == JoinResult.Wait)
+            {
+                if (joinNow)
+                {
+                    Notice($"Can't join yet: waiting until {why}");
+                }
+                waiting.WaitingFor = why;
+                waiting.CanClear = canClear;
+                _waitingFocus = waiting;
+                return;
+            }
+            _waitingFocus = null;
+            ReportJoin(waiting.Name, waiting.Activity, result, why);
+            if (S.DebugLog.Value)
+            {
+                Plugin.Log.LogInfo($"Waited to join {waiting.Name}'s focus: {result}" + (why != null ? $" ({why})." : "."));
+            }
+        }
+
+        private void ReportJoin(string name, string activity, JoinResult result, string why)
+        {
+            switch (result)
+            {
+                case JoinResult.Joined:
+                    Notice($"Focusing with {name} ({activity})");
+                    break;
+                case JoinResult.Wait:
+                    // Only when waiting is turned off in the settings.
+                    Notice($"Couldn't join {name} ({activity}) until {why}");
+                    break;
+                default:
+                    Notice($"Couldn't join {name} ({activity}): {why}");
+                    break;
+            }
+        }
+
+        // "Joining Sam (Read) when you finish typing (12s)", or null when not waiting.
+        private string WaitingLine()
+        {
+            if (!(_waitingFocus is WaitingFocus waiting))
+            {
+                return null;
+            }
+            float left = Mathf.Max(0f, waiting.Until - Time.unscaledTime);
+            return $"Joining {waiting.Name} ({waiting.Activity}) when {waiting.WaitingFor} ({Mathf.CeilToInt(left)}s)";
+        }
+
+        // A player's name, kept from being read as formatting tags.
+        private static string SafeName(CSteamID id)
+        {
+            return LobbyChannel.NameOf(id).Replace("<", "‹");
         }
 
         private void AddToGroup(CSteamID id)
@@ -452,10 +621,13 @@ namespace EmoteSync
 
         private void OnGUI()
         {
+            // The prompt shows whenever we're waiting to join a focus, even with notices turned off,
+            // because it has a button.
+            string prompt = WaitingLine();
             bool notice = _notice != null && Time.unscaledTime < _noticeUntil;
             bool panel = _on && _showPanel;
             // Hidden while Photo Mode takes a photo.
-            if ((!notice && !panel) || PanelStack.Hidden)
+            if ((prompt == null && !notice && !panel) || PanelStack.Hidden)
             {
                 return;
             }
@@ -464,6 +636,12 @@ namespace EmoteSync
             {
                 _panelStyle = PanelStack.MakeStyle(TextAnchor.UpperLeft);
                 _noticeStyle = PanelStack.MakeStyle(TextAnchor.MiddleCenter);
+                _buttonStyle = new GUIStyle(GUI.skin.button)
+                {
+                    fontSize = 15,
+                    fontStyle = FontStyle.Bold,
+                    padding = new RectOffset(12, 12, 2, 2),
+                };
             }
 
             // Lay out at 1080p and scale to the real screen, so text isn't tiny on 4K.
@@ -477,14 +655,50 @@ namespace EmoteSync
                 GUI.Box(PanelStack.Place("EmoteSync", PanelStack.EmoteSyncOrder, size), text, _panelStyle);
             }
 
+            // Below Photo Mode's messages (y = 40), so both can show at once.
+            float y = 90f;
+            if (prompt != null)
+            {
+                y += DrawPrompt(prompt, width, y) + 6f;
+            }
             if (notice)
             {
-                // Below Photo Mode's messages (y = 40), so both can show at once.
                 Vector2 size = _noticeStyle.CalcSize(new GUIContent(_notice));
-                GUI.Box(new Rect((width - size.x) / 2f, 90f, size.x, size.y), _notice, _noticeStyle);
+                GUI.Box(new Rect((width - size.x) / 2f, y, size.x, size.y), _notice, _noticeStyle);
             }
 
             PanelStack.End(previous);
+        }
+
+        // "Joining Sam (Read) when you finish typing (24s)  [Join now]", centred. Returns its height.
+        private float DrawPrompt(string text, float width, float y)
+        {
+            bool button = _waitingFocus is WaitingFocus waiting && waiting.CanClear;
+            const string label = "Join now";
+            const float gap = 6f;
+            Vector2 textSize = _noticeStyle.CalcSize(new GUIContent(text));
+            float buttonWidth = button ? _buttonStyle.CalcSize(new GUIContent(label)).x : 0f;
+            float total = textSize.x + (button ? gap + buttonWidth : 0f);
+
+            var textRect = new Rect((width - total) / 2f, y, textSize.x, textSize.y);
+            GUI.Box(textRect, text, _noticeStyle);
+            Rect whole = textRect;
+            if (button)
+            {
+                var buttonRect = new Rect(textRect.xMax + gap, y, buttonWidth, textSize.y);
+                if (GUI.Button(buttonRect, label, _buttonStyle))
+                {
+                    // Acted on in Update, outside the GUI pass.
+                    _joinNowClicked = true;
+                }
+                whole.xMax = buttonRect.xMax;
+            }
+
+            // Where it is on the real screen, for the click blocker.
+            float scale = Screen.height / 1080f;
+            _promptScreenRect = new Rect(whole.x * scale, whole.y * scale, whole.width * scale, whole.height * scale);
+            _promptDrawnFrame = Time.frameCount;
+            return textSize.y;
         }
 
         private string PanelText()
@@ -532,7 +746,7 @@ namespace EmoteSync
                 foreach (ulong id in _group)
                 {
                     // Keep names from being read as formatting tags.
-                    names.Add(LobbyChannel.NameOf(new CSteamID(id)).Replace("<", "‹"));
+                    names.Add(SafeName(new CSteamID(id)));
                 }
                 names.Sort(StringComparer.OrdinalIgnoreCase);
                 _groupNames = string.Join(", ", names);
