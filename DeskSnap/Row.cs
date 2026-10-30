@@ -13,8 +13,9 @@ namespace DeskSnap
     // Working out where your desk goes in a row, and checking there's room for it there.
     internal static class Row
     {
-        // The most the ground may rise or drop between the two desks, in metres.
-        private const float MaxStep = 0.3f;
+        // How far the ground may rise above your seat at the new spot, in metres, before you'd be
+        // sitting in it. Ground lower than your seat (or none at all) is fine: you float in line.
+        private const float MaxSink = 0.15f;
         // How many desks along the row to look past for a free end.
         private const int MaxChain = 8;
         // Desks overlapping by less than this (in metres) don't count as in the spot.
@@ -40,13 +41,13 @@ namespace DeskSnap
         // Finds a free spot for your desk beside `target`'s, facing the same way: on `side` first
         // (+1 their right, -1 their left), then the other side. If a desk is already there, it moves
         // along the row to the next free spot.
-        public static bool TryPlace(Seat target, int side, Span mine, float hover, List<Seat> seats, float gap,
+        public static bool TryPlace(Seat target, int side, Span mine, List<Seat> seats, float gap,
             out Placement placement, out string why)
         {
             why = null;
             foreach (int s in new[] { side, -side })
             {
-                if (TryPlaceOnSide(target, s, mine, hover, seats, gap, out placement, out string sideWhy))
+                if (TryPlaceOnSide(target, s, mine, seats, gap, out placement, out string sideWhy))
                 {
                     return true;
                 }
@@ -56,7 +57,7 @@ namespace DeskSnap
             return false;
         }
 
-        private static bool TryPlaceOnSide(Seat target, int side, Span mine, float hover, List<Seat> seats, float gap,
+        private static bool TryPlaceOnSide(Seat target, int side, Span mine, List<Seat> seats, float gap,
             out Placement placement, out string why)
         {
             placement = default;
@@ -77,7 +78,7 @@ namespace DeskSnap
                     current = occupant;
                     continue;
                 }
-                if (!Fits(spot, facing, current, mine, hover, out Vector3 placed, out why))
+                if (!Fits(spot, facing, current, mine, out Vector3 placed, out why))
                 {
                     return false;
                 }
@@ -125,30 +126,20 @@ namespace DeskSnap
             return best;
         }
 
-        // How high a player's position is above the ground under them (normally about 0).
-        public static float HoverAt(Vector3 position)
-        {
-            return Ground(position, 0.5f, 1f, out float y) ? Mathf.Clamp(position.y - y, -0.2f, 0.3f) : 0f;
-        }
-
-        // Checks the spot has level ground, nothing between it and the neighbour's desk, and room for
-        // your desk and chair. `placed` is the spot at the right height.
-        private static bool Fits(Vector3 spot, Quaternion facing, Seat neighbour, Span mine, float hover,
+        // Checks the ground doesn't rise into your seat, nothing's between you and the neighbour's desk,
+        // and there's room for your desk and chair. `placed` is the spot at the neighbour's exact height,
+        // so a row stays level wherever you started from, on the ground or in the air.
+        private static bool Fits(Vector3 spot, Quaternion facing, Seat neighbour, Span mine,
             out Vector3 placed, out string why)
         {
-            placed = spot;
-            float neighbourGround = Ground(neighbour.Position, 0.5f, 1f, out float gy) ? gy : neighbour.Position.y - hover;
-            if (!Ground(new Vector3(spot.x, neighbour.Position.y, spot.z), 1f, 1.5f, out float ground))
+            placed = new Vector3(spot.x, neighbour.Position.y, spot.z);
+
+            // Ground higher than your seat. (Ground more than 0.6 m higher is caught by the room check.)
+            if (Ground(placed + Vector3.up * MaxSink, 0.45f, 0f, out _))
             {
-                why = "there's no ground there";
+                why = "the ground is higher there";
                 return false;
             }
-            if (Mathf.Abs(ground - neighbourGround) > MaxStep)
-            {
-                why = "the ground isn't level there";
-                return false;
-            }
-            placed = new Vector3(spot.x, ground + hover, spot.z);
 
             // A wall or fence between the two desks.
             Vector3 from = neighbour.Position + Vector3.up * 0.9f;

@@ -236,11 +236,10 @@ namespace DeskSnap
                 : near.OrderBy(Distance).First();
 
             Span mine = Desks.Measure(_me);
-            float hover = Row.HoverAt(_sitPosition);
             Vector3 targetRight = target.Facing * Vector3.right;
             int side = Vector3.Dot(from - target.Position, targetRight) >= 0f ? 1 : -1;
 
-            if (!Row.TryPlace(target, side, mine, hover, seats, S.Gap.Value, out Placement place, out string why))
+            if (!Row.TryPlace(target, side, mine, seats, S.Gap.Value, out Placement place, out string why))
             {
                 message = $"No room next to {PlayerNames.ForText(target.Name)}'s desk: {why}";
                 Plugin.Log.LogInfo($"No room next to {target.Name}'s desk: {why}.");
@@ -289,7 +288,7 @@ namespace DeskSnap
             _resettles++;
             Plugin.Log.LogInfo($"{clash.Name} snapped into the same spot, so moving along the row.");
             int side = Vector3.Dot(t.position - neighbour.Position, neighbour.Facing * Vector3.right) >= 0f ? 1 : -1;
-            if (Row.TryPlace(neighbour, side, mine, Row.HoverAt(_sitPosition), seats, S.Gap.Value, out Placement place, out string why))
+            if (Row.TryPlace(neighbour, side, mine, seats, S.Gap.Value, out Placement place, out string why))
             {
                 MoveTo(place, out string message);
                 if (message != null)

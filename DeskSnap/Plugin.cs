@@ -10,7 +10,7 @@ namespace DeskSnap
     {
         public const string PluginGuid = "nelphei.ontogether.desksnap";
         public const string PluginName = "Desk Snap";
-        public const string PluginVersion = "0.1.3";
+        public const string PluginVersion = "0.1.4";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
