@@ -5,7 +5,7 @@ BepInEx 5 plugins for On-Together (GigaPuff), a Unity 6 (6000.0.60) **Mono** gam
 ## Layout
 - `Directory.Build.props`: shared settings for every mod. Targets netstandard2.1, sets the game path (`GameDir`), and references BepInEx, HarmonyX and every game/Unity DLL with `Private=false`.
 - `Directory.Build.targets`: when built with `-p:DeployToGame=true`, copies the DLL and PDB to `<GameDir>\BepInEx\plugins\<AssemblyName>\`. Normal builds don't touch the game.
-- `HelloTogether/`: starter mod (a logging plugin plus one Harmony postfix). Copy it to start a new mod, change the GUID and names, then `dotnet sln add`.
+- `HelloTogether/`: starter mod (a logging plugin plus one Harmony postfix). Copy it to start a new mod, change the GUID and names, delete its `<NoDeploy>true</NoDeploy>` line (it keeps the template out of the game when deploying), then `dotnet sln add`.
 - `PhotoMode/`: free camera, UI hiding and PNG screenshots (F9 to toggle). Works only in the Normal window mode.
 - `EmoteSync/`: players who turn it on (F7) start emotes together on the same network tick, and join each other's free-focus activities with loops kept in step (a busy player joins once free, for up to 30 s, or at once with a "Join now" button). Every player in the group needs the mod.
 - `TeleportSpots/`: a window (F5) where you save the spot you're standing on and click a name to teleport back there. Spots are saved in `BepInEx\config\TeleportSpots.json`. Only you need the mod.

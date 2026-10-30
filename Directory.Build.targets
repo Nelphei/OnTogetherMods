@@ -1,7 +1,11 @@
 <Project>
   <!-- When built with -p:DeployToGame=true, copy the mod into BepInEx\plugins\<ModName>\
-       so the game picks it up on next launch. Normal builds skip this. -->
-  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
+       so the game picks it up on next launch. Normal builds skip this, and so does a project
+       that sets <NoDeploy>true</NoDeploy> (the HelloTogether template). -->
+  <Target Name="SkipDeploy" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true' and '$(NoDeploy)' == 'true'">
+    <Message Importance="high" Text="Not deploying $(TargetFileName): NoDeploy is set in its .csproj" />
+  </Target>
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true' and '$(NoDeploy)' != 'true'">
     <PropertyGroup>
       <PluginDeployDir>$(BepInExDir)\plugins\$(AssemblyName)</PluginDeployDir>
     </PropertyGroup>

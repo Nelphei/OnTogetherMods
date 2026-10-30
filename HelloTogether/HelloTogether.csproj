@@ -4,5 +4,7 @@
     <AssemblyName>HelloTogether</AssemblyName>
     <RootNamespace>HelloTogether</RootNamespace>
     <Version>0.1.0</Version>
+    <!-- This is a template, so "deploy to game" leaves it out. Delete this line in a mod copied from it. -->
+    <NoDeploy>true</NoDeploy>
   </PropertyGroup>
 </Project>
