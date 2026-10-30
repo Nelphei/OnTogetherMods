@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusAnywhere", "FocusAnywh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskSnap", "DeskSnap\DeskSnap.csproj", "{BB662CEF-C272-4A20-B7D4-C015F3115241}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRange", "ChatRange\ChatRange.csproj", "{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{BB662CEF-C272-4A20-B7D4-C015F3115241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB662CEF-C272-4A20-B7D4-C015F3115241}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB662CEF-C272-4A20-B7D4-C015F3115241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
