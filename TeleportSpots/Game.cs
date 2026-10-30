@@ -1,5 +1,4 @@
 using EZhex1991.EZSoftBone;
-using PurrNet;
 using UnityEngine;
 
 namespace TeleportSpots
@@ -112,14 +111,10 @@ namespace TeleportSpots
                 scene.PlayerVCamera.PreviousStateIsValid = false;
             }
 
-            // Your game decides where your character is and sends it to everyone. ForceSync sends it
-            // right now and tells the others to jump straight there instead of sliding (the game does
-            // this for the basketball).
-            NetworkTransform net = move.GetComponent<NetworkTransform>();
-            if (net != null)
-            {
-                net.ForceSync();
-            }
+            // Your game sends your new spot to everyone on the next network tick, the same way the game
+            // does when you fall off the world. Don't call NetworkTransform.ForceSync here: when you
+            // aren't the host, the host passes the move on a second time, so everyone else sees you
+            // go twice as far.
         }
 
         // The tail is a chain of floppy bones (EZSoftBone) that remember where they were on the map.

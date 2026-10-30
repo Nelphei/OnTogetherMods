@@ -12,7 +12,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 |---|---|---|---|---|
 | [Photo Mode](#photo-mode) | 0.3.0, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.2.1, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
-| [Teleport Spots](#teleport-spots) | 0.1.1, pre-release | F5 | Save spots and teleport back to them | Only you |
+| [Teleport Spots](#teleport-spots) | 0.1.2, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.1.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.1.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.2.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
@@ -26,7 +26,7 @@ Every key can be changed in the mod's settings file (see [Settings](#settings)).
 |---|---|
 | Photo Mode 0.3.0 | **Pre-release.** 0.2.1 worked, including in a lobby with other players. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet |
 | Emote Sync 0.2.1 | **Pre-release.** 0.1.0 worked with a friend. 0.2.0's joining once you're free and the **Join now** button, and 0.2.1's styled names, haven't been tried yet |
-| Teleport Spots 0.1.1 | **Pre-release.** Teleporting works. 0.1.1's fix for keeping spots after a restart hasn't been tried yet |
+| Teleport Spots 0.1.2 | **Pre-release.** Teleporting works on your own screen. 0.1.1's fix for keeping spots after a restart, and 0.1.2's fix for where other players see you land, haven't been tried yet |
 | Song Player 0.1.0 | Yes, on its own. Not yet checked with other players listening |
 | Trace Overlay 0.1.0 | Yes |
 | Focus Anywhere 0.2.0 | **Pre-release.** 0.1.0 worked on its own. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
@@ -58,7 +58,7 @@ Everyone who wants to sync presses **F7**. After that, when anyone in the group 
 
 ### Teleport Spots
 
-> **Pre-release:** 0.1.1 fixes spots being lost when the game closes, and that fix hasn't been tried in the game yet.
+> **Pre-release:** 0.1.2 fixes other players seeing you land too far away when you teleport (if you aren't the lobby host). 0.1.1 fixes spots being lost when the game closes. Neither fix has been tried in the game yet.
 
 Press **F5** to open the window. Click **Save this spot** to remember where you're standing (and which way the camera faces), then click a spot's name later to jump back there. Spots can be renamed or deleted, and they're kept in `BepInEx\config\TeleportSpots.json` if you want to back them up.
 
