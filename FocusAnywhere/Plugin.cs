@@ -9,7 +9,7 @@ namespace FocusAnywhere
     {
         public const string PluginGuid = "nelphei.ontogether.focusanywhere";
         public const string PluginName = "Focus Anywhere";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -22,7 +22,7 @@ namespace FocusAnywhere
             new Harmony(PluginGuid).PatchAll();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Every activity: {Settings.AllActivities.Value}, " +
-                $"any ground: {Settings.AnyGround.Value}.");
+                $"any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}.");
         }
     }
 }

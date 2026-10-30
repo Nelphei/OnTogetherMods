@@ -15,7 +15,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Teleport Spots](#teleport-spots) | 0.1.1, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.1.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.1.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
-| [Focus Anywhere](#focus-anywhere) | 0.1.0 | The game's focus key | Focus on any ground, with every activity in the game | Only you (others see your activity without the mod) |
+| [Focus Anywhere](#focus-anywhere) | 0.2.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.1.2, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys.
@@ -29,7 +29,7 @@ Every key can be changed in the mod's settings file (see [Settings](#settings)).
 | Teleport Spots 0.1.1 | **Pre-release.** Teleporting works. 0.1.1's fix for keeping spots after a restart hasn't been tried yet |
 | Song Player 0.1.0 | Yes, on its own. Not yet checked with other players listening |
 | Trace Overlay 0.1.0 | Yes |
-| Focus Anywhere 0.1.0 | Yes, on its own. Not yet checked what other players see |
+| Focus Anywhere 0.2.0 | **Pre-release.** 0.1.0 worked on its own. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.1.2 | **Pre-release.** Snapping works with a friend, and so do styled names in its message. 0.1.2 moves that text into code shared with Emote Sync, and hasn't been tried yet |
 
 None of the mods have been tried on a Mac yet.
@@ -78,7 +78,9 @@ Put `.png` or `.jpg` files in `Pictures\On-Together\Trace`, then start drawing o
 
 ### Focus Anywhere
 
-Press the game's usual focus key wherever you are: on grass, on rocks, at the music hill, or next to a seat someone else is using. The focus menu also lists every activity in the game, not just the ones for where you're standing:
+> **Pre-release:** 0.2.0 lets you focus in the air. It hasn't been tried in the game yet.
+
+Press the game's usual focus key wherever you are: on grass, on rocks, at the music hill, next to a seat someone else is using, or in the air. In the air you stop where you are and focus floating there. Closing the menu without picking, or standing up, lets you fall again. The focus menu also lists every activity in the game, not just the ones for where you're standing:
 
 - The water activities work on land, and the land ones work in water. On land, floater activities bring out your floater.
 - A new **Play** category has the play tower activities.
@@ -86,7 +88,7 @@ Press the game's usual focus key wherever you are: on grass, on rocks, at the mu
 
 Seat spots that are free (benches, desks, the swan...) still open their own menu and sit you down on the seat. Seat poses done on open ground sit on thin air, and other players see that too. Summer DLC activities stay hidden unless you own the DLC, and the basketball court stays off limits. Focus time counts the same as normal focus.
 
-`AllActivities` and `AnyGround` in the settings file turn each half off.
+`AllActivities`, `AnyGround` and `MidAir` in the settings file turn each part off. `MidAir` needs `AnyGround`.
 
 ### Desk Snap
 

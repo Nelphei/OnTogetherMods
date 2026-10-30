@@ -6,9 +6,10 @@ using UnityEngine;
 namespace FocusAnywhere
 {
     // Pressing the focus key opens the free focus menu wherever the game would have said no: ground
-    // it doesn't count as focusable (IsFocusable), near the music hill, or next to a seat someone else
-    // is using. The game's own state checks still apply (not walking stairs, not fishing, not mid-air,
-    // not on the basketball court, no menu open). Seat spots that are free still open their own menu.
+    // it doesn't count as focusable (IsFocusable), near the music hill, next to a seat someone else
+    // is using, or in the air (MidAir.cs holds you there). The game's other checks still apply (not on
+    // stairs, not fishing, not on the basketball court, no menu open). Seat spots that are free still
+    // open their own menu, in the air too.
     // See reference/Assembly-CSharp/PlayerFocusController.cs (Update) and TaskManager.cs.
     [HarmonyPatch(typeof(PlayerFocusController), "Update")]
     internal static class UpdatePatch
@@ -62,24 +63,103 @@ namespace FocusAnywhere
             {
                 return;
             }
-            // The game's own "free to start a focus" checks, minus where you're standing.
-            TaskManager tasks = MonoSingleton<TaskManager>.I;
-            if (tasks == null || !tasks.IsReadyForAreaFocus() || !tasks.IsReadyForFreeFocus())
+            PlayerMovementController movement = Game.Movement(focus);
+            if (movement == null || !IsFreeToFocus(movement))
             {
                 return;
             }
 
-            // What the game does before opening the free focus menu.
-            Game.SetCurrentFocusArea(focus, null);
+            // In the air next to a free seat spot, open its menu, as the game does on the ground.
+            // Otherwise the free menu, which is what the game does before opening it.
+            FocusAreaController seat = MidAir.IsAirborne(movement) ? FreeSeatNearby(focus, movement, areas) : null;
+            Game.SetCurrentFocusArea(focus, seat);
             Game.IsFocusChange(focus) = false;
             Game.OpenSelector(focus);
+        }
+
+        // The game's "free to start a focus" checks (TaskManager.IsReadyForAreaFocus and
+        // IsReadyForFreeFocus), minus being on the ground when MidAir is on. They're copied rather
+        // than called, because BlueSage QoL's Focus Anywhere makes those two always say yes.
+        private static bool IsFreeToFocus(PlayerMovementController movement)
+        {
+            TaskManager tasks = MonoSingleton<TaskManager>.I;
+            BasketBallManager basketball = NetworkSingleton<BasketBallManager>.I;
+            FishingManager fishing = MonoSingleton<FishingManager>.I;
+            if (tasks == null || basketball == null || fishing == null)
+            {
+                return false;
+            }
+            LockState lockState = tasks.LockState;
+            if (lockState != LockState.Free && lockState != LockState.UIInventory &&
+                lockState != LockState.UIWalkable && lockState != LockState.UIFishUI)
+            {
+                return false;
+            }
+            if (tasks.IsWriting || basketball.IsInBasketBallCourtColorful || fishing.FishingState != FishingState.None ||
+                movement.IsAnimation || movement.IsStair)
+            {
+                return false;
+            }
+            bool midAir = Plugin.Settings.MidAir.Value;
+            switch (movement.MovementState)
+            {
+                case MovementState.Idle:
+                case MovementState.Walk:
+                    return midAir || movement.GroundState == GroundState.Grounded;
+                case MovementState.Fall:
+                case MovementState.Umbrella:
+                    return midAir;
+                default:
+                    return false;   // in a bubble
+            }
+        }
+
+        // The game's seat spot pick: the nearest seat spot whose trigger you're in, if nobody's using it.
+        private static FocusAreaController FreeSeatNearby(PlayerFocusController focus, PlayerMovementController movement, FocusAreaManager areas)
+        {
+            if (focus.FocusAreaControllers.Count == 0 || movement.IsLake)
+            {
+                return null;
+            }
+            FocusAreaController nearest = null;
+            float best = float.MaxValue;
+            foreach (FocusAreaController area in focus.FocusAreaControllers)
+            {
+                if (area == null)
+                {
+                    continue;
+                }
+                float distance = (area.transform.position - focus.transform.position).sqrMagnitude;
+                if (distance < best)
+                {
+                    best = distance;
+                    nearest = area;
+                }
+            }
+            return nearest != null && areas.IsAreaEmpty(nearest.ID) ? nearest : null;
         }
     }
 
     // Before the menu opens: make sure the lists are merged and the menu has enough buttons.
+    // Once it's open: hold you in place if you're in the air.
     [HarmonyPatch(typeof(PlayerFocusController), "OpenSelector")]
     internal static class OpenSelectorPatch
     {
+        private static void Postfix(PlayerFocusController __instance)
+        {
+            try
+            {
+                if (__instance.isOwner && __instance.IsSelectorOpened)
+                {
+                    MidAir.OnMenuOpened(__instance);
+                }
+            }
+            catch (Exception e)
+            {
+                Plugin.Log.LogError(e);
+            }
+        }
+
         private static void Prefix(PlayerFocusController __instance)
         {
             try
