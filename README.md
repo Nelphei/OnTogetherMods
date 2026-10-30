@@ -16,7 +16,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Song Player](#song-player) | 0.1.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.1.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.2.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
-| [Desk Snap](#desk-snap) | 0.1.2, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
+| [Desk Snap](#desk-snap) | 0.1.3, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys.
 
@@ -30,7 +30,7 @@ Every key can be changed in the mod's settings file (see [Settings](#settings)).
 | Song Player 0.1.0 | Yes, on its own. Not yet checked with other players listening |
 | Trace Overlay 0.1.0 | Yes |
 | Focus Anywhere 0.2.0 | **Pre-release.** 0.1.0 worked on its own. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
-| Desk Snap 0.1.2 | **Pre-release.** Snapping works with a friend, and so do styled names in its message. 0.1.2 moves that text into code shared with Emote Sync, and hasn't been tried yet |
+| Desk Snap 0.1.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message. 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. Neither has been tried yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -93,7 +93,7 @@ Seat spots that are free (benches, desks, the swan...) still open their own menu
 
 ### Desk Snap
 
-> **Pre-release:** snapping beside a friend works, and so do names with colours or other styling in the message at the top. 0.1.2 moves that text into code shared with Emote Sync, and hasn't been tried yet.
+> **Pre-release:** snapping beside a friend works on your own screen, and so do names with colours or other styling in the message at the top. 0.1.3 fixes other players seeing you in the wrong spot, with your desk turning twice, when you aren't the lobby host. 0.1.2 moves the message text into code shared with Emote Sync. Neither has been tried in the game yet.
 
 Sit down at your desk within 3 m of someone who's already at theirs, and you move into line beside them, facing the same way, with a small gap between the desks. You go to whichever side you were closer to, and if someone's already there, to the end of the row. The mod measures each desk, so desks of every shape and size line up.
 

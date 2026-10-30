@@ -130,13 +130,10 @@ namespace DeskSnap
             PreFocusRotation(me) = rotation;
             ResetTail(me);
 
-            // Your game decides where your character is and sends it to everyone. ForceSync sends it
-            // now and tells the others to jump straight there instead of sliding.
-            NetworkTransform net = me.GetComponent<NetworkTransform>();
-            if (net != null)
-            {
-                net.ForceSync();
-            }
+            // Your game sends your new spot to everyone on the next network tick, the same way the game
+            // does when it seats you at a seat spot. Don't call NetworkTransform.ForceSync here: when
+            // you aren't the host, the host passes the move on a second time, so everyone else sees
+            // you go twice as far and turn twice as much.
         }
 
         // The tail's floppy bones (EZSoftBone) remember where they were, so a jump would fling it.
