@@ -4,7 +4,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Cinemachine;
 using OnTogetherMods.Shared;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering;
 
 namespace PhotoMode
@@ -15,6 +17,9 @@ namespace PhotoMode
     {
         // Read by the Harmony patches to pause the game's own input and camera control.
         internal static bool IsActive { get; private set; }
+
+        // The chat box is showing, so Enter is let through to start typing in it.
+        internal static bool ChatShown { get; private set; }
 
         private const float RefreshInterval = 0.5f;
         private const float ZoomStepDegrees = 3f;
@@ -33,6 +38,10 @@ namespace PhotoMode
         private float _startFov;
         private float _yaw;
         private float _pitch;
+
+        private TMP_InputField _chatField;
+        private bool _typingLastFrame;
+        private bool _restoreSelectAll;
 
         private bool _looking;
         private bool _capturing;
@@ -74,6 +83,25 @@ namespace PhotoMode
                 return;
             }
 
+            _refreshTimer -= Time.unscaledDeltaTime;
+            if (_refreshTimer <= 0f)
+            {
+                _refreshTimer = RefreshInterval;
+                _ui.Refresh();
+            }
+
+            // While you type in chat, keys go to the chat box, and Esc stops typing instead of
+            // leaving photo mode. Checking last frame too covers the chat box having already
+            // handled this Esc itself.
+            if (IsTyping() || _typingLastFrame)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    StopTyping();
+                }
+                return;
+            }
+
             if (Input.GetKeyDown(S.ToggleKey.Value) || Input.GetKeyDown(KeyCode.Escape))
             {
                 // Exit in LateUpdate, after the game's InputManager has run for this frame.
@@ -104,13 +132,6 @@ namespace PhotoMode
             {
                 StartCoroutine(Capture());
             }
-
-            _refreshTimer -= Time.unscaledDeltaTime;
-            if (_refreshTimer <= 0f)
-            {
-                _refreshTimer = RefreshInterval;
-                _ui.Refresh();
-            }
         }
 
         private void LateUpdate()
@@ -125,10 +146,87 @@ namespace PhotoMode
                 return;
             }
 
+            // This runs after the EventSystem's Update, so a click it read as "clicked on nothing"
+            // (the chat's raycasts are off, see UiHider) can still select the chat box here.
+            ClickToType();
+            bool typing = IsTyping();
+            _typingLastFrame = typing;
+
             float dt = Time.unscaledDeltaTime;
             UpdateLook();
-            UpdateMove(dt);
+            if (!typing)
+            {
+                UpdateMove(dt);
+            }
             UpdateZoom();
+        }
+
+        // True while the chat box has the keyboard (or is about to: Select() activates it a frame later).
+        private bool IsTyping()
+        {
+            if (_chatField == null)
+            {
+                return false;
+            }
+            if (_chatField.isFocused)
+            {
+                return true;
+            }
+            EventSystem events = EventSystem.current;
+            return events != null && events.currentSelectedGameObject == _chatField.gameObject;
+        }
+
+        private void StopTyping()
+        {
+            EventSystem events = EventSystem.current;
+            if (events != null && _chatField != null && events.currentSelectedGameObject == _chatField.gameObject)
+            {
+                events.SetSelectedGameObject(null);
+            }
+            // The chat box tells the game typing ended through events set up in the scene. Make sure,
+            // or the game would keep ignoring keys after photo mode ends.
+            TaskManager tasks = MonoSingleton<TaskManager>.I;
+            if (tasks != null && tasks.IsWriting)
+            {
+                tasks.OnWritingDeactive();
+            }
+        }
+
+        // Clicking the chat box starts typing, like Enter does. Only the box itself takes clicks:
+        // the rest of the chat stays read-only to the mouse.
+        private void ClickToType()
+        {
+            // The box selects all its text when it gets the keyboard. That's switched off for a
+            // click back into it while typing (see below); switch it on again once it has the keyboard.
+            if (_restoreSelectAll && (_chatField == null || _chatField.isFocused || !IsTyping()))
+            {
+                if (_chatField != null)
+                {
+                    _chatField.onFocusSelectAll = true;
+                }
+                _restoreSelectAll = false;
+            }
+
+            if (!_ui.ChatShown || _chatField == null || !Input.GetMouseButtonDown(0) ||
+                !_chatField.gameObject.activeInHierarchy || _chatField.isFocused)
+            {
+                return;
+            }
+            Canvas canvas = _chatField.GetComponentInParent<Canvas>();
+            Canvas root = canvas != null ? canvas.rootCanvas : null;
+            Camera uiCamera = root == null || root.renderMode == RenderMode.ScreenSpaceOverlay ? null : root.worldCamera;
+            if (!RectTransformUtility.RectangleContainsScreenPoint((RectTransform)_chatField.transform, Input.mousePosition, uiCamera))
+            {
+                return;
+            }
+            // A click anywhere makes the EventSystem drop the chat box, because it can't see the box
+            // under the mouse. Clicking back into it while typing shouldn't select what you've typed.
+            if (_typingLastFrame && _chatField.onFocusSelectAll)
+            {
+                _chatField.onFocusSelectAll = false;
+                _restoreSelectAll = true;
+            }
+            _chatField.Select();
         }
 
         private void OnDestroy()
@@ -187,6 +285,9 @@ namespace PhotoMode
 
             _camera = camera;
             _player = chat.MainPlayer;
+            UIManager uiManager = MonoSingleton<UIManager>.I;
+            _chatField = uiManager != null ? uiManager.MessageInputField : null;
+            _typingLastFrame = false;
 
             // Cinemachine moves the camera every frame. Pause it, the same way the swan ride does.
             _brain = camera.GetComponent<CinemachineBrain>();
@@ -232,11 +333,16 @@ namespace PhotoMode
                 return;
             }
 
+            if (!shown && IsTyping())
+            {
+                StopTyping();
+            }
             if (!_ui.SetChatShown(shown))
             {
                 Toast("Couldn't find the chat box. See the BepInEx log.");
                 return;
             }
+            ChatShown = _ui.ChatShown;
             if (!quiet)
             {
                 Toast(shown ? "Chat shown" : "Chat hidden");
@@ -246,8 +352,17 @@ namespace PhotoMode
         private void Exit()
         {
             IsActive = false;
+            ChatShown = false;
             _exitRequested = false;
             _ui.RestoreAll();
+
+            if (_restoreSelectAll && _chatField != null)
+            {
+                _chatField.onFocusSelectAll = true;
+            }
+            _restoreSelectAll = false;
+            _typingLastFrame = false;
+            _chatField = null;
 
             if (_camera != null)
             {
@@ -514,6 +629,7 @@ namespace PhotoMode
                     "Shift: faster      Ctrl: slower      Scroll: zoom\n" +
                     $"{S.CaptureKey.Value}: take photo      {S.NameTagsKey.Value}: name tags      " +
                     $"{S.ChatKey.Value}: chat      {S.ResetKey.Value}: reset camera\n" +
+                    (_ui.ChatShown ? "Enter or click the chat box: type      Esc: stop typing\n" : "") +
                     $"{S.HelpKey.Value}: hide this panel      {S.ToggleKey.Value} or Esc: exit";
                 Vector2 size = _panelStyle.CalcSize(new GUIContent(text));
                 // In the bottom window stack, with other mods' windows (like Emote Sync's) stacked above.

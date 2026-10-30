@@ -10,7 +10,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 
 | Mod | Version | Open with | What it does | Who needs it |
 |---|---|---|---|---|
-| [Photo Mode](#photo-mode) | 0.2.2, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
+| [Photo Mode](#photo-mode) | 0.3.0, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.2.1, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.1.1, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.1.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
@@ -24,7 +24,7 @@ Every key can be changed in the mod's settings file (see [Settings](#settings)).
 
 | Mod | Tried in the game |
 |---|---|
-| Photo Mode 0.2.2 | **Pre-release.** 0.2.1 worked, including in a lobby with other players. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and that hasn't been tried yet |
+| Photo Mode 0.3.0 | **Pre-release.** 0.2.1 worked, including in a lobby with other players. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet |
 | Emote Sync 0.2.1 | **Pre-release.** 0.1.0 worked with a friend. 0.2.0's joining once you're free and the **Join now** button, and 0.2.1's styled names, haven't been tried yet |
 | Teleport Spots 0.1.1 | **Pre-release.** Teleporting works. 0.1.1's fix for keeping spots after a restart hasn't been tried yet |
 | Song Player 0.1.0 | Yes, on its own. Not yet checked with other players listening |
@@ -36,13 +36,14 @@ None of the mods have been tried on a Mac yet.
 
 ### Photo Mode
 
-> **Pre-release:** 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI. They still stay out of your photos. This hasn't been tried in the game yet.
+> **Pre-release:** 0.3.0 lets you type in chat while Photo Mode is on. 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI, and they still stay out of your photos. Neither has been tried in the game yet.
 
 Press **F9** in a lobby to detach the camera and hide the game's UI, then **P** to save a photo.
 
 - Hold right mouse to look, **WASD** to move, **Q / E** to go down / up, scroll to zoom
 - **Shift** for faster, **Ctrl** for slower
-- **H** shows or hides name tags and chat bubbles, **T** shows the chat box (read only), **R** puts the camera back where it started
+- **H** shows or hides name tags and chat bubbles, **T** shows the chat box, **R** puts the camera back where it started
+- With the chat box showing, press **Enter** or click it to type (the photo keys pause while you type), and **Esc** to stop typing
 - **F1** hides the controls panel, **F9** or **Esc** exits
 
 Photos are saved to `Pictures\On-Together`. You can save them bigger than your screen with `ResolutionMultiplier` (2 on a 1080p screen gives 4K). Photo Mode only works in the game's Normal window mode, not Landscape, Portrait or Desk.

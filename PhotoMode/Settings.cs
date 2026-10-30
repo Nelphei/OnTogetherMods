@@ -35,7 +35,8 @@ namespace PhotoMode
             NameTagsKey = config.Bind("Keys", "NameTagsKey", KeyCode.H,
                 "Shows or hides name tags and chat bubbles while photo mode is on.");
             ChatKey = config.Bind("Keys", "ChatKey", KeyCode.T,
-                "Shows or hides the chat box while photo mode is on. You can read it but not type.");
+                "Shows or hides the chat box while photo mode is on. While it's showing, press Enter or click " +
+                "the chat box to type, and Esc to stop typing. Photo mode keys pause while you type.");
             ResetKey = config.Bind("Keys", "ResetKey", KeyCode.R,
                 "Moves the camera back to where photo mode started.");
             HelpKey = config.Bind("Keys", "HelpKey", KeyCode.F1,

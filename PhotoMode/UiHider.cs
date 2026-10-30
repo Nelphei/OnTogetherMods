@@ -28,8 +28,9 @@ namespace PhotoMode
 
         // While chat is shown, we turn its canvases back on, then hide everything else on them
         // by adding a switched-off Canvas to each non-chat object (a disabled Canvas hides
-        // everything under it). Chat is read-only: its raycasters are off, so clicks and
-        // scrolling can't focus the chat box or start typing.
+        // everything under it). Its raycasters stay off, because UI hidden that way can still
+        // catch clicks. So the mouse can't reach the chat, except the chat box itself:
+        // PhotoModeController.ClickToType checks for clicks on it. Enter starts typing too.
         private readonly List<Canvas> _chatCanvases = new List<Canvas>();
         private readonly List<Canvas> _blockers = new List<Canvas>();
         private readonly List<GraphicRaycaster> _disabledRaycasters = new List<GraphicRaycaster>();

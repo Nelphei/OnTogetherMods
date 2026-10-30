@@ -20,6 +20,7 @@ namespace PhotoMode
     }
 
     // The cancelled-input path above still reports Enter, which would open the hidden chat box.
+    // When the chat box is showing, Enter goes through, so it starts typing as usual.
     [HarmonyPatch(typeof(InputManager), "Update")]
     internal static class EnterKeyPatch
     {
@@ -28,7 +29,7 @@ namespace PhotoMode
 
         private static void Postfix(InputManager __instance)
         {
-            if (PhotoModeController.IsActive)
+            if (PhotoModeController.IsActive && !PhotoModeController.ChatShown)
             {
                 SetEnterKeyDown(__instance, false);
                 SetEnterKeyUp(__instance, false);
