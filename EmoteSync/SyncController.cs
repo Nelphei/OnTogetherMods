@@ -73,6 +73,7 @@ namespace EmoteSync
         private Rect _promptScreenRect;
         private int _promptDrawnFrame = -100;
         private bool _joinNowClicked;
+        private IconBar.Click _iconClick;
         private string _notice;
         private float _noticeUntil;
         private bool _showPanel;
@@ -105,11 +106,14 @@ namespace EmoteSync
         {
             try
             {
-                if (Input.GetKeyDown(S.ToggleKey.Value) && !IsTyping())
+                // A click on the icon (Shared/IconBar.cs) from the last OnGUI.
+                IconBar.Click click = _iconClick;
+                _iconClick = IconBar.Click.None;
+                if ((Input.GetKeyDown(S.ToggleKey.Value) && !IsTyping()) || click == IconBar.Click.Left)
                 {
                     Toggle();
                 }
-                if (_on && Input.GetKeyDown(S.PanelKey.Value) && !IsTyping())
+                if (_on && ((Input.GetKeyDown(S.PanelKey.Value) && !IsTyping()) || click == IconBar.Click.Right))
                 {
                     _showPanel = !_showPanel;
                 }
@@ -625,6 +629,19 @@ namespace EmoteSync
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value)
+            {
+                IconBar.Click click = IconBar.Draw("EmoteSync", IconBar.EmoteSyncOrder, Icon.Pixels,
+                    _on ? IconBar.State.On : IconBar.State.Off, "Emote Sync", S.ToggleKey.Value,
+                    _on ? (_showPanel ? "Right-click: hide its window" : "Right-click: show its window") +
+                          IconBar.KeyText(S.PanelKey.Value) : null);
+                if (click != IconBar.Click.None)
+                {
+                    _iconClick = click;   // acted on in Update
+                }
+            }
+
             // The prompt shows whenever we're waiting to join a focus, even with notices turned off,
             // because it has a button.
             string prompt = WaitingLine();

@@ -14,6 +14,7 @@ namespace EmoteSync
         public readonly ConfigEntry<bool> SyncFocus;
         public readonly ConfigEntry<float> JoinWaitSeconds;
         public readonly ConfigEntry<bool> ShowNotices;
+        public readonly ConfigEntry<bool> ShowIcon;
         public readonly ConfigEntry<bool> DebugLog;
 
         public Settings(ConfigFile config)
@@ -48,6 +49,9 @@ namespace EmoteSync
                 "It sits at the bottom of the screen, above Photo Mode's controls when both are open, and is never in photos.");
             ShowNotices = config.Bind("Display", "ShowNotices", true,
                 "Show short messages at the top of the screen, like who has emote sync on.");
+            ShowIcon = config.Bind("Display", "ShowIcon", true,
+                "Show an icon in the row of mod icons at the bottom-right. Clicking it does what ToggleKey does, " +
+                "and right-clicking it while sync is on does what PanelKey does.");
             DebugLog = config.Bind("Debug", "DebugLog", false,
                 "Write extra details about each synced emote to the BepInEx log.");
         }

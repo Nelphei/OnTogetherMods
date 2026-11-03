@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using OnTogetherMods.Shared;
 using UnityEngine;
 
 namespace EmoteSync
@@ -10,7 +11,7 @@ namespace EmoteSync
     {
         public const string PluginGuid = "nelphei.ontogether.emotesync";
         public const string PluginName = "Emote Sync";
-        public const string PluginVersion = "0.2.1";
+        public const string PluginVersion = "0.3.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -23,6 +24,9 @@ namespace EmoteSync
             Settings = new Settings(Config);
 
             new Harmony(PluginGuid).PatchAll();
+            // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
+            // mod loads first.
+            IconBar.Patch();
 
             // Runs on its own object so it survives scene loads.
             _host = new GameObject("EmoteSync");
