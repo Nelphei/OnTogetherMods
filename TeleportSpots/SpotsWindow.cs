@@ -39,6 +39,7 @@ namespace TeleportSpots
         private readonly SpotStore _store = new SpotStore();
         private TextChannelManager _channel;
         private bool _open;
+        private bool _iconClicked;
 
         private EditMode _edit;
         private int _editIndex = -1;
@@ -96,7 +97,10 @@ namespace TeleportSpots
         {
             try
             {
-                if (Input.GetKeyDown(S.ToggleKey.Value) && !IsChatOpen())
+                // A click on the icon (Shared/IconBar.cs) from the last OnGUI.
+                bool clicked = _iconClicked;
+                _iconClicked = false;
+                if ((Input.GetKeyDown(S.ToggleKey.Value) && !IsChatOpen()) || clicked)
                 {
                     if (_open)
                     {
@@ -320,6 +324,14 @@ namespace TeleportSpots
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value &&
+                IconBar.Draw("TeleportSpots", IconBar.TeleportSpotsOrder, Icon.Pixels,
+                    _open ? IconBar.State.Open : IconBar.State.Plain, "Teleport Spots", S.ToggleKey.Value) == IconBar.Click.Left)
+            {
+                _iconClicked = true;   // acted on in Update
+            }
+
             if (_clearFocus)
             {
                 GUIUtility.keyboardControl = 0;

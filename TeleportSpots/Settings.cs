@@ -11,6 +11,7 @@ namespace TeleportSpots
         public readonly ConfigEntry<bool> RestoreView;
         public readonly ConfigEntry<bool> CloseAfterTeleport;
         public readonly ConfigEntry<int> VisibleRows;
+        public readonly ConfigEntry<bool> ShowIcon;
 
         public Settings(ConfigFile config)
         {
@@ -26,6 +27,8 @@ namespace TeleportSpots
                 new ConfigDescription(
                     "How many spots the window shows before it scrolls.",
                     new AcceptableValueRange<int>(3, 20)));
+            ShowIcon = config.Bind("Display", "ShowIcon", true,
+                "Show a map pin icon in the row of mod icons at the bottom-right. Clicking it opens and closes the window.");
         }
     }
 }
