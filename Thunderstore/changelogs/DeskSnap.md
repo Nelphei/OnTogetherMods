@@ -1,3 +1,8 @@
+## 0.2.1
+
+- The icon and the message at the top hide in the game's Desk window mode (key 4, the small see-through window), and come back when you switch to another window mode. Snapping keeps working, and F3 still turns it on or off.
+- The icon hides while Photo Mode is on.
+
 ## 0.2.0
 
 - A desk icon in the icon row at the bottom-right of the screen, with a green dot while snapping is on. Clicking it does what **F3** does.
