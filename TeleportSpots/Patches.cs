@@ -11,7 +11,7 @@ namespace TeleportSpots
     {
         private static void Postfix(ref bool __result)
         {
-            if (SpotsWindow.IsTyping)
+            if (SpotsWindow.HoldsKeys)
             {
                 __result = true;
             }
@@ -28,7 +28,7 @@ namespace TeleportSpots
         private static void Postfix(InputManager __instance)
         {
             // The typing path above still reports Enter, which would open chat. Enter saves the name.
-            if (SpotsWindow.IsTyping)
+            if (SpotsWindow.HoldsKeys)
             {
                 SetEnterKeyDown(__instance, false);
                 SetEnterKeyUp(__instance, false);

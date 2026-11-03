@@ -26,10 +26,14 @@ namespace TeleportSpots
 
         private static SpotsWindow _instance;
 
-        // Read by the patches. True while the name box is open, so the game ignores the keys.
+        // True while the name box is open.
         internal static bool IsTyping =>
             _instance != null && _instance._open &&
             (_instance._edit == EditMode.Add || _instance._edit == EditMode.Rename);
+
+        // Read by the patches, so the game ignores the keys while you type. A window hidden in the
+        // game's Desk window mode (PanelStack.Hidden) gives them back.
+        internal static bool HoldsKeys => IsTyping && !PanelStack.Hidden;
 
         // Read by the patches. True while the mouse is over the window, so clicks don't reach the world.
         internal static bool IsMouseOver { get; private set; }

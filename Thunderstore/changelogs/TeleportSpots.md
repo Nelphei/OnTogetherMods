@@ -1,3 +1,8 @@
+## 0.2.1
+
+- The icon and the window hide in the game's Desk window mode (key 4, the small see-through window), and come back when you switch to another window mode. If you were typing a spot's name, your keys go back to the game until the window shows again.
+- The icon hides while Photo Mode is on.
+
 ## 0.2.0
 
 - A map pin icon in the icon row at the bottom-right of the screen opens and closes the window.
