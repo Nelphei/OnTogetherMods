@@ -4,12 +4,14 @@
   <PropertyGroup>
     <AssemblyName>TraceOverlay</AssemblyName>
     <RootNamespace>TraceOverlay</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Stacks this mod's window with other mods' windows, and stops clicks going through it. -->
     <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- This mod's icon in the row of mod icons at the bottom-right. -->
+    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
     <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
   </ItemGroup>
 </Project>

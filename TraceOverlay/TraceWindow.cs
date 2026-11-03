@@ -40,6 +40,7 @@ namespace TraceOverlay
         private readonly BoardGuide _guide = new BoardGuide();
         private readonly List<string> _files = new List<string>();
         private bool _active;
+        private bool _iconClicked;
 
         private Texture2D _texture;
         private string _imagePath;
@@ -94,7 +95,14 @@ namespace TraceOverlay
         {
             try
             {
-                bool drawing = Drawing != null && Drawing.IsActive;
+                // A click on the icon (Shared/IconBar.cs) from the last OnGUI switches the mod.
+                if (_iconClicked)
+                {
+                    _iconClicked = false;
+                    S.Enabled.Value = !S.Enabled.Value;
+                }
+
+                bool drawing = S.Enabled.Value && Drawing != null && Drawing.IsActive;
                 if (drawing && !_active)
                 {
                     StartDrawing();
@@ -281,6 +289,15 @@ namespace TraceOverlay
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value &&
+                IconBar.Draw("TraceOverlay", IconBar.TraceOverlayOrder, Icon.Pixels,
+                    S.Enabled.Value ? IconBar.State.On : IconBar.State.Off, "Trace Overlay", KeyCode.None,
+                    "Shows a picture to trace on boards") == IconBar.Click.Left)
+            {
+                _iconClicked = true;   // acted on in Update
+            }
+
             // Hidden while Photo Mode takes a photo.
             if (!_active || PanelStack.Hidden)
             {

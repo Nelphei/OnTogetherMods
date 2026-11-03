@@ -8,6 +8,8 @@ namespace TraceOverlay
     // The window also saves your last image, opacity and fit here, so they're kept next time.
     internal sealed class Settings
     {
+        public readonly ConfigEntry<bool> Enabled;
+        public readonly ConfigEntry<bool> ShowIcon;
         public readonly ConfigEntry<string> ImageFolder;
         public readonly ConfigEntry<string> LastImage;
         public readonly ConfigEntry<float> Opacity;
@@ -17,6 +19,9 @@ namespace TraceOverlay
 
         public Settings(ConfigFile config)
         {
+            Enabled = config.Bind("Guide", "Enabled", true,
+                "Show the window and the guide picture while you draw on a chalkboard or whiteboard. The mod's " +
+                "icon at the bottom-right switches this on and off, and it's remembered between games.");
             ImageFolder = config.Bind("Images", "ImageFolder", "",
                 "Folder the image list reads .png and .jpg files from. Leave empty to use Pictures\\On-Together\\Trace.");
             LastImage = config.Bind("Images", "LastImage", "",
@@ -34,6 +39,9 @@ namespace TraceOverlay
             VisibleRows = config.Bind("Display", "VisibleRows", 5,
                 new ConfigDescription("How many images the window shows before it scrolls.",
                     new AcceptableValueRange<int>(3, 15)));
+            ShowIcon = config.Bind("Display", "ShowIcon", true,
+                "Show a picture icon in the row of mod icons at the bottom-right, with a green dot while Enabled " +
+                "is on. Clicking it switches Enabled.");
         }
 
         public string Folder()
