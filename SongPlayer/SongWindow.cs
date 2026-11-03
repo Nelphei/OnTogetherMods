@@ -41,6 +41,7 @@ namespace SongPlayer
         private readonly Performer _performer = new Performer();
         private readonly List<string> _files = new List<string>();
         private bool _active;
+        private bool _iconClicked;
         private InstrumentType _instrument;
 
         private Song _song;
@@ -87,13 +88,26 @@ namespace SongPlayer
         {
             try
             {
+                // A click on the icon (Shared/IconBar.cs) from the last OnGUI switches the mod.
+                if (_iconClicked)
+                {
+                    _iconClicked = false;
+                    S.Enabled.Value = !S.Enabled.Value;
+                }
+
                 bool atInstrument = Music != null && Music.IsActive;
-                if (atInstrument && !_active)
+                bool show = atInstrument && S.Enabled.Value;
+                if (show && !_active)
                 {
                     SitDown();
                 }
-                else if (!atInstrument && _active)
+                else if (!show && _active)
                 {
+                    if (atInstrument)
+                    {
+                        // Switched off while still seated: let go of the keys the song is holding.
+                        _performer.Stop();
+                    }
                     StandUp();
                 }
 
@@ -266,6 +280,15 @@ namespace SongPlayer
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value &&
+                IconBar.Draw("SongPlayer", IconBar.SongPlayerOrder, Icon.Pixels,
+                    S.Enabled.Value ? IconBar.State.On : IconBar.State.Off, "Song Player", KeyCode.None,
+                    "Shows the song list at instruments") == IconBar.Click.Left)
+            {
+                _iconClicked = true;   // acted on in Update
+            }
+
             // Hidden while Photo Mode takes a photo.
             if (!_active || PanelStack.Hidden)
             {
