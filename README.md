@@ -17,7 +17,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Trace Overlay](#trace-overlay) | 0.2.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.3.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.0, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
-| [Chat Range](#chat-range) | 0.1.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
+| [Chat Range](#chat-range) | 0.2.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -45,7 +45,7 @@ The row only shows in a world, and hides while a game menu or panel is open (pau
 | Trace Overlay 0.2.0 | Yes, its icon too |
 | Focus Anywhere 0.3.0 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.2.0 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
-| Chat Range 0.1.0 | **Pre-release.** New, and not tried in the game yet |
+| Chat Range 0.2.0 | **Pre-release.** 0.2.0's icon works. The list itself hasn't been tried in the game yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -120,11 +120,11 @@ It also works when [Emote Sync](#emote-sync) starts your activity because a frie
 
 ### Chat Range
 
-> **Pre-release:** new in 0.1.0, and not tried in the game yet.
+> **Pre-release:** the list hasn't been tried in the game yet.
 
 Local chat messages (and their chat bubbles) only reach players within 5 m of you, counting height too. While the chat box is open on its **Local** tab, a small box just above it lists everyone in that range, with their names styled the way their name tags are. It says so when nobody's close enough. If the chat box is dragged to the top of the screen, the list sits beside it instead.
 
-The list hides when chat is minimised or the game's UI is hidden. In [Photo Mode](#photo-mode) it shows only while the chat box does, and it stays out of your photos. Someone who has muted you is still listed, but won't see your messages. `ShowOnGlobalTab` in the settings file shows the list on the Global tab too, and `MaxNames` sets how many names it lists before counting the rest.
+The list hides when chat is minimised or the game's UI is hidden. In [Photo Mode](#photo-mode) it shows only while the chat box does, and it stays out of your photos. Someone who has muted you is still listed, but won't see your messages. The speech bubble icon switches the list off and on. `ShowOnGlobalTab` in the settings file shows the list on the Global tab too, and `MaxNames` sets how many names it lists before counting the rest.
 
 ## Installing
 

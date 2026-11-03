@@ -33,6 +33,7 @@ namespace ChatRange
 
         private bool _show;
         private bool _broken;
+        private bool _iconClicked;
         private string _text;
         private Rect _chat;          // the chat box on screen, in 1080p units from the top-left
         private Rect _loggedChat;
@@ -70,8 +71,27 @@ namespace ChatRange
             _box.LateUpdate();
         }
 
+        // A click on the icon (Shared/IconBar.cs) from the last OnGUI switches the list on or off.
+        private void Update()
+        {
+            if (_iconClicked)
+            {
+                _iconClicked = false;
+                S.Enabled.Value = !S.Enabled.Value;
+            }
+        }
+
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value &&
+                IconBar.Draw("ChatRange", IconBar.ChatRangeOrder, Icon.Pixels,
+                    S.Enabled.Value ? IconBar.State.On : IconBar.State.Off, "Chat Range", KeyCode.None,
+                    "Shows who's in range above the chat box") == IconBar.Click.Left)
+            {
+                _iconClicked = true;   // acted on in Update
+            }
+
             // Hidden while Photo Mode takes a photo.
             if (!_show || _text == null || PanelStack.Hidden)
             {

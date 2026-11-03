@@ -1,5 +1,6 @@
 using BepInEx;
 using BepInEx.Logging;
+using OnTogetherMods.Shared;
 using UnityEngine;
 
 namespace ChatRange
@@ -9,7 +10,7 @@ namespace ChatRange
     {
         public const string PluginGuid = "nelphei.ontogether.chatrange";
         public const string PluginName = "Chat Range";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -20,6 +21,9 @@ namespace ChatRange
         {
             Log = Logger;
             Settings = new Settings(Config);
+            // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
+            // mod loads first.
+            IconBar.Patch();
 
             // Runs on its own object so it survives scene loads.
             _host = new GameObject("ChatRange");
