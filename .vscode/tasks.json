@@ -18,6 +18,14 @@
       "args": ["build", "${workspaceFolder}/OnTogetherMods.sln", "-p:DeployToGame=true"],
       "problemMatcher": "$msCompile",
       "group": "build"
+    },
+    {
+      "label": "package for Thunderstore",
+      "detail": "Make a Thunderstore zip for every mod in Thunderstore\\bin. Doesn't upload anything.",
+      "type": "process",
+      "command": "python",
+      "args": ["${workspaceFolder}/Thunderstore/pack.py"],
+      "problemMatcher": []
     }
   ]
 }

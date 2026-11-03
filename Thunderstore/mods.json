@@ -1,0 +1,43 @@
+{
+  "team": "SoapieScripts",
+  "website": "https://github.com/Nelphei/OnTogetherMods",
+  "dependencies": ["BepInEx-BepInExPack-5.4.2305"],
+  "mods": {
+    "PhotoMode": {
+      "name": "Photo_Mode",
+      "description": "Free camera, hidden UI and PNG photos. Press F9 to fly the camera anywhere, hide the game's UI and name tags, and save photos bigger than your screen. Only you need it."
+    },
+    "EmoteSync": {
+      "name": "Emote_Sync",
+      "description": "Emotes and focus activities start together for your whole group, on the same network tick, with looping animations kept in step. Press F7 to join in. Everyone in the group needs the mod."
+    },
+    "TeleportSpots": {
+      "name": "Teleport_Spots",
+      "description": "Save the spot you're standing on and teleport back to it with one click. Press F5 to open the window. Only you need it."
+    },
+    "SongPlayer": {
+      "name": "Song_Player",
+      "description": "Plays MIDI songs on the instrument you're sitting at. Put .mid files in your Music/On-Together folder. Everyone nearby hears the song, even without the mod."
+    },
+    "TraceOverlay": {
+      "name": "Trace_Overlay",
+      "description": "Lays a see-through picture over chalkboards and whiteboards so you can trace it with chalk. Put images in Pictures/On-Together/Trace. Only you see the picture."
+    },
+    "FocusAnywhere": {
+      "name": "Focus_Anywhere",
+      "description": "Focus on any ground or in mid-air, with every activity in the game in the focus menu: water ones on land, seat-spot poses anywhere, and a new Play category. Only you need it."
+    },
+    "DeskSnap": {
+      "name": "Desk_Snap",
+      "description": "Sit at your desk near a friend's and yours lines up beside it: same direction, same height, small gap. Rows stay level, even in the air. F3 turns it on or off. Only you need it."
+    },
+    "ChatRange": {
+      "name": "Chat_Range",
+      "description": "Shows who's close enough to see your local chat messages, in a small list above the chat box while its Local tab is open. Only you need it."
+    },
+    "NameDesigner": {
+      "name": "Name_Designer",
+      "description": "Colour each letter of your player name or a session name, with gradients, rainbows, a live preview and presets. Press F4. Only you need the mod; everyone sees the colours."
+    }
+  }
+}
