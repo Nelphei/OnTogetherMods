@@ -14,7 +14,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Emote Sync](#emote-sync) | 0.3.1, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.1, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.1, pre-release | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
-| [Trace Overlay](#trace-overlay) | 0.2.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
+| [Trace Overlay](#trace-overlay) | 0.2.1, pre-release | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.3.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.0, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
@@ -45,7 +45,7 @@ In the game's Desk window mode (key 4, the small see-through window), every mod'
 | Emote Sync 0.3.1 | **Pre-release.** 0.1.0 worked with a friend, and 0.3.0's icon works. 0.2.0's joining once you're free and the **Join now** button, 0.2.1's styled names, and 0.3.1's hiding in Desk mode and Photo Mode haven't been tried yet |
 | Teleport Spots 0.2.1 | **Pre-release.** Teleporting works on your own screen, and so does 0.2.0's icon. 0.1.1's fix for keeping spots after a restart, 0.1.2's fix for where other players see you land, and 0.2.1's hiding in Desk mode and Photo Mode haven't been tried yet |
 | Song Player 0.2.1 | **Pre-release.** 0.2.0 worked on its own, icon included. Not yet checked with other players listening, and 0.2.1's hiding in Desk mode and Photo Mode hasn't been tried yet |
-| Trace Overlay 0.2.0 | Yes, its icon too |
+| Trace Overlay 0.2.1 | **Pre-release.** 0.2.0 worked, icon included. 0.2.1's hiding in Desk mode and Photo Mode hasn't been tried yet |
 | Focus Anywhere 0.3.0 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.2.0 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.0 | **Pre-release.** 0.2.0's icon works. The list itself hasn't been tried in the game yet |
@@ -95,6 +95,8 @@ Put `.mid` files in `Music\On-Together`, then sit at an instrument. The song win
 Everyone nearby hears the song, with or without the mod. Click **Stop**, or stand up (Space or Esc), to stop. Switching the mod off with its icon also stops the song and closes the window until you switch it back on.
 
 ### Trace Overlay
+
+> **Pre-release:** 0.2.0 worked. 0.2.1 hides the window and icon in the game's Desk window mode, which hasn't been tried in the game yet.
 
 Put `.png` or `.jpg` files in `Pictures\On-Together\Trace`, then start drawing on a chalkboard or whiteboard. The window opens by itself. Click an image to lay it over the board, set how see-through it is, and trace over it with chalk. Only you can see the picture. Switch the mod off with its icon and the window and picture stay away until you switch it back on.
 
