@@ -1,3 +1,9 @@
+## 0.3.1
+
+- The icon, the group window and the messages at the top hide in the game's Desk window mode (key 4, the small see-through window), and come back when you switch to another window mode. Sync keeps working meanwhile.
+- The icon hides while Photo Mode is on.
+- Works with 0.2.0, 0.2.1 and 0.3.0.
+
 ## 0.3.0
 
 - An icon in the icon row at the bottom-right of the screen: two cheering friends, with a green dot while sync is on. Click it to turn sync on or off, and right-click it to show or hide the group window.

@@ -11,7 +11,7 @@ namespace EmoteSync
     {
         public const string PluginGuid = "nelphei.ontogether.emotesync";
         public const string PluginName = "Emote Sync";
-        public const string PluginVersion = "0.3.0";
+        public const string PluginVersion = "0.3.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
