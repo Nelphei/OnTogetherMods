@@ -16,7 +16,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Song Player](#song-player) | 0.2.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.3.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
-| [Desk Snap](#desk-snap) | 0.1.4, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
+| [Desk Snap](#desk-snap) | 0.2.0, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.1.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
@@ -44,7 +44,7 @@ The row only shows in a world, and hides while a game menu or panel is open (pau
 | Song Player 0.2.0 | Yes, on its own, and so does its icon. Not yet checked with other players listening |
 | Trace Overlay 0.2.0 | Yes, its icon too |
 | Focus Anywhere 0.3.0 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
-| Desk Snap 0.1.4 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
+| Desk Snap 0.2.0 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.1.0 | **Pre-release.** New, and not tried in the game yet |
 
 None of the mods have been tried on a Mac yet.
@@ -116,7 +116,7 @@ Rows stay level even where the ground drops away, and they work in the air too: 
 
 It also works when [Emote Sync](#emote-sync) starts your activity because a friend picked it.
 
-**F3** turns snapping on or off (it starts on, and the game remembers your choice). If you're sitting at your desk when you press it, it snaps you right away, or moves you back to where you sat down. It won't put you inside the ground or a wall, or next to a classroom desk. `Gap` and `Range` in the settings file change the space between desks and how close you need to sit.
+**F3** or the desk icon turns snapping on or off (it starts on, and the game remembers your choice). If you're sitting at your desk when you press it, it snaps you right away, or moves you back to where you sat down. It won't put you inside the ground or a wall, or next to a classroom desk. `Gap` and `Range` in the settings file change the space between desks and how close you need to sit.
 
 ### Chat Range
 

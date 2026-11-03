@@ -48,6 +48,7 @@ namespace DeskSnap
         private readonly TextBox _noticeBox = new TextBox("DeskSnap Notice", TextAlignmentOptions.Center);
         private string _notice;
         private float _noticeUntil;
+        private bool _iconClicked;
 
         private void Awake()
         {
@@ -115,7 +116,10 @@ namespace DeskSnap
 
         private void Update()
         {
-            if (Input.GetKeyDown(S.ToggleKey.Value) && !IsTyping())
+            // A click on the icon (Shared/IconBar.cs) from the last OnGUI.
+            bool clicked = _iconClicked;
+            _iconClicked = false;
+            if ((Input.GetKeyDown(S.ToggleKey.Value) && !IsTyping()) || clicked)
             {
                 Toggle();
             }
@@ -332,6 +336,14 @@ namespace DeskSnap
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons.
+            if (S.ShowIcon.Value &&
+                IconBar.Draw("DeskSnap", IconBar.DeskSnapOrder, Icon.Pixels,
+                    S.Enabled.Value ? IconBar.State.On : IconBar.State.Off, "Desk Snap", S.ToggleKey.Value) == IconBar.Click.Left)
+            {
+                _iconClicked = true;   // acted on in Update
+            }
+
             // Hidden while Photo Mode takes a photo.
             if (_notice == null || Time.unscaledTime >= _noticeUntil || PanelStack.Hidden)
             {

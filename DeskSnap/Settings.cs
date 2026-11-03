@@ -11,6 +11,7 @@ namespace DeskSnap
         public readonly ConfigEntry<float> Gap;
         public readonly ConfigEntry<float> Range;
         public readonly ConfigEntry<bool> ShowNotices;
+        public readonly ConfigEntry<bool> ShowIcon;
         public readonly ConfigEntry<bool> DebugLog;
 
         public Settings(ConfigFile config)
@@ -33,6 +34,9 @@ namespace DeskSnap
 
             ShowNotices = config.Bind("Display", "ShowNotices", true,
                 "Show a short message at the top of the screen when your desk snaps or you press ToggleKey.");
+            ShowIcon = config.Bind("Display", "ShowIcon", true,
+                "Show a desk icon in the row of mod icons at the bottom-right, with a green dot while snapping is on. " +
+                "Clicking it does what ToggleKey does.");
             DebugLog = config.Bind("Debug", "DebugLog", false,
                 "Write desk sizes, targets and why a snap didn't happen to the BepInEx log.");
         }
