@@ -1,3 +1,8 @@
+## 0.4.1
+
+- The icon row hides while Photo Mode is on, so it stays out of your way. Leave with **F9** or **Esc**, and **F1** shows or hides the controls panel.
+- Photo Mode's messages hide in the game's Desk window mode (key 4, the small see-through window), like the other mods' windows.
+
 ## 0.4.0
 
 - A camera icon in the icon row at the bottom-right of the screen. Click it to start or leave Photo Mode, and right-click it for the controls panel. The row is never in your photos.

@@ -44,8 +44,7 @@ namespace PhotoMode
         private bool _restoreSelectAll;
 
         private bool _looking;
-        private bool _rightPressOnIcons;
-        private IconBar.Click _iconClick;
+        private bool _iconClicked;
         private bool _capturing;
         private bool _exitRequested;
         private bool _showHelp;
@@ -69,32 +68,18 @@ namespace PhotoMode
                 Toast(saved);
             }
 
-            // A click on the camera icon (Shared/IconBar.cs) from the last OnGUI.
-            IconBar.Click click = _iconClick;
-            _iconClick = IconBar.Click.None;
+            // A click on the camera icon (Shared/IconBar.cs) from the last OnGUI. The icons hide
+            // while photo mode is on, so the icon only ever starts it.
+            bool clicked = _iconClicked;
+            _iconClicked = false;
 
             if (!IsActive)
             {
-                if (Input.GetKeyDown(S.ToggleKey.Value) || click == IconBar.Click.Left)
+                if (Input.GetKeyDown(S.ToggleKey.Value) || clicked)
                 {
                     TryEnter();
                 }
                 return;
-            }
-
-            if (click == IconBar.Click.Left)
-            {
-                // Clicking the icon works while typing too, unlike the key.
-                if (IsTyping())
-                {
-                    StopTyping();
-                }
-                _exitRequested = true;
-                return;
-            }
-            if (click == IconBar.Click.Right)
-            {
-                _showHelp = !_showHelp;
             }
 
             // The scene changed under us, e.g. after leaving the lobby.
@@ -166,6 +151,8 @@ namespace PhotoMode
                 Exit();
                 return;
             }
+            // Keeps the mod icons out of the way while photo mode is on.
+            IconBar.HideRow();
 
             // This runs after the EventSystem's Update, so a click it read as "clicked on nothing"
             // (the chat's raycasts are off, see UiHider) can still select the chat box here.
@@ -405,16 +392,7 @@ namespace PhotoMode
 
         private void UpdateLook()
         {
-            // A right-click on the mod icons is a click, not a look: locking the mouse would lose it.
-            if (Input.GetMouseButtonDown(1))
-            {
-                _rightPressOnIcons = IconBar.MouseOver;
-            }
-            else if (!Input.GetMouseButton(1))
-            {
-                _rightPressOnIcons = false;
-            }
-            bool held = Input.GetMouseButton(1) && !_rightPressOnIcons;
+            bool held = Input.GetMouseButton(1);
             if (held && !_looking)
             {
                 _looking = true;
@@ -631,19 +609,18 @@ namespace PhotoMode
 
         private void OnGUI()
         {
-            // First, so it lines up with the other mods' icons. Hidden while a photo is taken.
+            // First, so it lines up with the other mods' icons. The row hides while photo mode is on.
             if (S.ShowIcon.Value)
             {
-                IconBar.Click click = IconBar.Draw("PhotoMode", IconBar.PhotoModeOrder, Icon.Pixels,
-                    IsActive ? IconBar.State.Open : IconBar.State.Plain, "Photo Mode", S.ToggleKey.Value,
-                    IsActive ? "Right-click: controls" + IconBar.KeyText(S.HelpKey.Value) : null);
-                if (click != IconBar.Click.None)
+                if (IconBar.Draw("PhotoMode", IconBar.PhotoModeOrder, Icon.Pixels, IconBar.State.Plain,
+                    "Photo Mode", S.ToggleKey.Value) == IconBar.Click.Left)
                 {
-                    _iconClick = click;   // acted on in Update
+                    _iconClicked = true;   // acted on in Update
                 }
             }
 
-            if (_capturing)
+            // Nothing shows while a photo is taken, or in the game's Desk window mode (PanelStack.Hidden).
+            if (_capturing || PanelStack.Hidden)
             {
                 return;
             }
