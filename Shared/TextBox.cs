@@ -37,6 +37,9 @@ namespace OnTogetherMods.Shared
             _alignment = alignment;
         }
 
+        // A font to use instead of the name tags' font. Leave it null to use the name tags' font.
+        public TMP_FontAsset Font { get; set; }
+
         // How big the box is for this text, padding included, in 1080p units. Call from OnGUI.
         public Vector2 Measure(string text)
         {
@@ -92,7 +95,7 @@ namespace OnTogetherMods.Shared
             {
                 Build();
             }
-            TMP_FontAsset font = PlayerNames.NameTagFont();
+            TMP_FontAsset font = Font != null ? Font : PlayerNames.NameTagFont();
             if (font != null && _text.font != font)
             {
                 _text.font = font;

@@ -30,6 +30,7 @@ namespace OnTogetherMods.Shared
         public const int TeleportSpotsOrder = 20;
         public const int SongPlayerOrder = 30;
         public const int TraceOverlayOrder = 40;
+        public const int NameDesignerOrder = 50;
 
         // Screen width in the same 1080p units the windows are laid out in.
         public static float Width => Screen.width * 1080f / Screen.height;

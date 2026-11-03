@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskSnap", "DeskSnap\DeskSn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatRange", "ChatRange\ChatRange.csproj", "{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameDesigner", "NameDesigner\NameDesigner.csproj", "{E45CC2B7-5789-49E2-A131-5FC480FDCB0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +68,9 @@ Global
 		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A53CC9F-17C5-482A-B7EC-D454A7179FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E45CC2B7-5789-49E2-A131-5FC480FDCB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E45CC2B7-5789-49E2-A131-5FC480FDCB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E45CC2B7-5789-49E2-A131-5FC480FDCB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E45CC2B7-5789-49E2-A131-5FC480FDCB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
