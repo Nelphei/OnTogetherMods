@@ -25,6 +25,7 @@ namespace PhotoMode
         public readonly ConfigEntry<bool> ShutterSound;
         public readonly ConfigEntry<int> ResolutionMultiplier;
         public readonly ConfigEntry<string> SaveFolder;
+        public readonly ConfigEntry<bool> ShowIcon;
 
         public Settings(ConfigFile config)
         {
@@ -71,6 +72,10 @@ namespace PhotoMode
                     new AcceptableValueRange<int>(1, 4)));
             SaveFolder = config.Bind("Photos", "SaveFolder", "",
                 "Folder for photos. Leave empty to use Pictures\\On-Together.");
+
+            ShowIcon = config.Bind("Display", "ShowIcon", true,
+                "Show a camera icon in the row of mod icons at the bottom-right. Clicking it does what ToggleKey " +
+                "does, and right-clicking it while photo mode is on does what HelpKey does. It's never in photos.");
         }
     }
 }

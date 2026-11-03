@@ -44,6 +44,8 @@ namespace PhotoMode
         private bool _restoreSelectAll;
 
         private bool _looking;
+        private bool _rightPressOnIcons;
+        private IconBar.Click _iconClick;
         private bool _capturing;
         private bool _exitRequested;
         private bool _showHelp;
@@ -67,13 +69,32 @@ namespace PhotoMode
                 Toast(saved);
             }
 
+            // A click on the camera icon (Shared/IconBar.cs) from the last OnGUI.
+            IconBar.Click click = _iconClick;
+            _iconClick = IconBar.Click.None;
+
             if (!IsActive)
             {
-                if (Input.GetKeyDown(S.ToggleKey.Value))
+                if (Input.GetKeyDown(S.ToggleKey.Value) || click == IconBar.Click.Left)
                 {
                     TryEnter();
                 }
                 return;
+            }
+
+            if (click == IconBar.Click.Left)
+            {
+                // Clicking the icon works while typing too, unlike the key.
+                if (IsTyping())
+                {
+                    StopTyping();
+                }
+                _exitRequested = true;
+                return;
+            }
+            if (click == IconBar.Click.Right)
+            {
+                _showHelp = !_showHelp;
             }
 
             // The scene changed under us, e.g. after leaving the lobby.
@@ -384,7 +405,16 @@ namespace PhotoMode
 
         private void UpdateLook()
         {
-            bool held = Input.GetMouseButton(1);
+            // A right-click on the mod icons is a click, not a look: locking the mouse would lose it.
+            if (Input.GetMouseButtonDown(1))
+            {
+                _rightPressOnIcons = IconBar.MouseOver;
+            }
+            else if (!Input.GetMouseButton(1))
+            {
+                _rightPressOnIcons = false;
+            }
+            bool held = Input.GetMouseButton(1) && !_rightPressOnIcons;
             if (held && !_looking)
             {
                 _looking = true;
@@ -601,6 +631,18 @@ namespace PhotoMode
 
         private void OnGUI()
         {
+            // First, so it lines up with the other mods' icons. Hidden while a photo is taken.
+            if (S.ShowIcon.Value)
+            {
+                IconBar.Click click = IconBar.Draw("PhotoMode", IconBar.PhotoModeOrder, Icon.Pixels,
+                    IsActive ? IconBar.State.Open : IconBar.State.Plain, "Photo Mode", S.ToggleKey.Value,
+                    IsActive ? "Right-click: controls" + IconBar.KeyText(S.HelpKey.Value) : null);
+                if (click != IconBar.Click.None)
+                {
+                    _iconClick = click;   // acted on in Update
+                }
+            }
+
             if (_capturing)
             {
                 return;
