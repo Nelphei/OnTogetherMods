@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>FocusAnywhere</AssemblyName>
     <RootNamespace>FocusAnywhere</RootNamespace>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
