@@ -16,6 +16,9 @@ namespace OnTogetherMods.Shared
     {
         private const string TableKey = "OnTogetherMods.PanelStack.Panels";
         private const string HiddenKey = "OnTogetherMods.PanelStack.Hidden";
+        // Where the icon row is, written by IconBar.cs: x, y, width, height (screen pixels from the
+        // top-left), the frame, and whether it's showing.
+        private const string IconBarKey = "OnTogetherMods.IconBar.Rect";
         private const float Margin = 20f;
         // How far in from the right edge the windows' right edges sit, as a share of screen width.
         private const float FromRight = 0.15f;
@@ -71,7 +74,7 @@ namespace OnTogetherMods.Shared
             float width = Width;
             // Never pushed off the left edge, even on a narrow screen.
             float x = Mathf.Max(Margin, width * (1f - FromRight) - size.x);
-            float y = 1080f - Margin - size.y;
+            float y = Bottom(x + size.x, frame) - size.y;
             foreach (DictionaryEntry entry in panels)
             {
                 var key = (string)entry.Key;
@@ -84,6 +87,22 @@ namespace OnTogetherMods.Shared
                 }
             }
             return new Rect(x, y, size.x, size.y);
+        }
+
+        // Where the stack starts. The mods' icon row (IconBar.cs) sits in the bottom-right corner;
+        // when it reaches under the windows, they start just above it.
+        private static float Bottom(float windowRight, int frame)
+        {
+            float bottom = 1080f - Margin;
+            if (AppDomain.CurrentDomain.GetData(IconBarKey) is double[] bar && frame - bar[4] <= 2)
+            {
+                float scale = 1080f / Screen.height;
+                if (bar[0] * scale < windowRight + Gap)
+                {
+                    bottom = Mathf.Min(bottom, (float)bar[1] * scale - Gap);
+                }
+            }
+            return bottom;
         }
 
         // Scales GUI drawing from 1080p to the real screen. Returns the old matrix for End().

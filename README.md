@@ -19,7 +19,20 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Desk Snap](#desk-snap) | 0.1.4, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.1.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 
-Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys.
+Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
+
+### The icon row
+
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay and a speech bubble for Chat Range.
+
+- **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
+- **Hover** over one to see its name, its key, and whether it's on.
+- **Right-click** does a second thing on two icons: Photo Mode's controls panel (F1) while Photo Mode is on, and Emote Sync's window (F6) while sync is on.
+- A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
+
+Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
+
+The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel). It's never in your photos. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon.
 
 ### What's been tested
 
@@ -167,6 +180,6 @@ Add a project name to build or deploy just one mod, like `dotnet build PhotoMode
 ## Making your own mod
 
 - `HelloTogether/` is a minimal starter mod: a plugin that logs a message and one Harmony patch. Copy the folder, change the GUID and names in `Plugin.cs`, delete the `NoDeploy` line in the `.csproj` (it keeps the template out of the game), and add it with `dotnet sln add`.
-- `Shared/` holds code used by more than one mod. `PanelStack.cs` stacks each mod's window along the bottom, right edges lined up 15% in from the right (clear of the chat box) so they don't overlap, and `ClickBlocker.cs` stops clicks on a mod window from reaching the game.
+- `Shared/` holds code used by more than one mod. `PanelStack.cs` stacks each mod's window along the bottom, right edges lined up 15% in from the right (clear of the chat box) so they don't overlap, `ClickBlocker.cs` stops clicks on a mod window from reaching the game, and `IconBar.cs` draws each mod's icon in the row at the bottom-right.
 - [CLAUDE.md](CLAUDE.md) has notes on how the game works inside (camera, input, animations, focus, networking, instruments, drawing) that were learned while building these mods.
 - To read the game's code, decompile it with [ILSpy](https://github.com/icsharpcode/ILSpy). The decompiled code is GigaPuff's, so keep it out of anything you publish. This repo ignores a local `reference/` folder for it.
