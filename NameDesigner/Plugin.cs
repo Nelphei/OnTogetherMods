@@ -11,7 +11,7 @@ namespace NameDesigner
     {
         public const string PluginGuid = "nelphei.ontogether.namedesigner";
         public const string PluginName = "Name Designer";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

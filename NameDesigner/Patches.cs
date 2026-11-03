@@ -42,7 +42,7 @@ namespace NameDesigner
     {
         private static void Postfix(ref bool __result)
         {
-            if (DesignerWindow.IsTyping)
+            if (DesignerWindow.HoldsKeys)
             {
                 __result = true;
             }
@@ -59,7 +59,7 @@ namespace NameDesigner
         private static void Postfix(InputManager __instance)
         {
             // The typing path above still reports Enter, which would open chat.
-            if (DesignerWindow.IsTyping)
+            if (DesignerWindow.HoldsKeys)
             {
                 SetEnterKeyDown(__instance, false);
                 SetEnterKeyUp(__instance, false);
