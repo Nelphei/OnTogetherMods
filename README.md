@@ -13,7 +13,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Photo Mode](#photo-mode) | 0.4.1, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.3.1, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.1, pre-release | F5 | Save spots and teleport back to them | Only you |
-| [Song Player](#song-player) | 0.2.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
+| [Song Player](#song-player) | 0.2.1, pre-release | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.3.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.0, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
@@ -44,7 +44,7 @@ In the game's Desk window mode (key 4, the small see-through window), every mod'
 | Photo Mode 0.4.1 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and 0.4.0's icon works. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, 0.3.0 lets you type in chat, and 0.4.1 hides the icon row while Photo Mode is on. None of these has been tried yet |
 | Emote Sync 0.3.1 | **Pre-release.** 0.1.0 worked with a friend, and 0.3.0's icon works. 0.2.0's joining once you're free and the **Join now** button, 0.2.1's styled names, and 0.3.1's hiding in Desk mode and Photo Mode haven't been tried yet |
 | Teleport Spots 0.2.1 | **Pre-release.** Teleporting works on your own screen, and so does 0.2.0's icon. 0.1.1's fix for keeping spots after a restart, 0.1.2's fix for where other players see you land, and 0.2.1's hiding in Desk mode and Photo Mode haven't been tried yet |
-| Song Player 0.2.0 | Yes, on its own, and so does its icon. Not yet checked with other players listening |
+| Song Player 0.2.1 | **Pre-release.** 0.2.0 worked on its own, icon included. Not yet checked with other players listening, and 0.2.1's hiding in Desk mode and Photo Mode hasn't been tried yet |
 | Trace Overlay 0.2.0 | Yes, its icon too |
 | Focus Anywhere 0.3.0 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.2.0 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
@@ -82,6 +82,8 @@ Everyone who wants to sync presses **F7** or clicks the mod's icon. After that, 
 Press **F5** or click the map pin icon to open the window. Click **Save this spot** to remember where you're standing (and which way the camera faces), then click a spot's name later to jump back there. Spots can be renamed or deleted, and they're kept in `BepInEx\config\TeleportSpots.json` if you want to back them up.
 
 ### Song Player
+
+> **Pre-release:** 0.2.0 worked. 0.2.1 hides the window and icon in the game's Desk window mode, which hasn't been tried in the game yet.
 
 Put `.mid` files in `Music\On-Together`, then sit at an instrument. The song window opens by itself. Click a song to play it.
 

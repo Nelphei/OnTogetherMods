@@ -1,3 +1,8 @@
+## 0.2.1
+
+- The icon and the song window hide in the game's Desk window mode (key 4, the small see-through window), and come back when you switch to another window mode.
+- The icon hides while Photo Mode is on.
+
 ## 0.2.0
 
 - A music notes icon in the icon row at the bottom-right of the screen switches the mod on and off. Switched off, the song window stays away at instruments, and a song that's playing stops. Your choice is remembered between games.

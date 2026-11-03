@@ -11,7 +11,7 @@ namespace SongPlayer
     {
         public const string PluginGuid = "nelphei.ontogether.songplayer";
         public const string PluginName = "Song Player";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.2.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
