@@ -10,7 +10,7 @@ namespace ChatRange
     {
         public const string PluginGuid = "nelphei.ontogether.chatrange";
         public const string PluginName = "Chat Range";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.2.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
