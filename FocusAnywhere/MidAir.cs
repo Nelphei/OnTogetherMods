@@ -27,7 +27,7 @@ namespace FocusAnywhere
         public static void OnMenuOpened(PlayerFocusController focus)
         {
             _holding = false;
-            if (!Plugin.Settings.MidAir.Value || focus.IsFocus)
+            if (!Plugin.Settings.Enabled.Value || !Plugin.Settings.MidAir.Value || focus.IsFocus)
             {
                 return;   // switching activity while already focusing: you're already held
             }

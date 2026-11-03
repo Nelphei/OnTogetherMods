@@ -1,6 +1,8 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using OnTogetherMods.Shared;
+using UnityEngine;
 
 namespace FocusAnywhere
 {
@@ -9,10 +11,12 @@ namespace FocusAnywhere
     {
         public const string PluginGuid = "nelphei.ontogether.focusanywhere";
         public const string PluginName = "Focus Anywhere";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.3.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
+
+        private GameObject _host;
 
         private void Awake()
         {
@@ -20,9 +24,26 @@ namespace FocusAnywhere
             Settings = new Settings(Config);
 
             new Harmony(PluginGuid).PatchAll();
+            // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
+            // mod loads first.
+            IconBar.Patch();
 
-            Log.LogInfo($"{PluginName} {PluginVersion} loaded. Every activity: {Settings.AllActivities.Value}, " +
-                $"any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}.");
+            // The icon runs on its own object so it survives scene loads.
+            _host = new GameObject("FocusAnywhere");
+            _host.hideFlags = HideFlags.HideAndDontSave;
+            DontDestroyOnLoad(_host);
+            _host.AddComponent<IconButton>();
+
+            Log.LogInfo($"{PluginName} {PluginVersion} loaded. On: {Settings.Enabled.Value}, every activity: " +
+                $"{Settings.AllActivities.Value}, any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}.");
+        }
+
+        private void OnDestroy()
+        {
+            if (_host != null)
+            {
+                Destroy(_host);
+            }
         }
     }
 }

@@ -29,6 +29,16 @@ namespace FocusAnywhere
             }
             try
             {
+                if (!Plugin.Settings.Enabled.Value)
+                {
+                    // Switched off from the icon. Put the game's own activity lists back, but only
+                    // while nothing is using the extra entries.
+                    if (ActivityList.Installed && !__instance.IsFocus && !__instance.IsSelectorOpened)
+                    {
+                        ActivityList.Restore();
+                    }
+                    return;
+                }
                 // Merge the lists as soon as we're in a lobby, so EmoteSync can join any activity too.
                 if (!ActivityList.Installed)
                 {

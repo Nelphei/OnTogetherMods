@@ -65,7 +65,7 @@ namespace FocusAnywhere
         // Cheap when nothing changed. Call only in a lobby.
         public static void Refresh()
         {
-            if (!Plugin.Settings.AllActivities.Value || _broken)
+            if (!Plugin.Settings.Enabled.Value || !Plugin.Settings.AllActivities.Value || _broken)
             {
                 return;
             }
@@ -78,6 +78,36 @@ namespace FocusAnywhere
                 // Don't retry every frame. The menu stays as the game made it (or as last merged).
                 _broken = true;
                 Plugin.Log.LogError($"Couldn't merge the focus activity lists: {e}");
+            }
+        }
+
+        // Puts the game's own lists back, for when the mod is switched off. Only call it while you
+        // aren't focusing and the menu is closed: the merged lists' extra entries go away.
+        public static void Restore()
+        {
+            if (!Installed || _landOriginal == null || _waterOriginal == null)
+            {
+                return;
+            }
+            try
+            {
+                GameSettings settings = ScriptableSingleton<GameSettings>.I;
+                if (settings == null)
+                {
+                    return;
+                }
+                WriteLand(settings, _landOriginal);
+                WriteWater(settings, _waterOriginal);
+                LandWaterProps = new List<WaterPropType>();
+                Installed = false;
+                // Merge from scratch when switched back on.
+                _seatListCount = -1;
+                Plugin.Log.LogInfo("Focus menu: back to the game's own activities.");
+            }
+            catch (Exception e)
+            {
+                _broken = true;
+                Plugin.Log.LogError($"Couldn't put the game's focus activity lists back: {e}");
             }
         }
 

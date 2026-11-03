@@ -15,7 +15,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Teleport Spots](#teleport-spots) | 0.2.0, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.0 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.0 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
-| [Focus Anywhere](#focus-anywhere) | 0.2.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
+| [Focus Anywhere](#focus-anywhere) | 0.3.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.1.4, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.1.0, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 
@@ -43,7 +43,7 @@ The row only shows in a world, and hides while a game menu or panel is open (pau
 | Teleport Spots 0.2.0 | **Pre-release.** Teleporting works on your own screen, and so does 0.2.0's icon. 0.1.1's fix for keeping spots after a restart, and 0.1.2's fix for where other players see you land, haven't been tried yet |
 | Song Player 0.2.0 | Yes, on its own, and so does its icon. Not yet checked with other players listening |
 | Trace Overlay 0.2.0 | Yes, its icon too |
-| Focus Anywhere 0.2.0 | **Pre-release.** 0.1.0 worked on its own. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
+| Focus Anywhere 0.3.0 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.1.4 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.1.0 | **Pre-release.** New, and not tried in the game yet |
 
@@ -104,7 +104,7 @@ Press the game's usual focus key wherever you are: on grass, on rocks, at the mu
 
 Seat spots that are free (benches, desks, the swan...) still open their own menu and sit you down on the seat. Seat poses done on open ground sit on thin air, and other players see that too. Summer DLC activities stay hidden unless you own the DLC, and the basketball court stays off limits. Focus time counts the same as normal focus.
 
-`AllActivities`, `AnyGround` and `MidAir` in the settings file turn each part off. `MidAir` needs `AnyGround`.
+Click the mod's icon to switch it all off, for example to use BlueSage QoL's Focus Anywhere instead. The focus menu goes back to the game's own activities as soon as you're not focusing. `AllActivities`, `AnyGround` and `MidAir` in the settings file turn each part off. `MidAir` needs `AnyGround`.
 
 ### Desk Snap
 
