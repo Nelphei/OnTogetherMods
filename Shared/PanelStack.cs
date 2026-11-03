@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OnTogetherMods.Shared
 {
@@ -23,6 +24,8 @@ namespace OnTogetherMods.Shared
         // How far in from the right edge the windows' right edges sit, as a share of screen width.
         private const float FromRight = 0.15f;
         private const float Gap = 10f;
+        // The game's scenes by build index: 1 is the main menu, 2 is the world.
+        private const int WorldScene = 2;
 
         // Stack order, bottom first. Leave gaps for future mods.
         public const int PhotoModeOrder = 0;
@@ -51,9 +54,34 @@ namespace OnTogetherMods.Shared
             return root.gameObject.name.StartsWith(CanvasPrefix, StringComparison.Ordinal);
         }
 
-        // True while Photo Mode is taking a photo. Mods draw nothing then, so they stay out of it.
+        // True while mods should draw nothing: Photo Mode is taking a photo, or the game is in its
+        // Desk window mode (key 4), where the window goes see-through over the desktop.
         public static bool Hidden =>
-            AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until;
+            (AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until) || InDeskMode;
+
+        // The game's Desk window mode ("mini mode", key 4). Worked out once a frame, and only in the
+        // world: on the main menu MonoSingleton.I searches the scene.
+        public static bool InDeskMode
+        {
+            get
+            {
+                int frame = Time.frameCount;
+                if (_deskFrame != frame)
+                {
+                    _deskFrame = frame;
+                    _desk = false;
+                    if (SceneManager.GetActiveScene().buildIndex == WorldScene)
+                    {
+                        OverlayManager overlay = MonoSingleton<OverlayManager>.I;
+                        _desk = overlay != null && overlay.ResolutionMode == ResolutionMode.Desk;
+                    }
+                }
+                return _desk;
+            }
+        }
+
+        private static int _deskFrame = -1;
+        private static bool _desk;
 
         // Hides every mod's windows for this frame and the next. It runs out by itself, so a
         // photo that fails halfway can't leave them hidden.

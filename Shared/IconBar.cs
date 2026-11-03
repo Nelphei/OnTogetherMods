@@ -16,8 +16,8 @@ namespace OnTogetherMods.Shared
     // the row is) is kept in AppDomain data, using built-in types only.
     //
     // The row shows only in a world, while no game menu or panel is open (pause menu, inventory, shop,
-    // player list, focus menu, emote wheel...), and never in photos. PanelStack moves the mod windows
-    // up when the row reaches under them.
+    // player list, focus menu, emote wheel...). It hides in Photo Mode and in the game's Desk window
+    // mode (PanelStack.Hidden). PanelStack moves the mod windows up when the row reaches under them.
     internal static class IconBar
     {
         public enum State
@@ -48,6 +48,7 @@ namespace OnTogetherMods.Shared
         private const string PatchedKey = "OnTogetherMods.IconBar.Patched";
         private const string BlockerKey = "OnTogetherMods.IconBar.Blocker";
         private const string BlockerFrameKey = "OnTogetherMods.IconBar.BlockerFrame";
+        private const string HiddenKey = "OnTogetherMods.IconBar.HiddenUntil";
 
         // The game's scenes by build index: 1 is the main menu, 2 is the world.
         private const int WorldScene = 2;
@@ -150,6 +151,16 @@ namespace OnTogetherMods.Shared
                 GUI.matrix = previous;
             }
         }
+
+        // Hides the whole row for this frame and the next. Photo Mode calls it every frame while it's
+        // on (before OnGUI). It runs out by itself, so the row can't get stuck hidden.
+        public static void HideRow()
+        {
+            AppDomain.CurrentDomain.SetData(HiddenKey, Time.frameCount + 1);
+        }
+
+        private static bool RowHidden =>
+            AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until;
 
         // " (F7)", or nothing when the key is switched off in the config.
         public static string KeyText(KeyCode key)
@@ -373,7 +384,7 @@ namespace OnTogetherMods.Shared
             _cachedFrame = frame;
             _inWorld = SceneManager.GetActiveScene().buildIndex == WorldScene;
             _visible = false;
-            if (_inWorld && !PanelStack.Hidden)
+            if (_inWorld && !PanelStack.Hidden && !RowHidden)
             {
                 TaskManager tasks = MonoSingleton<TaskManager>.I;
                 // Free, or at an instrument or a drawing board. The other states are menus and panels.

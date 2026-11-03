@@ -35,6 +35,8 @@ Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their 
 
 The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel). It's never in your photos. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon.
 
+In the game's Desk window mode (key 4, the small see-through window), every mod's icons, windows and messages hide. They come back when you switch to another window mode. The mods keep working meanwhile, and their keys still work.
+
 ### What's been tested
 
 | Mod | Tried in the game |
