@@ -19,16 +19,17 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Desk Snap](#desk-snap) | 0.2.1, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.1, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.1.1, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
+| [Outfit Slots](#outfit-slots) | 0.1.0 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay and a speech bubble for Chat Range.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay and a speech bubble for Chat Range.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
-- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on.
+- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, or Outfit Slots' icon to put on your next outfit.
 - A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
 
 Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
@@ -50,6 +51,7 @@ In the game's Desk window mode (key 4, the small see-through window), every mod'
 | Desk Snap 0.2.1 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.2.1 hides the icon and message in Desk mode and Photo Mode, 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.1 | **Pre-release.** 0.2.0's icon works. The list itself, and 0.2.1's hiding in Desk mode and Photo Mode, haven't been tried in the game yet |
 | Name Designer 0.1.1 | **Pre-release.** New. Its icon works, but the window's features and 0.1.1's hiding in Desk mode and Photo Mode haven't been tried in the game yet |
+| Outfit Slots 0.1.0 | Works, including staying in your slot after a restart. Not yet checked with other players watching |
 
 None of the mods have been tried on a Mac yet.
 
@@ -148,6 +150,16 @@ Type the name, then click letters to pick them (drag across or Shift-click for a
 Each tab has 5 presets: **Save** puts the current design in a slot, and clicking a slot loads it. They're kept in `BepInEx\config\NameDesigner.json`.
 
 The colours are the same colour tags players can type into their names by hand, so other players see them without the mod. Other styling in a name, like sizes or bold, can't be edited here and is left out when you load it. `OpenWithCreateSession` in the settings file stops the window opening by itself on the main menu.
+
+### Outfit Slots
+
+Adds slots 4 to 9 to the game's 3 outfit slots. They're in the outfit screen's style list below slots 1-3 and work the same way: pick one, change your look, and name it in the name box. Whatever you wear is saved in the slot you're on, and you're still wearing it after a restart. A slot you haven't used yet starts as a copy of what you're wearing.
+
+Press **F2** or click the shirt icon to open a window listing all 9 slots, and click one to put it on without opening the outfit screen. Right-click the icon to put on your next outfit.
+
+Slots 4-9 are kept in `BepInEx\config\OutfitSlots.json`. The game's own save only ever holds slots 1-3, so if you remove the mod, you're back in whichever of slots 1-3 you wore last. Other players see your outfit without the mod. `CloseAfterSwap` in the settings file closes the window once you pick an outfit.
+
+**BlueSage QoL** has its own style slots 4-9, which change the same part of the game, so Outfit Slots stays off while they're on. To switch them off, set `EnableExtendedAvatarStyles = false` in `BepInEx\config\com.bluesage.ontogether.qoltweaks.beta.cfg` (or use BlueSage's menu) and restart the game. The first time Outfit Slots runs, it copies BlueSage's slots 4-9 (outfits and names) into its own, and leaves BlueSage's file as it was.
 
 ## Installing
 

@@ -38,6 +38,10 @@
     "NameDesigner": {
       "name": "Name_Designer",
       "description": "Colour each letter of your player name or a session name, with gradients, rainbows, a live preview and presets. Press F4. Only you need the mod; everyone sees the colours."
+    },
+    "OutfitSlots": {
+      "name": "Outfit_Slots",
+      "description": "Six more outfit slots (9 in all) in the outfit screen, and a window (F2) to swap outfits with one click. The game's save keeps only slots 1-3, so removing the mod is safe. Only you need it."
     }
   }
 }
