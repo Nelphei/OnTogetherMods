@@ -18,7 +18,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Focus Anywhere](#focus-anywhere) | 0.3.1, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.1, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.1, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
-| [Name Designer](#name-designer) | 0.1.1, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
+| [Name Designer](#name-designer) | 0.2.0, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.0 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
@@ -50,7 +50,7 @@ In the game's Desk window mode (key 4, the small see-through window), every mod'
 | Focus Anywhere 0.3.1 | **Pre-release.** 0.1.0 worked on its own, and 0.3.0's icon works. 0.2.0's focusing in the air and 0.3.1's hiding in Desk mode and Photo Mode haven't been tried yet, and neither has what other players see |
 | Desk Snap 0.2.1 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message and 0.2.0's icon. 0.2.1 hides the icon and message in Desk mode and Photo Mode, 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.1 | **Pre-release.** 0.2.0's icon works. The list itself, and 0.2.1's hiding in Desk mode and Photo Mode, haven't been tried in the game yet |
-| Name Designer 0.1.1 | **Pre-release.** New. Its icon works, but the window's features and 0.1.1's hiding in Desk mode and Photo Mode haven't been tried in the game yet |
+| Name Designer 0.2.0 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding in Desk mode and Photo Mode. The Session tab and presets haven't been tried in the game yet |
 | Outfit Slots 0.1.0 | Works, including staying in your slot after a restart. Not yet checked with other players watching |
 
 None of the mods have been tried on a Mac yet.
@@ -138,7 +138,7 @@ The list hides when chat is minimised, when the game's UI is hidden, and in the 
 
 ### Name Designer
 
-> **Pre-release:** new in 0.1.0. Its icon works, but the window's features, and 0.1.1 hiding the window in the game's Desk window mode, haven't been tried in the game yet.
+> **Pre-release:** colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding the window in the game's Desk window mode and Photo Mode. The Session tab and presets haven't been tried in the game yet.
 
 Give every letter of your name its own colour. Press **F4** or click the palette icon to open the window. It has two tabs:
 
@@ -146,6 +146,8 @@ Give every letter of your name its own colour. Press **F4** or click the palette
 - **Session** designs the name of a session you create. On the main menu the window opens by itself beside the Create Session box, and whatever you design goes straight into that box, so just click Create.
 
 Type the name, then click letters to pick them (drag across or Shift-click for a run, Ctrl-click to add one, or pick none to colour the whole name) and choose a colour from the square and strip, a swatch, or a hex code. **Gradient** blends from the first picked letter's colour to the last one's, and **Rainbow** spreads a rainbow across them. The preview above the window shows the name in the game's own lettering.
+
+On the Name tab, the **:** tile after your letters is the colon after your name in chat ("Name: hello"). Click it and pick a colour to colour the colon; your message keeps the game's normal text colour. The game's "has joined the server!" and "joined your pomodoro session." messages, and the "(Host)" label in the player list, come right after your name, so they take the colon colour too. Pick the tile and click **No colour** to go back to the game's colour.
 
 Each tab has 5 presets: **Save** puts the current design in a slot, and clicking a slot loads it. They're kept in `BepInEx\config\NameDesigner.json`.
 

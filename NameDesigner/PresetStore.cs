@@ -36,8 +36,8 @@ namespace NameDesigner
             try
             {
                 PresetFile file = JsonConvert.DeserializeObject<PresetFile>(File.ReadAllText(FilePath));
-                Fill(Names, file?.Names);
-                Fill(Sessions, file?.Sessions);
+                Fill(Names, file?.Names, withColon: true);
+                Fill(Sessions, file?.Sessions, withColon: false);
             }
             catch (Exception e)
             {
@@ -75,12 +75,12 @@ namespace NameDesigner
             }
         }
 
-        private static void Fill(Design[] slots, List<string> saved)
+        private static void Fill(Design[] slots, List<string> saved, bool withColon)
         {
             for (int i = 0; i < Slots; i++)
             {
                 string text = saved != null && i < saved.Count ? saved[i] : null;
-                Design design = string.IsNullOrEmpty(text) ? null : Design.Parse(text, out _);
+                Design design = string.IsNullOrEmpty(text) ? null : Design.Parse(text, withColon, out _);
                 slots[i] = design != null && design.Count > 0 ? design : null;
             }
         }

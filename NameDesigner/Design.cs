@@ -20,8 +20,9 @@ namespace NameDesigner
     // colours without the mod.
     internal sealed class Design
     {
-        // A letter takes at most "<#RRGGBB>" + 2 characters + "</color>" = 19 characters. The game
-        // sends at most 1000 characters of a name (PlayerData.GetPlayerIdInfo), so 40 letters always fit.
+        // A letter takes at most "<#RRGGBB>" + 2 characters + "</color>" = 19 characters, and the
+        // colon colour "</color><#RRGGBB>" 17 more. The game sends at most 1000 characters of a name
+        // (PlayerData.GetPlayerIdInfo), so 40 letters always fit.
         public const int MaxLetters = 40;
 
         // The colours TextMeshPro knows by name (TMP_Text.ValidateHtmlTag).
@@ -33,6 +34,10 @@ namespace NameDesigner
         };
 
         public readonly List<Letter> Letters = new List<Letter>();
+
+        // The colour of the colon after the name in chat as "RRGGBB", or null for the game's own
+        // colour (the same as the letters without a colour). Only player names have one.
+        public string ColonColor;
 
         public int Count => Letters.Count;
 
@@ -53,7 +58,7 @@ namespace NameDesigner
 
         public Design Clone()
         {
-            var copy = new Design();
+            var copy = new Design { ColonColor = ColonColor };
             foreach (Letter letter in Letters)
             {
                 copy.Letters.Add(new Letter { Text = letter.Text, Color = letter.Color });
@@ -112,6 +117,14 @@ namespace NameDesigner
         // The name as TextMeshPro rich text: "<#FF8800>Soa</color><#66CCFF>py</color>". Letters in a
         // row with the same colour share one tag, spaces never start a new one, and every tag is
         // closed, so nothing carries on into the text after the name (like a chat message).
+        //
+        // A colon colour is the one exception. Chat writes "<color=#player>" + name + ":</color> " +
+        // message (TextChannelManager.AddMessageUI), so the name ends with "</color><#colon>": that
+        // closes the game's colour, the colon gets ours, and the game's own "</color>" closes ours
+        // again, so the message keeps the game's text colour. Elsewhere the extra "</color>" does
+        // nothing (TextMeshPro never closes its base colour), but text the game puts right after
+        // the name takes the colon colour too: " has joined the server!", " joined your pomodoro
+        // session." and the player list's " (Host)".
         public string ToRichText()
         {
             var text = new StringBuilder();
@@ -136,11 +149,16 @@ namespace NameDesigner
             {
                 text.Append("</color>");
             }
+            if (ColonColor != null)
+            {
+                text.Append("</color><#").Append(ColonColor).Append('>');
+            }
             return text.ToString();
         }
 
         // The same for Unity's immediate-mode GUI (the mod's own buttons), which spells colour tags
-        // differently. Letters without a colour use the style's text colour.
+        // differently. Letters without a colour use the style's text colour. A colon colour shows
+        // as a coloured colon after the name.
         public string ToGuiText()
         {
             var text = new StringBuilder();
@@ -155,13 +173,19 @@ namespace NameDesigner
                     text.Append(letter.Text);
                 }
             }
+            if (ColonColor != null)
+            {
+                text.Append("<color=#").Append(ColonColor).Append(">:</color>");
+            }
             return text.ToString();
         }
 
         // Reads a name back into letters and colours. Understands colour tags written any way
         // TextMeshPro accepts them (<#F80>, <#FF8800>, <color=#FF8800>, <color="red">...). Other
         // tags, like sizes or bold, can't be edited here: they're left out and `dropped` is set.
-        public static Design Parse(string styled, out bool dropped)
+        // With `withColon`, a colour left open after the last letter is the colon colour (see
+        // ToRichText).
+        public static Design Parse(string styled, bool withColon, out bool dropped)
         {
             dropped = false;
             var design = new Design();
@@ -173,6 +197,8 @@ namespace NameDesigner
             var plain = new StringBuilder();
             var charColors = new List<string>();
             var stack = new List<string>();
+            // How many characters came before each colour on the stack.
+            var openedAt = new List<int>();
             for (int i = 0; i < styled.Length; i++)
             {
                 char c = styled[i];
@@ -184,6 +210,15 @@ namespace NameDesigner
                         if (!ReadTag(styled.Substring(i + 1, end - i - 1).Trim(), stack))
                         {
                             dropped = true;
+                        }
+                        // A tag adds or removes at most one colour.
+                        if (openedAt.Count > stack.Count)
+                        {
+                            openedAt.RemoveAt(openedAt.Count - 1);
+                        }
+                        else if (openedAt.Count < stack.Count)
+                        {
+                            openedAt.Add(plain.Length);
                         }
                         i = end;
                         continue;
@@ -203,6 +238,10 @@ namespace NameDesigner
                 int start = starts[k];
                 int length = (k + 1 < starts.Length ? starts[k + 1] : text.Length) - start;
                 design.Letters.Add(new Letter { Text = text.Substring(start, length), Color = charColors[start] });
+            }
+            if (withColon && stack.Count > 0 && openedAt[openedAt.Count - 1] == text.Length)
+            {
+                design.ColonColor = stack[stack.Count - 1];
             }
             return design;
         }

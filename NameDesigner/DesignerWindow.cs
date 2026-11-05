@@ -55,6 +55,8 @@ namespace NameDesigner
             // The letters picked for colouring, by index. None picked means the whole name.
             public readonly SortedSet<int> Picked = new SortedSet<int>();
             public int Anchor = -1;
+            // The chat colon is picked instead of letters (Name tab only).
+            public bool ColonPicked;
         }
 
         private static DesignerWindow _instance;
@@ -267,7 +269,7 @@ namespace NameDesigner
         // Returns false if some of the name's styling couldn't be kept (and says so).
         private bool LoadName()
         {
-            _name.Design = Design.Parse(Game.CurrentName(), out bool dropped);
+            _name.Design = Design.Parse(Game.CurrentName(), withColon: true, out bool dropped);
             ClearPicked(_name);
             if (dropped)
             {
@@ -312,7 +314,7 @@ namespace NameDesigner
 
         private void ImportSession(string text)
         {
-            _session.Design = Design.Parse(text, out bool dropped);
+            _session.Design = Design.Parse(text, withColon: false, out bool dropped);
             _sessionWritten = text;
             ClampPicked(_session);
             if (dropped)
@@ -338,14 +340,23 @@ namespace NameDesigner
         // ---- Letters and colours ----
 
         // The letters a colour goes on: the picked ones, or every letter when none are picked.
+        // None while the colon is picked.
         private static List<int> Targets(TabState tab, bool skipBlank)
         {
+            if (tab.ColonPicked)
+            {
+                return new List<int>();
+            }
             IEnumerable<int> all = tab.Picked.Count > 0 ? tab.Picked : Enumerable.Range(0, tab.Design.Count);
             return all.Where(i => i < tab.Design.Count && !(skipBlank && tab.Design.Letters[i].IsBlank)).ToList();
         }
 
         private void SetColour(TabState tab, string hex)
         {
+            if (tab.ColonPicked)
+            {
+                tab.Design.ColonColor = hex;
+            }
             foreach (int i in Targets(tab, skipBlank: false))
             {
                 tab.Design.Letters[i].Color = hex;
@@ -353,9 +364,15 @@ namespace NameDesigner
             Changed(tab);
         }
 
-        // Sets the picker to the colour of the first coloured letter it would change.
+        // Sets the picker to the colour of the first coloured letter it would change (or the colon's).
         private void SyncPicker(TabState tab)
         {
+            if (tab.ColonPicked && tab.Design.ColonColor != null)
+            {
+                _picker.Set(Design.FromHex(tab.Design.ColonColor));
+                _hexText = tab.Design.ColonColor;
+                return;
+            }
             foreach (int i in Targets(tab, skipBlank: true))
             {
                 string hex = tab.Design.Letters[i].Color;
@@ -416,11 +433,16 @@ namespace NameDesigner
         {
             tab.Picked.Clear();
             tab.Anchor = -1;
+            tab.ColonPicked = false;
         }
 
         private static void ClampPicked(TabState tab)
         {
             tab.Picked.RemoveWhere(i => i >= tab.Design.Count);
+            if (tab.Design.Count == 0)
+            {
+                tab.ColonPicked = false;
+            }
             if (tab.Anchor >= tab.Design.Count)
             {
                 tab.Anchor = -1;
@@ -430,6 +452,7 @@ namespace NameDesigner
         private static void PickRange(TabState tab, int a, int b)
         {
             tab.Picked.Clear();
+            tab.ColonPicked = false;
             for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++)
             {
                 tab.Picked.Add(i);
@@ -533,7 +556,7 @@ namespace NameDesigner
             int limit = Limit();
             float inner = Width - 2 * Pad;
             int perRow = Mathf.Max(1, Mathf.FloorToInt((inner + LetterGap) / (LetterWidth + LetterGap)));
-            int rows = Mathf.Max(1, Mathf.CeilToInt(tab.Design.Count / (float)perRow));
+            int rows = Mathf.Max(1, Mathf.CeilToInt(Tiles(tab) / (float)perRow));
             float lettersHeight = rows * LetterHeight + (rows - 1) * LetterGap;
             float height = Pad + HeaderHeight + Gap + RowHeight + Gap + lettersHeight + 4f + TipHeight + Gap +
                 ToolsHeight + 8f + PickerSize + 10f + LabelHeight + RowHeight + 3f + SaveHeight + 10f + RowHeight + Pad;
@@ -683,14 +706,27 @@ namespace NameDesigner
             }
         }
 
+        // On the Name tab, a tile for the colon after the name in chat comes after the letters.
+        private bool ShowsColon(TabState tab)
+        {
+            return tab == _name && tab.Design.Count > 0;
+        }
+
+        private int Tiles(TabState tab)
+        {
+            return tab.Design.Count + (ShowsColon(tab) ? 1 : 0);
+        }
+
         // The letters as little tiles with their colour underneath. Click a letter to pick it,
         // drag across letters to pick a run, Shift-click for a range, Ctrl-click to add or remove
         // one. Clicking the only picked letter again, or the empty space, goes back to the whole name.
+        // The colon tile is picked on its own, the same way.
         private void DrawLetters(Rect area, TabState tab, int perRow)
         {
             int id = GUIUtility.GetControlID(UnityEngine.FocusType.Passive);
             Event e = Event.current;
             List<Letter> letters = tab.Design.Letters;
+            int colon = ShowsColon(tab) ? letters.Count : -1;
 
             switch (e.GetTypeForControl(id))
             {
@@ -700,10 +736,16 @@ namespace NameDesigner
                         break;
                     }
                     GUIUtility.keyboardControl = 0;
-                    int hit = LetterAt(area, perRow, letters.Count, e.mousePosition, nearest: false);
+                    int hit = LetterAt(area, perRow, Tiles(tab), e.mousePosition, nearest: false);
                     if (hit < 0)
                     {
                         ClearPicked(tab);
+                    }
+                    else if (hit == colon)
+                    {
+                        bool was = tab.ColonPicked;
+                        ClearPicked(tab);
+                        tab.ColonPicked = !was;
                     }
                     else if (e.shift && tab.Anchor >= 0)
                     {
@@ -711,6 +753,7 @@ namespace NameDesigner
                     }
                     else if (e.control || e.command)
                     {
+                        tab.ColonPicked = false;
                         if (!tab.Picked.Remove(hit))
                         {
                             tab.Picked.Add(hit);
@@ -784,6 +827,35 @@ namespace NameDesigner
                     ColorPicker.Outline(bar, new Color(1f, 1f, 1f, 0.35f));
                 }
             }
+            if (colon >= 0)
+            {
+                DrawColonTile(LetterRect(area, perRow, colon), tab);
+            }
+        }
+
+        // Only outlined, so it reads as something after the name rather than part of it.
+        private void DrawColonTile(Rect tile, TabState tab)
+        {
+            string hex = tab.Design.ColonColor;
+            if (tab.ColonPicked)
+            {
+                ColorPicker.Fill(tile, new Color(0.3f, 0.55f, 1f, 0.85f));
+            }
+            else
+            {
+                ColorPicker.Outline(tile, new Color(1f, 1f, 1f, 0.3f));
+            }
+            _letterStyle.normal.textColor = hex != null ? Design.FromHex(hex) : Color.white;
+            GUI.Label(new Rect(tile.x, tile.y, tile.width, tile.height - 8f), ":", _letterStyle);
+            var bar = new Rect(tile.x + 3f, tile.yMax - 7f, tile.width - 6f, 4f);
+            if (hex != null)
+            {
+                ColorPicker.Fill(bar, Design.FromHex(hex));
+            }
+            else
+            {
+                ColorPicker.Outline(bar, new Color(1f, 1f, 1f, 0.35f));
+            }
         }
 
         private static Rect LetterRect(Rect area, int perRow, int index)
@@ -825,6 +897,10 @@ namespace NameDesigner
             {
                 return "";
             }
+            if (tab.ColonPicked)
+            {
+                return "Colouring the colon in chat. Join notices after your name get it too.";
+            }
             int n = tab.Picked.Count;
             return n == 0
                 ? "Colouring the whole name. Click letters to colour just those."
@@ -836,13 +912,14 @@ namespace NameDesigner
             float w = (row.width - 3 * Gap) / 4f;
             bool any = tab.Design.Count > 0;
 
-            GUI.enabled = tab.Picked.Count > 0;
+            GUI.enabled = tab.Picked.Count > 0 || tab.ColonPicked;
             if (GUI.Button(new Rect(row.x, row.y, w, row.height), "Whole name", _buttonStyle))
             {
                 ClearPicked(tab);
                 SyncPicker(tab);
             }
-            GUI.enabled = any;
+            // A gradient or rainbow needs letters, so not on the colon.
+            GUI.enabled = any && !tab.ColonPicked;
             if (GUI.Button(new Rect(row.x + (w + Gap), row.y, w, row.height), "Gradient", _buttonStyle))
             {
                 Gradient(tab);
@@ -851,6 +928,7 @@ namespace NameDesigner
             {
                 Rainbow(tab);
             }
+            GUI.enabled = any;
             if (GUI.Button(new Rect(row.x + 3 * (w + Gap), row.y, w, row.height), "No colour", _buttonStyle))
             {
                 SetColour(tab, null);
