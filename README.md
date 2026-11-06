@@ -19,7 +19,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Desk Snap](#desk-snap) | 0.2.3, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.3, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.2, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
-| [Outfit Slots](#outfit-slots) | 0.1.1 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
+| [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -51,7 +51,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Desk Snap 0.2.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.2 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab and presets haven't been tried in the game yet |
-| Outfit Slots 0.1.1 | Works, including staying in your slot after a restart and hiding with the game's eye button. Not yet checked with other players watching |
+| Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 
 None of the mods have been tried on a Mac yet.
 
