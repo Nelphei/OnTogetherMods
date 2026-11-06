@@ -1,3 +1,8 @@
+## 0.3.3
+
+- In the Normal window mode (key 1), the icon, the group window and the messages at the top also hide and show with the game's eye button in the top-right corner, as they already did in split screen and Desk mode.
+- Works with 0.2.0 to 0.3.2.
+
 ## 0.3.2
 
 - In the game's split-screen and Desk window modes (keys 2-4), the icon, the group window and the messages at the top hide and show with the game's own UI when you click its eye button. Before, they always hid in Desk mode and stayed on in split screen. In the Normal window mode they always show. Sync keeps working while they're hidden.
