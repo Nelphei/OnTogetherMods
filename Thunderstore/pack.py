@@ -196,7 +196,7 @@ def readme(display, guid, description, website, others):
 
 ## The icon
 
-Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. In the game's Desk window mode (key 4), the mods' icons and windows all hide until you switch back.
+Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. The mods' icons and windows also hide and show with the game's eye button, in every window mode.
 
 ## Settings
 

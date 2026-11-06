@@ -36,7 +36,7 @@ Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their 
 
 The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel) and while Photo Mode is on. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon.
 
-In the game's split-screen and Desk window modes (keys 2-4), the game shows an eye button that hides its UI. Every mod's icons, windows and messages hide and show with it. The mods keep working meanwhile, and their keys still work. In the Normal window mode (key 1) they always show.
+The game has an eye button that hides its UI (top-right in the Normal window mode, and in split-screen and Desk mode too). Every mod's icons, windows and messages hide and show with it. The mods keep working meanwhile, and their keys still work.
 
 ### What's been tested
 
@@ -130,7 +130,7 @@ It also works when [Emote Sync](#emote-sync) starts your activity because a frie
 
 Local chat messages (and their chat bubbles) only reach players within 5 m of you, counting height too. While the chat box is open on its **Local** tab, a small box just above it lists everyone in that range, with their names styled the way their name tags are. It says so when nobody's close enough. If the chat box is dragged to the top of the screen, the list sits beside it instead.
 
-The list hides when chat is minimised and when the game's UI is hidden (including with its eye button in split screen and Desk mode). In [Photo Mode](#photo-mode) it shows only while the chat box does, and it stays out of your photos. Someone who has muted you is still listed, but won't see your messages. The speech bubble icon switches the list off and on. `ShowOnGlobalTab` in the settings file shows the list on the Global tab too, and `MaxNames` sets how many names it lists before counting the rest.
+The list hides when chat is minimised and when the game's UI is hidden (including with its eye button). In [Photo Mode](#photo-mode) it shows only while the chat box does, and it stays out of your photos. Someone who has muted you is still listed, but won't see your messages. The speech bubble icon switches the list off and on. `ShowOnGlobalTab` in the settings file shows the list on the Global tab too, and `MaxNames` sets how many names it lists before counting the rest.
 
 ### Name Designer
 

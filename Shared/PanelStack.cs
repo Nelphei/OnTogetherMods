@@ -61,9 +61,9 @@ namespace OnTogetherMods.Shared
         public static bool Hidden =>
             (AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until) || GameUIHidden;
 
-        // True while the game's own UI is hidden by its eye button (UIManager.ButtonHideUI). The button
-        // only shows in the split-screen and Desk window modes (keys 2-4). Switching modes doesn't reset
-        // it, so in Normal mode (key 1), which has no button to bring the UI back, mod UI always shows.
+        // True while the game's own UI is hidden by its eye button (UIManager.ButtonHideUI), in any
+        // window mode: the button is in the top-right corner in Normal mode too. Switching modes
+        // doesn't reset it.
         // Worked out once a frame, and only in the world: on the main menu MonoSingleton.I searches
         // the scene.
         public static bool GameUIHidden
@@ -77,10 +77,8 @@ namespace OnTogetherMods.Shared
                     _gameUIHidden = false;
                     if (SceneManager.GetActiveScene().buildIndex == WorldScene)
                     {
-                        OverlayManager overlay = MonoSingleton<OverlayManager>.I;
                         UIManager ui = MonoSingleton<UIManager>.I;
-                        _gameUIHidden = overlay != null && overlay.ResolutionMode != ResolutionMode.Normal
-                            && ui != null && EyeState(ui) != HideUIState.Open;
+                        _gameUIHidden = ui != null && EyeState(ui) != HideUIState.Open;
                     }
                 }
                 return _gameUIHidden;
