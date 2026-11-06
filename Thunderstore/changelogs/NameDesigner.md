@@ -1,3 +1,7 @@
+## 0.2.1
+
+- In the game's split-screen and Desk window modes (keys 2-4), the icon and the window hide and show with the game's own UI when you click its eye button. Before, they always hid in Desk mode and stayed on in split screen. In the Normal window mode they always show. If you were typing, your keys go back to the game until the window shows again.
+
 ## 0.2.0
 
 - Colour the colon after your name in chat ("Name: hello"). On the Name tab, click the **:** tile after your letters and pick a colour. Your message keeps the game's normal text colour, and other players see the coloured colon without the mod.

@@ -64,7 +64,7 @@ namespace NameDesigner
         // Read by the patches. True while you type in the window, so the game ignores the keys.
         internal static bool IsTyping => _instance != null && _instance._open && _instance._typing;
 
-        // The same in the world, where a window hidden in the game's Desk window mode
+        // The same in the world, where a window hidden with the game's eye button
         // (PanelStack.Hidden) gives the keys back.
         internal static bool HoldsKeys => IsTyping && !PanelStack.Hidden;
 

@@ -18,7 +18,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Focus Anywhere](#focus-anywhere) | 0.3.2, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.2, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.2, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
-| [Name Designer](#name-designer) | 0.2.0, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
+| [Name Designer](#name-designer) | 0.2.1, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.0 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
@@ -50,7 +50,7 @@ In the game's split-screen and Desk window modes (keys 2-4), the game shows an e
 | Focus Anywhere 0.3.2 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon and 0.3.2's hiding with the game's eye button. 0.2.0's focusing in the air hasn't been tried yet, and neither has what other players see |
 | Desk Snap 0.2.2 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and 0.2.2's hiding with the game's eye button. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.2 | **Pre-release.** 0.2.0's icon works, and so does 0.2.2's hiding with the game's eye button. The list itself hasn't been tried in the game yet |
-| Name Designer 0.2.0 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding in Desk mode and Photo Mode. The Session tab and presets haven't been tried in the game yet |
+| Name Designer 0.2.1 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and 0.2.1's hiding with the game's eye button. The Session tab and presets haven't been tried in the game yet |
 | Outfit Slots 0.1.0 | Works, including staying in your slot after a restart. Not yet checked with other players watching |
 
 None of the mods have been tried on a Mac yet.
@@ -134,7 +134,7 @@ The list hides when chat is minimised and when the game's UI is hidden (includin
 
 ### Name Designer
 
-> **Pre-release:** colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding the window in the game's Desk window mode and Photo Mode. The Session tab and presets haven't been tried in the game yet.
+> **Pre-release:** colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding the window with the game's eye button. The Session tab and presets haven't been tried in the game yet.
 
 Give every letter of your name its own colour. Press **F4** or click the palette icon to open the window. It has two tabs:
 
