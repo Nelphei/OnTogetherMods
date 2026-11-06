@@ -11,7 +11,7 @@ namespace TraceOverlay
     {
         public const string PluginGuid = "nelphei.ontogether.traceoverlay";
         public const string PluginName = "Trace Overlay";
-        public const string PluginVersion = "0.2.2";
+        public const string PluginVersion = "0.2.3";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
