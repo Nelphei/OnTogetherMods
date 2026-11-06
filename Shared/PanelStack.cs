@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -55,34 +56,60 @@ namespace OnTogetherMods.Shared
             return root.gameObject.name.StartsWith(CanvasPrefix, StringComparison.Ordinal);
         }
 
-        // True while mods should draw nothing: Photo Mode is taking a photo, or the game is in its
-        // Desk window mode (key 4), where the window goes see-through over the desktop.
+        // True while mods should draw nothing: Photo Mode is taking a photo, or the player has hidden
+        // the game's UI with its eye button.
         public static bool Hidden =>
-            (AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until) || InDeskMode;
+            (AppDomain.CurrentDomain.GetData(HiddenKey) is int until && Time.frameCount <= until) || GameUIHidden;
 
-        // The game's Desk window mode ("mini mode", key 4). Worked out once a frame, and only in the
-        // world: on the main menu MonoSingleton.I searches the scene.
-        public static bool InDeskMode
+        // True while the game's own UI is hidden by its eye button (UIManager.ButtonHideUI). The button
+        // only shows in the split-screen and Desk window modes (keys 2-4). Switching modes doesn't reset
+        // it, so in Normal mode (key 1), which has no button to bring the UI back, mod UI always shows.
+        // Worked out once a frame, and only in the world: on the main menu MonoSingleton.I searches
+        // the scene.
+        public static bool GameUIHidden
         {
             get
             {
                 int frame = Time.frameCount;
-                if (_deskFrame != frame)
+                if (_hiddenFrame != frame)
                 {
-                    _deskFrame = frame;
-                    _desk = false;
+                    _hiddenFrame = frame;
+                    _gameUIHidden = false;
                     if (SceneManager.GetActiveScene().buildIndex == WorldScene)
                     {
                         OverlayManager overlay = MonoSingleton<OverlayManager>.I;
-                        _desk = overlay != null && overlay.ResolutionMode == ResolutionMode.Desk;
+                        UIManager ui = MonoSingleton<UIManager>.I;
+                        _gameUIHidden = overlay != null && overlay.ResolutionMode != ResolutionMode.Normal
+                            && ui != null && EyeState(ui) != HideUIState.Open;
                     }
                 }
-                return _desk;
+                return _gameUIHidden;
             }
         }
 
-        private static int _deskFrame = -1;
-        private static bool _desk;
+        private static int _hiddenFrame = -1;
+        private static bool _gameUIHidden;
+
+        // UIManager._hideUIState is private. Looked up on first use, so a game update that renames it
+        // leaves mod UI showing instead of breaking this class.
+        private static AccessTools.FieldRef<UIManager, HideUIState> _eyeState;
+        private static bool _eyeStateMissing;
+
+        private static HideUIState EyeState(UIManager ui)
+        {
+            if (_eyeState == null && !_eyeStateMissing)
+            {
+                try
+                {
+                    _eyeState = AccessTools.FieldRefAccess<UIManager, HideUIState>("_hideUIState");
+                }
+                catch (Exception)
+                {
+                    _eyeStateMissing = true;
+                }
+            }
+            return _eyeState != null ? _eyeState(ui) : HideUIState.Open;
+        }
 
         // Hides every mod's windows for this frame and the next. It runs out by itself, so a
         // photo that fails halfway can't leave them hidden.

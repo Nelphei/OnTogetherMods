@@ -16,8 +16,9 @@ namespace OnTogetherMods.Shared
     // the row is) is kept in AppDomain data, using built-in types only.
     //
     // The row shows only in a world, while no game menu or panel is open (pause menu, inventory, shop,
-    // player list, focus menu, emote wheel...). It hides in Photo Mode and in the game's Desk window
-    // mode (PanelStack.Hidden). PanelStack moves the mod windows up when the row reaches under them.
+    // player list, focus menu, emote wheel...). It hides in Photo Mode and while the game's eye button
+    // hides the UI (PanelStack.Hidden). PanelStack moves the mod windows up when the row reaches under
+    // them.
     internal static class IconBar
     {
         public enum State
