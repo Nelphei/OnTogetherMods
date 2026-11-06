@@ -42,6 +42,10 @@
     "OutfitSlots": {
       "name": "Outfit_Slots",
       "description": "Six more outfit slots (9 in all) in the outfit screen, and a window (F2) to swap outfits with one click. The game's save keeps only slots 1-3, so removing the mod is safe. Only you need it."
+    },
+    "QuickHide": {
+      "name": "Quick_Hide",
+      "description": "Hides the whole game with one key in split screen and mini mode: the world, characters and UI. Press F10 again to bring it back, even from another app. Only you need it."
     }
   }
 }

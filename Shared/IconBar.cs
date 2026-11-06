@@ -42,6 +42,7 @@ namespace OnTogetherMods.Shared
         public const int SongPlayerOrder = 60;
         public const int TraceOverlayOrder = 70;
         public const int ChatRangeOrder = 80;
+        public const int QuickHideOrder = 90;
 
         // Where the row is: x, y, width, height (screen pixels from the top-left), the frame it was
         // laid out, and 1 if it's showing. PanelStack reads it under the same key.

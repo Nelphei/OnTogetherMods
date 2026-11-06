@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameDesigner", "NameDesigne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutfitSlots", "OutfitSlots\OutfitSlots.csproj", "{3FF566B2-503B-4221-A3FD-3D2B87713334}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickHide", "QuickHide\QuickHide.csproj", "{82D66B7F-38B5-4BED-BE42-7B101491083D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,9 @@ Global
 		{3FF566B2-503B-4221-A3FD-3D2B87713334}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FF566B2-503B-4221-A3FD-3D2B87713334}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FF566B2-503B-4221-A3FD-3D2B87713334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

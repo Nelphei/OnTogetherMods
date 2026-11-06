@@ -20,12 +20,13 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Chat Range](#chat-range) | 0.2.3, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.2, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
+| [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay and a speech bubble for Chat Range.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range and a crossed-out eye for Quick Hide.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -52,6 +53,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.2 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab and presets haven't been tried in the game yet |
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
+| Quick Hide 0.1.0 | Works, in split screen and mini mode |
 
 None of the mods have been tried on a Mac yet.
 
@@ -158,6 +160,14 @@ Press **F2** or click the shirt icon to open a window listing all 9 slots, and c
 Slots 4-9 are kept in `BepInEx\config\OutfitSlots.json`. The game's own save only ever holds slots 1-3, so if you remove the mod, you're back in whichever of slots 1-3 you wore last. Other players see your outfit without the mod. `CloseAfterSwap` in the settings file closes the window once you pick an outfit.
 
 **BlueSage QoL** has its own style slots 4-9, which change the same part of the game, so Outfit Slots stays off while they're on. To switch them off, set `EnableExtendedAvatarStyles = false` in `BepInEx\config\com.bluesage.ontogether.qoltweaks.beta.cfg` (or use BlueSage's menu) and restart the game. The first time Outfit Slots runs, it copies BlueSage's slots 4-9 (outfits and names) into its own, and leaves BlueSage's file as it was.
+
+### Quick Hide
+
+For the game's split-screen and mini window modes (keys 2-4), where the game sits over your desktop. Press **F10** or click the crossed-out eye icon and the whole game disappears at once: the world, every character, the game's UI and the mods' windows. Clicks go straight through to whatever is behind it, and if you were using the game, the keyboard goes back to the app you were in before. Press **F10** again to bring it all back. The key works even while you're in another app, and clicking On-Together in the taskbar (or picking it with Alt+Tab) brings the game back too.
+
+The game keeps running while it's hidden: you stay in the session, other players still see your character, and sounds and voices keep playing. Switching window modes or leaving the world shows the game again. In the Normal window mode (key 1) Quick Hide does nothing, and its icon is greyed out.
+
+If you change `HideKey` in the settings file, pick a key you don't type with, since it works in every app. On a Mac, the key only works while the game is focused.
 
 ## Installing
 
