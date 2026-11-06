@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>OutfitSlots</AssemblyName>
     <RootNamespace>OutfitSlots</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

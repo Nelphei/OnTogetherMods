@@ -166,7 +166,8 @@ namespace OutfitSlots
                 }
             }
 
-            // Hidden while Photo Mode takes a photo, in Desk mode, and while the outfit screen is open.
+            // Hidden while Photo Mode takes a photo, while the game's eye button hides the UI, and
+            // while the outfit screen is open.
             if (!_open || PanelStack.Hidden || _screenOpen)
             {
                 return;

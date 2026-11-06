@@ -14,7 +14,7 @@ namespace OutfitSlots
     {
         public const string PluginGuid = "nelphei.ontogether.outfitslots";
         public const string PluginName = "Outfit Slots";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
