@@ -11,7 +11,7 @@ namespace FocusAnywhere
     {
         public const string PluginGuid = "nelphei.ontogether.focusanywhere";
         public const string PluginName = "Focus Anywhere";
-        public const string PluginVersion = "0.3.1";
+        public const string PluginVersion = "0.3.2";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

@@ -1,3 +1,7 @@
+## 0.3.2
+
+- In the game's split-screen and Desk window modes (keys 2-4), the icon hides and shows with the game's own UI when you click its eye button. Before, it always hid in Desk mode and stayed on in split screen. In the Normal window mode it always shows. The mod keeps working while it's hidden.
+
 ## 0.3.1
 
 - The icon hides in the game's Desk window mode (key 4, the small see-through window) and while Photo Mode is on. The mod keeps working meanwhile.
