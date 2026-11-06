@@ -619,7 +619,8 @@ namespace PhotoMode
                 }
             }
 
-            // Nothing shows while a photo is taken, or in the game's Desk window mode (PanelStack.Hidden).
+            // Nothing shows while a photo is taken, or while the game's eye button hides the UI
+            // (PanelStack.Hidden).
             if (_capturing || PanelStack.Hidden)
             {
                 return;

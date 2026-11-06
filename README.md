@@ -10,7 +10,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 
 | Mod | Version | Open with | What it does | Who needs it |
 |---|---|---|---|---|
-| [Photo Mode](#photo-mode) | 0.4.1, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
+| [Photo Mode](#photo-mode) | 0.4.2, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.3.1, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.1, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.1, pre-release | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
@@ -42,7 +42,7 @@ In the game's split-screen and Desk window modes (keys 2-4), the game shows an e
 
 | Mod | Tried in the game |
 |---|---|
-| Photo Mode 0.4.1 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and 0.4.0's icon works. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, 0.3.0 lets you type in chat, and 0.4.1 hides the icon row while Photo Mode is on. None of these has been tried yet |
+| Photo Mode 0.4.2 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and so do 0.4.0's icon, 0.4.1 hiding the icon row while Photo Mode is on, and 0.4.2's hiding with the game's eye button. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet |
 | Emote Sync 0.3.1 | **Pre-release.** 0.1.0 worked with a friend, and 0.3.0's icon works. 0.2.0's joining once you're free and the **Join now** button, 0.2.1's styled names, and 0.3.1's hiding in Desk mode and Photo Mode haven't been tried yet |
 | Teleport Spots 0.2.1 | **Pre-release.** Teleporting works on your own screen, and so does 0.2.0's icon. 0.1.1's fix for keeping spots after a restart, 0.1.2's fix for where other players see you land, and 0.2.1's hiding in Desk mode and Photo Mode haven't been tried yet |
 | Song Player 0.2.1 | **Pre-release.** 0.2.0 worked on its own, icon included. Not yet checked with other players listening, and 0.2.1's hiding in Desk mode and Photo Mode hasn't been tried yet |
@@ -57,7 +57,7 @@ None of the mods have been tried on a Mac yet.
 
 ### Photo Mode
 
-> **Pre-release:** 0.4.1 hides the icon row while Photo Mode is on. 0.3.0 lets you type in chat while Photo Mode is on. 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI, and they still stay out of your photos. None of these has been tried in the game yet.
+> **Pre-release:** 0.3.0 lets you type in chat while Photo Mode is on. 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI, and they still stay out of your photos. Neither has been tried in the game yet.
 
 Press **F9** (or click the camera icon) in a lobby to detach the camera and hide the game's UI, then **P** to save a photo.
 

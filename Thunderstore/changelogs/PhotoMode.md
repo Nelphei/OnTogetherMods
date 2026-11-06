@@ -1,3 +1,7 @@
+## 0.4.2
+
+- In the game's split-screen and Desk window modes (keys 2-4), Photo Mode's icon and messages hide and show with the game's own UI when you click its eye button. Before, they always hid in Desk mode and stayed on in split screen. In the Normal window mode they always show.
+
 ## 0.4.1
 
 - The icon row hides while Photo Mode is on, so it stays out of your way. Leave with **F9** or **Esc**, and **F1** shows or hides the controls panel.
