@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>SongPlayer</AssemblyName>
     <RootNamespace>SongPlayer</RootNamespace>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
