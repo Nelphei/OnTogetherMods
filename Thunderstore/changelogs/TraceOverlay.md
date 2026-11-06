@@ -1,3 +1,7 @@
+## 0.2.2
+
+- In the game's split-screen and Desk window modes (keys 2-4), the icon and the window hide and show with the game's own UI when you click its eye button. Before, they always hid in Desk mode and stayed on in split screen. In the Normal window mode they always show. The picture on the board stays.
+
 ## 0.2.1
 
 - The icon and the window hide in the game's Desk window mode (key 4, the small see-through window), and come back when you switch to another window mode.
