@@ -46,6 +46,10 @@
     "QuickHide": {
       "name": "Quick_Hide",
       "description": "Hides the whole game with one key in split screen and mini mode: the world, characters and UI. Press F10 again to bring it back, even from another app. Only you need it."
+    },
+    "NetworkCrashFix": {
+      "name": "Network_Crash_Fix",
+      "description": "Stops a crash in the game's networking code, seen on a Mac: reading other players' movement ran a few bytes past the end of the data. Same values, read safely. Nothing to open. Only you need it."
     }
   }
 }

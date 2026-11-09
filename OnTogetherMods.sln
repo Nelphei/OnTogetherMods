@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutfitSlots", "OutfitSlots\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickHide", "QuickHide\QuickHide.csproj", "{82D66B7F-38B5-4BED-BE42-7B101491083D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkCrashFix", "NetworkCrashFix\NetworkCrashFix.csproj", "{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +86,9 @@ Global
 		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82D66B7F-38B5-4BED-BE42-7B101491083D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

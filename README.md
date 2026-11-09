@@ -21,19 +21,20 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Name Designer](#name-designer) | 0.2.2, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
+| [Network Crash Fix](#network-crash-fix) | 0.1.0, pre-release | Nothing to open, it works by itself | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range and a crossed-out eye for Quick Hide.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide and a shield for Network Crash Fix.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
 - **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, or Outfit Slots' icon to put on your next outfit.
 - A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
 
-Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
+Song Player, Trace Overlay, Chat Range, Focus Anywhere and Network Crash Fix have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
 
 The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel) and while Photo Mode is on. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon.
 
@@ -54,6 +55,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Name Designer 0.2.2 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab and presets haven't been tried in the game yet |
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
+| Network Crash Fix 0.1.0 | **Pre-release.** Not tried in the game yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -168,6 +170,16 @@ For the game's split-screen and mini window modes (keys 2-4), where the game sit
 The game keeps running while it's hidden: you stay in the session, other players still see your character, and sounds and voices keep playing. Switching window modes or leaving the world shows the game again. In the Normal window mode (key 1) Quick Hide does nothing, and its icon is greyed out.
 
 If you change `HideKey` in the settings file, pick a key you don't type with, since it works in every app. On a Mac, the key only works while the game is focused.
+
+### Network Crash Fix
+
+> **Pre-release:** not tried in the game yet.
+
+Fixes a crash in the game's networking code, seen on a Mac, where the game closed by itself several times a day while playing in a session. When the game reads another player's movement, it reads a few bytes past the end of the data. Usually those bytes are just other memory and nothing happens, but when they belong to nothing, the whole game crashes. Network Crash Fix reads the end of each packet one byte at a time instead. The game gets exactly the same values as before, so nothing else changes.
+
+There's nothing to open: it works by itself from the moment the game starts. The shield icon switches it off and on, and a green dot means it's on. Each time the game starts, it checks its reading against the game's own and writes the result to the BepInEx log. If they don't match (say, after a game update), it stays off and leaves the game alone.
+
+When the game crashes like this, it leaves a crash file behind. On the Mac where the crash was found, those files were named `mono_crash.95b4e0c32.<number>.json`.
 
 ## Installing
 
