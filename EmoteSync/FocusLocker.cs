@@ -18,6 +18,10 @@ namespace EmoteSync
         // Corrections per animation start, so an animation the game speeds up or slows down
         // can't make us correct it every frame.
         private const int MaxFixes = 3;
+        // A pose must play this long (in seconds) without blending before we move it. The game
+        // restarts one innertube pose (A_FloatieDonut_Sleep04Med, AnimState 117) every 0.25 s:
+        // its Any State transition can go to itself. Moving it between restarts made it twitch.
+        private const float SettleSeconds = 0.2f;
 
         private sealed class Entry
         {
@@ -26,6 +30,7 @@ namespace EmoteSync
             public Animator Animator;
             public int Hash;
             public int Fixes;
+            public float SettledAt;
         }
 
         private readonly Dictionary<PlayerFocusController, Entry> _entries = new Dictionary<PlayerFocusController, Entry>();
@@ -76,8 +81,9 @@ namespace EmoteSync
                 {
                     entry.Hash = info.fullPathHash;
                     entry.Fixes = 0;
+                    entry.SettledAt = Time.unscaledTime + SettleSeconds;
                 }
-                if (!info.loop || info.length < 0.2f || entry.Fixes >= MaxFixes)
+                if (Time.unscaledTime < entry.SettledAt || !info.loop || info.length < 0.2f || entry.Fixes >= MaxFixes)
                 {
                     continue;
                 }

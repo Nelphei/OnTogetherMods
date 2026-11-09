@@ -11,7 +11,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | Mod | Version | Open with | What it does | Who needs it |
 |---|---|---|---|---|
 | [Photo Mode](#photo-mode) | 0.4.3, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
-| [Emote Sync](#emote-sync) | 0.3.3, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
+| [Emote Sync](#emote-sync) | 0.3.4, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.3, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.3 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.3 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
@@ -46,7 +46,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Mod | Tried in the game |
 |---|---|
 | Photo Mode 0.4.3 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and so do 0.4.0's icon, 0.4.1 hiding the icon row while Photo Mode is on, and hiding with the game's eye button in every window mode. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet |
-| Emote Sync 0.3.3 | **Pre-release.** 0.1.0 worked with a friend, and so do 0.3.0's icon and hiding with the game's eye button in every window mode. 0.2.0's joining once you're free and the **Join now** button, and 0.2.1's styled names, haven't been tried yet |
+| Emote Sync 0.3.4 | **Pre-release.** 0.1.0 worked with a friend, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, and 0.3.4's fix for players twitching in an innertube pose. 0.2.0's joining once you're free and the **Join now** button, and 0.2.1's styled names, haven't been tried yet |
 | Teleport Spots 0.2.3 | **Pre-release.** Teleporting works on your own screen, and so do 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.1's fix for keeping spots after a restart and 0.1.2's fix for where other players see you land haven't been tried yet |
 | Song Player 0.2.3 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening |
 | Trace Overlay 0.2.3 | Works, including the icon and hiding with the game's eye button in every window mode |
@@ -81,7 +81,7 @@ Photos are saved to `Pictures\On-Together`. You can save them bigger than your s
 
 Everyone who wants to sync presses **F7** or clicks the mod's icon. After that, when anyone in the group picks an emote, it starts for the whole group on the same network tick, so you all wave or dance at the same moment. Focus activities are shared too: when one of you starts one, the others join it, and the looping animations stay in step. If you're busy when someone picks one (typing, a window open, mid-emote, in the air), you join as soon as you're free, for up to 30 seconds. Nothing is closed or stopped for you, but a **Join now** button at the top of the screen closes the window, leaves the chat box or stops the emote and joins straight away. Players sitting at a seat spot (bench, classroom desk...) stay where they are. With [Focus Anywhere](#focus-anywhere) installed, you can join on any ground.
 
-**F6** (or right-clicking the mod's icon) shows or hides the window listing who's in your group. Its messages and window show players' in-game names the way their name tags do, colours and all. Every player in the group needs the mod (0.2.0, 0.2.1, 0.3.0 and 0.3.1 work together). Players without it don't see anything different.
+**F6** (or right-clicking the mod's icon) shows or hides the window listing who's in your group. Its messages and window show players' in-game names the way their name tags do, colours and all. Every player in the group needs the mod (0.2.0 and every later version work together). Players without it don't see anything different.
 
 ### Teleport Spots
 

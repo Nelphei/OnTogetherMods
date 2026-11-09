@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>EmoteSync</AssemblyName>
     <RootNamespace>EmoteSync</RootNamespace>
-    <Version>0.3.3</Version>
+    <Version>0.3.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

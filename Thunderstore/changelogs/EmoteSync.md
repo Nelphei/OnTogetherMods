@@ -1,3 +1,8 @@
+## 0.3.4
+
+- Fixed players twitching in one of the innertube poses while sync was on. The game restarts that pose every quarter second, and keeping loops in step kept jumping it in between. Sync now leaves a pose alone until it has played for a moment.
+- Works with 0.2.0 to 0.3.3.
+
 ## 0.3.3
 
 - In the Normal window mode (key 1), the icon, the group window and the messages at the top also hide and show with the game's eye button in the top-right corner, as they already did in split screen and Desk mode.
