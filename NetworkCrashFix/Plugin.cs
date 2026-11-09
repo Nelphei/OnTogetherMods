@@ -1,7 +1,6 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using OnTogetherMods.Shared;
 using UnityEngine;
 
 namespace NetworkCrashFix
@@ -11,7 +10,7 @@ namespace NetworkCrashFix
     {
         public const string PluginGuid = "nelphei.ontogether.networkcrashfix";
         public const string PluginName = "Network Crash Fix";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -23,19 +22,9 @@ namespace NetworkCrashFix
         {
             Log = Logger;
             Settings = new Settings(Config);
-            SafeReads.On = Settings.Enabled.Value;
-            Settings.Enabled.SettingChanged += (sender, args) =>
-            {
-                SafeReads.On = Settings.Enabled.Value;
-                Log.LogInfo(SafeReads.On
-                    ? "Switched on: the end of each network packet is read safely."
-                    : "Switched off: the game reads network packets its own way again.");
-            };
-            // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
-            // mod loads first.
-            IconBar.Patch();
 
-            // Now, before the game first reads a packet.
+            // Now, before the game first reads a packet. Always on: there's no switch. If the fix
+            // doesn't match the game's own reader, Apply leaves the game alone and logs why.
             _harmony = new Harmony(PluginGuid);
             bool patched = SafeReads.Apply(_harmony);
 
@@ -43,13 +32,11 @@ namespace NetworkCrashFix
             _host = new GameObject("NetworkCrashFix");
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
-            _host.AddComponent<IconButton>();
+            _host.AddComponent<Reporter>();
 
             if (patched)
             {
-                Log.LogInfo($"{PluginName} {PluginVersion} loaded. " + (SafeReads.On
-                    ? "The end of each network packet is read safely."
-                    : "Switched off in its settings, so the game reads network packets its own way."));
+                Log.LogInfo($"{PluginName} {PluginVersion} loaded. The end of each network packet is read safely.");
             }
         }
 

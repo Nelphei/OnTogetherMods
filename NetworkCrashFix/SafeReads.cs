@@ -17,9 +17,6 @@ namespace NetworkCrashFix
     // else the game's own code runs.
     internal static class SafeReads
     {
-        // False while the mod is switched off: the game reads its own way.
-        public static volatile bool On = true;
-
         // Reads near the end of a packet that the fix made safe. Only a statistic, so not locked.
         public static long Count;
 
@@ -68,10 +65,6 @@ namespace NetworkCrashFix
         // BitPacker.ReadBitsWithoutChecks.
         private static bool WithoutChecksPrefix(BitPacker __instance, byte bits, ref ulong __result)
         {
-            if (!On)
-            {
-                return true;
-            }
             byte[] buffer = _buffer(__instance);
             int position = _position(__instance);
             int start = position >> 3;
@@ -90,10 +83,6 @@ namespace NetworkCrashFix
         // BitPacker.ReadBits: the game checks the bits are there, then calls ReadBitsWithoutChecks.
         private static bool ReadBitsPrefix(BitPacker __instance, byte bits, ref ulong __result)
         {
-            if (!On)
-            {
-                return true;
-            }
             byte[] buffer = _buffer(__instance);
             int position = _position(__instance);
             int start = position >> 3;
@@ -168,8 +157,6 @@ namespace NetworkCrashFix
         // and ReadBytes, should both come through the fix and give the right values.
         private static void CheckPatched()
         {
-            bool wasOn = On;
-            On = true;
             try
             {
                 var data = new byte[] { 0xA5, 0x3C, 0xF0, 0x0F, 0x99 };
@@ -215,7 +202,6 @@ namespace NetworkCrashFix
             }
             finally
             {
-                On = wasOn;
                 Count = 0;
             }
         }

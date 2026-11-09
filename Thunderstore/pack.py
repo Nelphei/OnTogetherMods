@@ -6,8 +6,9 @@
 For each mod it does a clean Release build, then writes Thunderstore/bin/<team>-<name>-<version>.zip
 holding:
   manifest.json  name, version, description and the BepInEx pack dependency (from mods.json)
-  icon.png       the mod's in-game pixel-art icon (<Mod>/Icon.cs), scaled up to 256 x 256
-  README.md      the mod's part of the repo README, plus install, icon and settings notes
+  icon.png       the mod's pixel-art icon (<Mod>/Icon.cs, as in the game's icon row), scaled up to 256 x 256
+  README.md      the mod's part of the repo README, plus install, icon and settings notes (the icon
+                 notes only for mods with an icon in the game, i.e. that compile Shared/IconBar.cs)
   CHANGELOG.md   Thunderstore/changelogs/<Mod>.md
   <Mod>.dll      mod managers put it in BepInEx/plugins/<team>-<name>/
 
@@ -57,6 +58,12 @@ def version_of(folder):
     if not m or m.group(1) != version:
         raise PackError(f"{folder}: Plugin.cs PluginVersion doesn't match the .csproj version {version}")
     return version
+
+
+def has_game_icon(folder):
+    # Mods with an icon in the game's icon row compile Shared\IconBar.cs. Network Crash Fix doesn't.
+    csproj = read(ROOT / folder / f"{folder}.csproj")
+    return re.search(r'<Compile Include="[^"]*IconBar\.cs"', csproj) is not None
 
 
 def plugin_info(folder):
@@ -155,7 +162,7 @@ def png(width, height, filtered_rgba):
 
 # ---------------------------------------------------------------- README.md
 
-def readme(display, guid, description, website, others):
+def readme(display, guid, description, website, others, game_icon):
     lines = read(ROOT / "README.md").splitlines()
 
     # The mod's row in the README's table: Mod | Version | Open with | What it does | Who needs it
@@ -183,6 +190,13 @@ def readme(display, guid, description, website, others):
         if has_key else ""
     other_links = ", ".join(f"[{name}](#{anchor(name)})" for name in others)
 
+    icon_part = f"""## The icon
+
+Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. The mods' icons and windows also hide and show with the game's eye button, in every window mode.
+
+""" if game_icon else ""
+    show_icon = " `ShowIcon` hides the mod's icon." if game_icon else ""
+
     text = f"""# {display}
 
 {description}
@@ -194,13 +208,9 @@ def readme(display, guid, description, website, others):
 
 {section}
 
-## The icon
+{icon_part}## Settings
 
-Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. The mods' icons and windows also hide and show with the game's eye button, in every window mode.
-
-## Settings
-
-After the first launch, the settings are in `BepInEx/config/{guid}.cfg`. In r2modman or Gale, open them from the config editor. Each setting has a comment explaining it. Restart the game after changing them. `ShowIcon` hides the mod's icon.
+After the first launch, the settings are in `BepInEx/config/{guid}.cfg`. In r2modman or Gale, open them from the config editor. Each setting has a comment explaining it. Restart the game after changing them.{show_icon}
 
 ## Mac
 
@@ -268,7 +278,8 @@ def pack(folder, config, colours):
     files = {
         "manifest.json": (json.dumps(manifest, indent=2, ensure_ascii=False) + "\n").encode("utf-8"),
         "icon.png": render_icon(icon_pixels(folder), colours),
-        "README.md": readme(display, guid, settings["description"], config["website"], others).encode("utf-8"),
+        "README.md": readme(display, guid, settings["description"], config["website"], others,
+                            has_game_icon(folder)).encode("utf-8"),
         "CHANGELOG.md": changelog.encode("utf-8"),
     }
 

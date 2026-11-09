@@ -4,13 +4,12 @@
   <PropertyGroup>
     <AssemblyName>NetworkCrashFix</AssemblyName>
     <RootNamespace>NetworkCrashFix</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- This mod's icon in the row of mod icons at the bottom-right. IconBar hides the row with
-         the game's eye button through PanelStack. -->
-    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
-    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
+    <!-- No icon in the game (the fix is always on). Icon.cs is only read by Thunderstore\pack.py
+         for the package's icon.png, so it isn't compiled. -->
+    <Compile Remove="Icon.cs" />
   </ItemGroup>
 </Project>
