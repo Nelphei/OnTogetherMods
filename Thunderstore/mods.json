@@ -50,6 +50,10 @@
     "NetworkCrashFix": {
       "name": "Network_Crash_Fix",
       "description": "Stops a crash in the game's networking code, seen on a Mac: reading other players' movement ran a few bytes past the end of the data. Same values, read safely. Nothing to open. Only you need it."
+    },
+    "DeskSwarm": {
+      "name": "Desk_Swarm",
+      "description": "Fly your desk like a drone (F11): sit, take off, move with WASD. Start a swarm and friends' desks fly in formation around you: ring, V, line, tower or trail. Everyone sees it. Only you need it to fly; everyone in a swarm needs it."
     }
   }
 }

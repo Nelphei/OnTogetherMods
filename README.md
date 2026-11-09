@@ -22,16 +22,17 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.0, pre-release | Nothing to open, it works by itself | Stops a crash in the game's networking code (seen on a Mac) | Only you |
+| [Desk Swarm](#desk-swarm) | 0.1.0, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: each mod also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide and a shield for Network Crash Fix.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a shield for Network Crash Fix and a desk with rotors for Desk Swarm.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
-- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, or Outfit Slots' icon to put on your next outfit.
+- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, Outfit Slots' icon to put on your next outfit, or Desk Swarm's icon to take off or stop flying.
 - A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
 
 Song Player, Trace Overlay, Chat Range, Focus Anywhere and Network Crash Fix have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
@@ -56,6 +57,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.0 | **Pre-release.** Not tried in the game yet |
+| Desk Swarm 0.1.0 | **Pre-release.** Not tried in the game yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -180,6 +182,28 @@ Fixes a crash in the game's networking code, seen on a Mac, where the game close
 There's nothing to open: it works by itself from the moment the game starts. The shield icon switches it off and on, and a green dot means it's on. Each time the game starts, it checks its reading against the game's own and writes the result to the BepInEx log. If they don't match (say, after a game update), it stays off and leaves the game alone.
 
 When the game crashes like this, it leaves a crash file behind. On the Mac where the crash was found, those files were named `mono_crash.95b4e0c32.<number>.json`.
+
+### Desk Swarm
+
+> **Pre-release:** not tried in the game yet.
+
+Your desk becomes a drone. Press **F11** or click the icon (a desk with rotors) to open the window.
+
+**Flying your desk.** Sit at your desk (any focus activity on open ground works too, but not benches or other seat spots), then click **Take off** in the window, or right-click the icon. Fly with your movement keys (WASD), **Space** to go up and **Shift** to go down, and hold right mouse to look around as usual. The desk turns to face where it's going and tips a little as it flies. It stays above the ground and water, but flies through walls and trees. While you fly, Space doesn't stand you up: click **Stop flying** first, then Space stands you up wherever you are (in the air, you fall). You don't need anyone else to fly.
+
+**Swarms.** Click **Start a swarm** and other players with Desk Swarm see it in their window and can click **Join**. Each follower's desk flies to its own spot around you and stays there wherever you walk or fly, bobbing slightly like a drone. As the leader you pick the shape:
+
+- **Ring**: desks circle around you overhead
+- **V**: a V trailing behind you, like geese
+- **Line**: a row beside you, like Desk Snap's
+- **Tower**: stacked on top of you
+- **Trail**: one behind another, following your path
+
+**Spread** spaces the desks out or packs them closer. Followers need to sit at their desk to fly to their spot (joining doesn't sit you down), and standing up drops them out of the formation until they sit again. **Leave** or **End swarm** stops it, and the desks stay where they are.
+
+Everyone sees the flying, mod or not, because each player's game only ever moves their own character. Everyone in a swarm, leader included, needs the mod. Focus time counts the same as normal while you fly. When you stand up away from where you sat down, the mod tells the game you've left the areas there (so pressing F later doesn't open a bench menu from across the map).
+
+`FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, and `StartFormation` picks the shape a new swarm starts with.
 
 ## Installing
 

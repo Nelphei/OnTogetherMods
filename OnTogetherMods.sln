@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickHide", "QuickHide\Quic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkCrashFix", "NetworkCrashFix\NetworkCrashFix.csproj", "{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskSwarm", "DeskSwarm\DeskSwarm.csproj", "{C5E08E7E-D30A-4D97-BC1A-30FA98753636}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,5 +92,9 @@ Global
 		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55D8F92A-FB34-42EF-A17E-E14B30C47D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E08E7E-D30A-4D97-BC1A-30FA98753636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E08E7E-D30A-4D97-BC1A-30FA98753636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E08E7E-D30A-4D97-BC1A-30FA98753636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E08E7E-D30A-4D97-BC1A-30FA98753636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

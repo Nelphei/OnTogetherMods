@@ -36,6 +36,7 @@ namespace OnTogetherMods.Shared
         public const int TraceOverlayOrder = 40;
         public const int NameDesignerOrder = 50;
         public const int OutfitSlotsOrder = 60;
+        public const int DeskSwarmOrder = 70;
 
         // Screen width in the same 1080p units the windows are laid out in.
         public static float Width => Screen.width * 1080f / Screen.height;
