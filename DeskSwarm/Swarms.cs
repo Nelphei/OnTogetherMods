@@ -303,8 +303,9 @@ namespace DeskSwarm
 
         private void ReceiveSwarm(ulong from, string[] words)
         {
+            // A shape from a newer version (or a bare number) isn't one we can fly.
             if (words.Length < 3 || !Enum.TryParse(words[1], out Formation formation) ||
-                !int.TryParse(words[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int spread))
+                !Enum.IsDefined(typeof(Formation), formation) || !int.TryParse(words[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int spread))
             {
                 return;
             }

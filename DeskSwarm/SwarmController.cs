@@ -19,6 +19,7 @@ namespace DeskSwarm
         private const float Gap = 4f;
         private const float SectionGap = 8f;
         private const int MaxListed = 6;
+        private const int ShapesPerRow = 5;
 
         public static SwarmController Instance { get; private set; }
 
@@ -394,20 +395,9 @@ namespace DeskSwarm
                 }
             });
 
-            rows.Add(r =>
-            {
-                Formation[] all = Formations.All;
-                float buttonWidth = (r.width - Gap * (all.Length - 1)) / all.Length;
-                for (int i = 0; i < all.Length; i++)
-                {
-                    Formation formation = all[i];
-                    var button = new Rect(r.x + i * (buttonWidth + Gap), r.y, buttonWidth, r.height);
-                    if (GUI.Button(button, formation.ToString(), formation == mine.Formation ? _pickedStyle : _buttonStyle))
-                    {
-                        _clicks.Add(() => _swarms.SetFormation(formation));
-                    }
-                }
-            });
+            // The flying shapes, then the landing ones after a "Land" label, all on one grid.
+            AddShapeRows(rows, mine, null, Formations.Flying);
+            AddShapeRows(rows, mine, "Land", Formations.Landing);
 
             rows.Add(r =>
             {
@@ -472,9 +462,45 @@ namespace DeskSwarm
             }
             else
             {
-                status = $"{swarm.Formation}, spot {spot + 1} of {swarm.Members.Count}";
+                string shape = Formations.Lands(swarm.Formation) ? $"{swarm.Formation} on the ground" : swarm.Formation.ToString();
+                status = $"{shape}, spot {spot + 1} of {swarm.Members.Count}";
             }
             rows.Add(r => _canvas.Name(r, status, Dim));
+        }
+
+        // As many rows of shape buttons as these shapes need. With a label, it takes the first cell
+        // of the first row, and that cell is left empty on the rows after, so the buttons line up.
+        private void AddShapeRows(List<Action<Rect>> rows, Swarm mine, string label, Formation[] shapes)
+        {
+            bool indent = label != null;
+            int perRow = indent ? ShapesPerRow - 1 : ShapesPerRow;
+            for (int start = 0; start < shapes.Length; start += perRow)
+            {
+                int from = start;
+                string text = start == 0 ? label : null;
+                rows.Add(r => ShapeButtons(r, mine, text, indent, shapes, from));
+            }
+        }
+
+        // One row of the shape grid: a button per shape (from `from` on), the one the swarm is
+        // flying pressed in.
+        private void ShapeButtons(Rect r, Swarm mine, string label, bool indent, Formation[] shapes, int from)
+        {
+            float cell = (r.width - Gap * (ShapesPerRow - 1)) / ShapesPerRow;
+            int column = indent ? 1 : 0;
+            if (label != null)
+            {
+                GUI.Label(new Rect(r.x, r.y, cell, r.height), label, _labelStyle);
+            }
+            for (int i = from; i < shapes.Length && column < ShapesPerRow; i++, column++)
+            {
+                Formation formation = shapes[i];
+                var button = new Rect(r.x + column * (cell + Gap), r.y, cell, r.height);
+                if (GUI.Button(button, formation.ToString(), formation == mine.Formation ? _pickedStyle : _buttonStyle))
+                {
+                    _clicks.Add(() => _swarms.SetFormation(formation));
+                }
+            }
         }
 
         private static string Count(int n, string thing) => n == 1 ? $"1 {thing}" : $"{n} {thing}s";

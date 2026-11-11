@@ -24,6 +24,18 @@ namespace DeskSwarm
         // speed, but under most roofs and treetops, so you don't pop up on top of them.
         private const float GroundSearch = 1.2f;
         private const float TrailStep = 0.25f;
+        // Landing shapes: a desk still on its way to its spot flies this high per metre it has to go
+        // (so it hops over the others), up to the most, and has landed once it's this low.
+        private const float LiftPerMetre = 0.4f;
+        private const float MaxLift = 2.5f;
+        private const float Touchdown = 0.15f;
+        // Where to look for the ground a desk lands on: from this far above the leader's feet (under
+        // the roof of a building they're in), or, if that finds nothing near, from higher up (the
+        // spot is on a hill above them).
+        private const float LandSearchAbove = 2.5f;
+        private const float LandSearchHigh = 25f;
+        private const float LandSearchNear = 3f;
+        private const float LandSearchDepth = 200f;
 
         private static Settings S => Plugin.Settings;
 
@@ -63,6 +75,9 @@ namespace DeskSwarm
 
         // Waiting to see the leader on your screen.
         public bool LeaderMissing { get; private set; }
+
+        // Sitting on the ground at your spot in a landing shape (or just about to touch down).
+        public bool Landed { get; private set; }
 
         public void StartPiloting(PlayerFocusController me)
         {
@@ -104,6 +119,7 @@ namespace DeskSwarm
         {
             InFormation = false;
             LeaderMissing = false;
+            Landed = false;
 
             bool sitting = me != null && me.IsFocus;
             if (_sitter != null && (_sitter != me || !sitting))
@@ -162,7 +178,8 @@ namespace DeskSwarm
                 return;
             }
 
-            _bob = Mathf.MoveTowards(_bob, 1f, dt);
+            // No drone wobble once landed, so the desk sits still on the ground.
+            _bob = Mathf.MoveTowards(_bob, Landed ? 0f : 1f, dt);
             Apply(me, dt, follower: InFormation, spot);
         }
 
@@ -246,6 +263,18 @@ namespace DeskSwarm
 
             Vector3 target = Formations.Place(swarm.Formation, spot, swarm.Members.Count, swarm.Spread,
                 leaderAt, leaderYaw, Game.SharedTime, _path, out float yaw);
+
+            if (Formations.Lands(swarm.Formation))
+            {
+                // Come down on the ground under the spot. While it's still some way off (just
+                // picked, or the leader walked on), fly a little above the ground, and touch down
+                // as it arrives, so the desks take off and land as the leader moves and stops.
+                float ground = GroundUnder(target, leaderAt.y);
+                float away = new Vector2(target.x - _base.x, target.z - _base.z).magnitude;
+                float lift = Mathf.Min(away * LiftPerMetre, MaxLift);
+                target.y = ground + lift;
+                Landed = lift < Touchdown;
+            }
 
             // Far away (just joined, or the leader teleported): fly faster, so it never takes long.
             float distance = Vector3.Distance(_base, target);
@@ -336,6 +365,27 @@ namespace DeskSwarm
         // sea. Lower ground doesn't matter: you just float above it.
         private float Floor(Vector3 at)
         {
+            return Highest(at + Vector3.up * GroundSearch, GroundSearch);
+        }
+
+        // The ground or water a landing desk comes down on. Looking from just above the leader's
+        // height finds the floor of a building they're in rather than its roof. But a ray that
+        // starts inside a hill goes straight through it, so if that finds nothing near the
+        // leader's height, look again from higher up, for a hill or rock the spot is on.
+        private float GroundUnder(Vector3 spot, float leaderY)
+        {
+            float ground = Highest(new Vector3(spot.x, leaderY + LandSearchAbove, spot.z), LandSearchDepth);
+            if (ground < leaderY - LandSearchNear)
+            {
+                float top = leaderY + LandSearchHigh;
+                ground = Mathf.Max(ground, Highest(new Vector3(spot.x, top, spot.z), top - (leaderY - LandSearchNear)));
+            }
+            return ground;
+        }
+
+        // The highest ground or water up to `depth` below `from`, or the sea.
+        private float Highest(Vector3 from, float depth)
+        {
             if (_ground == 0)
             {
                 // Everything solid, water included, but not players, areas or invisible triggers.
@@ -343,7 +393,7 @@ namespace DeskSwarm
                     "Customization", "IsGroundedChecker", "DeskRender");
             }
             float floor = Game.SeaLevel + 0.1f;
-            int hits = Physics.RaycastNonAlloc(at + Vector3.up * GroundSearch, Vector3.down, _hits, GroundSearch, _ground,
+            int hits = Physics.RaycastNonAlloc(from, Vector3.down, _hits, depth, _ground,
                 QueryTriggerInteraction.Ignore);
             for (int i = 0; i < hits; i++)
             {
