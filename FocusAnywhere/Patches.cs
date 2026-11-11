@@ -29,6 +29,9 @@ namespace FocusAnywhere
             }
             try
             {
+                // Hides or brings back the desk and objects when the icon switches them (or the mod).
+                NoObjects.Follow(__instance);
+
                 if (!Plugin.Settings.Enabled.Value)
                 {
                     // Switched off from the icon. Put the game's own activity lists back, but only

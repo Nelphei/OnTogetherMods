@@ -11,7 +11,7 @@ namespace FocusAnywhere
     {
         public const string PluginGuid = "nelphei.ontogether.focusanywhere";
         public const string PluginName = "Focus Anywhere";
-        public const string PluginVersion = "0.3.3";
+        public const string PluginVersion = "0.4.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -35,7 +35,7 @@ namespace FocusAnywhere
             _host.AddComponent<IconButton>();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. On: {Settings.Enabled.Value}, every activity: " +
-                $"{Settings.AllActivities.Value}, any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}.");
+                $"{Settings.AllActivities.Value}, any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}, objects off: {Settings.HideObjects.Value}.");
         }
 
         private void OnDestroy()

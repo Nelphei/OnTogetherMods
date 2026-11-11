@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using UnityEngine;
 
 namespace FocusAnywhere
 {
@@ -21,6 +22,21 @@ namespace FocusAnywhere
         public static readonly AccessTools.FieldRef<PlayerFocusController, PlayerMovementController> Movement =
             AccessTools.FieldRefAccess<PlayerFocusController, PlayerMovementController>("_playerMovementController");
 
+        // The personal desk and the activity objects (one list per PropType, minus None).
+        public static readonly AccessTools.FieldRef<PlayerFocusController, GameObject> Desk =
+            AccessTools.FieldRefAccess<PlayerFocusController, GameObject>("_desk");
+
+        public static readonly AccessTools.FieldRef<PlayerFocusController, List<FocusProps>> Props =
+            AccessTools.FieldRefAccess<PlayerFocusController, List<FocusProps>>("_props");
+
+        // Set by SetFocus each time an activity starts.
+        public static readonly AccessTools.FieldRef<PlayerFocusController, DateTime> FocusStart =
+            AccessTools.FieldRefAccess<PlayerFocusController, DateTime>("_focusStart");
+
+        private static readonly Action<PlayerFocusController, bool> SetIsDeskMethod =
+            AccessTools.MethodDelegate<Action<PlayerFocusController, bool>>(
+                AccessTools.PropertySetter(typeof(PlayerFocusController), nameof(PlayerFocusController.IsDesk)));
+
         private static readonly Action<PlayerFocusController> OpenSelectorMethod =
             AccessTools.MethodDelegate<Action<PlayerFocusController>>(AccessTools.Method(typeof(PlayerFocusController), "OpenSelector"));
 
@@ -38,5 +54,7 @@ namespace FocusAnywhere
         public static void SetCurrentFocusArea(PlayerFocusController focus, FocusAreaController area) => SetCurrentFocusAreaMethod(focus, area);
 
         public static void SetWaterProp(PlayerFocusController focus, WaterPropType prop) => SetWaterPropMethod(focus, prop);
+
+        public static void SetIsDesk(PlayerFocusController focus, bool value) => SetIsDeskMethod(focus, value);
     }
 }

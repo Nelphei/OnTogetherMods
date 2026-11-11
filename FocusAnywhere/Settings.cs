@@ -3,14 +3,15 @@ using BepInEx.Configuration;
 namespace FocusAnywhere
 {
     // Everything here shows up in BepInEx\config\nelphei.ontogether.focusanywhere.cfg after the first launch.
-    // Changes made in the file take effect the next time the game starts. Enabled also changes from the
-    // mod's icon while you play.
+    // Changes made in the file take effect the next time the game starts. Enabled and HideObjects also
+    // change from the mod's icon while you play.
     internal sealed class Settings
     {
         public readonly ConfigEntry<bool> Enabled;
         public readonly ConfigEntry<bool> AllActivities;
         public readonly ConfigEntry<bool> AnyGround;
         public readonly ConfigEntry<bool> MidAir;
+        public readonly ConfigEntry<bool> HideObjects;
         public readonly ConfigEntry<bool> ShowIcon;
         public readonly ConfigEntry<bool> DebugLog;
 
@@ -30,10 +31,15 @@ namespace FocusAnywhere
                 "The focus key works in the air too: you stop where you are and focus floating there. " +
                 "Closing the menu without picking, or standing up, lets you fall again. Needs AnyGround on " +
                 "(or BlueSage QoL's own Focus Anywhere).");
+            HideObjects = config.Bind("Focus", "HideObjects", false,
+                "Focus activities without their desk or objects (laptop, book, easel, treadmill...), so the pose " +
+                "plays on its own. Effects like the sleep Zzz stay. Everyone sees it, with or without the mod. " +
+                "Right-clicking the mod's icon changes this, also while you're focusing, and it's remembered " +
+                "between games.");
 
             ShowIcon = config.Bind("Display", "ShowIcon", true,
                 "Show an icon in the row of mod icons at the bottom-right, with a green dot while the mod is on. " +
-                "Clicking it switches Enabled.");
+                "Clicking it switches Enabled, and right-clicking it switches HideObjects.");
 
             DebugLog = config.Bind("Debug", "DebugLog", false,
                 "Write extra details to the BepInEx log (the activity lists and the menu buttons).");

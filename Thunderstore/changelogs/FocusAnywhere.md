@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Right-click the icon to do focus activities without their desk or objects: sleep at a desk with no desk, type with no laptop, paint with no easel. Effects like the sleep Zzz stay. Other players see it too, even without the mod. It works while you're already focusing, and it's remembered between games. Right-click again to bring them back.
+
 ## 0.3.3
 
 - In the Normal window mode (key 1), the icon also hides and shows with the game's eye button in the top-right corner, as it already did in split screen and Desk mode.
