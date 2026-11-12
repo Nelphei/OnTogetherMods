@@ -36,11 +36,22 @@ namespace DeskSwarm
         private const float LandSearchHigh = 25f;
         private const float LandSearchNear = 3f;
         private const float LandSearchDepth = 200f;
+        // Flying through buildings, only the land and water stop you. The game doesn't mark which is
+        // which, but the land reaches down into the sea (islands, hills, mountains, rocks, shores, the
+        // plaza; the sea's surface is at y -0.5), and in the game's world no building, bridge, dock or
+        // lighthouse does. A few posts and tree trunks do, so it also has to be this wide. Land up in
+        // the air (the Halloween island) is named as ground.
+        private const float SeaBed = -1f;
+        private const float RootedWidth = 2f;
+        private static readonly string[] GroundNames = { "Ground", "Island", "Hill", "Mountain", "Shore" };
 
         private static Settings S => Plugin.Settings;
 
         private int _ground;
+        private int _water = -1;
         private readonly RaycastHit[] _hits = new RaycastHit[16];
+        // Whether each collider met so far is land or water (IsLand).
+        private readonly Dictionary<Collider, bool> _isLand = new Dictionary<Collider, bool>();
 
         // This sit: who's sitting, whether we've moved them, and the areas they sat down in.
         private PlayerFocusController _sitter;
@@ -55,6 +66,9 @@ namespace DeskSwarm
         private float _pitch;
         private float _roll;
         private float _bob;   // 0 to 1: how much of the bob is showing
+        // Flying through buildings: yours while you pilot, the leader's while you follow. Kept while
+        // you slow to a stop.
+        private bool _through;
 
         // Where the leader has been, newest first, for the Trail formation.
         private readonly List<Vector3> _path = new List<Vector3>();
@@ -160,12 +174,14 @@ namespace DeskSwarm
                     return;
                 }
                 Begin(me);
+                _through = followed.Through;
                 Follow(followed, spot, leader.transform, dt);
                 InFormation = true;
             }
             else if (Piloting)
             {
                 Begin(me);
+                _through = S.ThroughBuildings.Value;
                 Pilot(dt);
             }
             else if (_managing)
@@ -306,7 +322,7 @@ namespace DeskSwarm
         private void Apply(PlayerFocusController me, float dt, bool follower, int spot)
         {
             // Room for the bob, so it never dips into the ground.
-            float floor = Floor(_base) + BobHeight * _bob;
+            float floor = Floor(_base, _through) + BobHeight * _bob;
             if (_base.y < floor)
             {
                 _base.y = floor;
@@ -362,10 +378,11 @@ namespace DeskSwarm
         }
 
         // The top of the ground or water under this spot (looking from a little above it), or the
-        // sea. Lower ground doesn't matter: you just float above it.
-        private float Floor(Vector3 at)
+        // sea. Lower ground doesn't matter: you just float above it. Flying through buildings, only
+        // land and water count; otherwise anything solid does.
+        private float Floor(Vector3 at, bool through)
         {
-            return Highest(at + Vector3.up * GroundSearch, GroundSearch);
+            return Highest(at + Vector3.up * GroundSearch, GroundSearch, landOnly: through);
         }
 
         // The ground or water a landing desk comes down on. Looking from just above the leader's
@@ -383,14 +400,16 @@ namespace DeskSwarm
             return ground;
         }
 
-        // The highest ground or water up to `depth` below `from`, or the sea.
-        private float Highest(Vector3 from, float depth)
+        // The highest ground or water up to `depth` below `from`, or the sea. With `landOnly`,
+        // buildings, bridges and everything else on the land are left out.
+        private float Highest(Vector3 from, float depth, bool landOnly = false)
         {
             if (_ground == 0)
             {
                 // Everything solid, water included, but not players, areas or invisible triggers.
                 _ground = ~LayerMask.GetMask("Ignore Raycast", "Player", "Area", "AreaTrigger",
                     "Customization", "IsGroundedChecker", "DeskRender");
+                _water = LayerMask.NameToLayer("Water");
             }
             float floor = Game.SeaLevel + 0.1f;
             int hits = Physics.RaycastNonAlloc(from, Vector3.down, _hits, depth, _ground,
@@ -398,13 +417,43 @@ namespace DeskSwarm
             for (int i = 0; i < hits; i++)
             {
                 RaycastHit hit = _hits[i];
-                if (hit.point.y > floor && hit.collider.GetComponentInParent<PlayerController>() == null &&
+                if (hit.point.y > floor && (!landOnly || IsLand(hit.collider)) &&
+                    hit.collider.GetComponentInParent<PlayerController>() == null &&
                     hit.collider.GetComponentInParent<PetController>() == null)
                 {
                     floor = hit.point.y;
                 }
             }
             return floor;
+        }
+
+        // Land or water, which you can't fly through even while flying through buildings (see SeaBed).
+        private bool IsLand(Collider collider)
+        {
+            if (_isLand.TryGetValue(collider, out bool land))
+            {
+                return land;
+            }
+            if (_isLand.Count > 4096)
+            {
+                // Colliders from an earlier visit to the world.
+                _isLand.Clear();
+            }
+
+            GameObject obj = collider.gameObject;
+            Bounds bounds = collider.bounds;
+            land = obj.layer == _water ||
+                (bounds.min.y < SeaBed && Mathf.Max(bounds.size.x, bounds.size.z) >= RootedWidth);
+            for (int i = 0; !land && i < GroundNames.Length; i++)
+            {
+                land = obj.name.IndexOf(GroundNames[i], System.StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            _isLand[collider] = land;
+            if (S.DebugLog.Value)
+            {
+                Plugin.Log.LogInfo($"{obj.name}: {(land ? "land, can't fly through" : "can fly through")}");
+            }
+            return land;
         }
     }
 }

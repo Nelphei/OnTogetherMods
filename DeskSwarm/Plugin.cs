@@ -11,7 +11,7 @@ namespace DeskSwarm
     {
         public const string PluginGuid = "nelphei.ontogether.deskswarm";
         public const string PluginName = "Desk Swarm";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.3.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

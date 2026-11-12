@@ -60,6 +60,7 @@ namespace DeskSwarm
         private GUIStyle _dimStyle;
         private GUIStyle _buttonStyle;
         private GUIStyle _pickedStyle;
+        private GUIStyle _toggleStyle;
 
         private void Awake()
         {
@@ -285,14 +286,42 @@ namespace DeskSwarm
             }
         }
 
-        // Taking off, or what's stopping you.
+        // Taking off, or what's stopping you, then the fly-through-buildings switch.
         private void AddFlyRows(List<Action<Rect>> rows)
         {
             if (_swarms.Following != 0)
             {
                 rows.Add(r => GUI.Label(r, "Your desk flies with the swarm. Leave it to fly yourself.", _dimStyle));
+                // The leader's switch counts while you follow, so yours is greyed out and shows theirs.
+                Swarm followed = _swarms.Followed;
+                bool leaders = followed != null && followed.Through;
+                rows.Add(r => ThroughSwitch(r, leaders, false, "the leader's choice"));
                 return;
             }
+            AddTakeOffRow(rows);
+            rows.Add(r => ThroughSwitch(r, S.ThroughBuildings.Value, true,
+                S.ThroughBuildings.Value ? "not ground or water" : "land on roofs"));
+        }
+
+        private void ThroughSwitch(Rect r, bool on, bool canChange, string help)
+        {
+            const string text = " Fly through buildings";
+            const float boxHeight = 18f;
+            float width = _toggleStyle.CalcSize(new GUIContent(text)).x;
+            bool was = GUI.enabled;
+            GUI.enabled = canChange;
+            bool now = GUI.Toggle(new Rect(r.x, r.y + (r.height - boxHeight) / 2f, width, boxHeight), on, text, _toggleStyle);
+            GUI.enabled = was;
+            if (canChange && now != on)
+            {
+                // Your followers hear about it too (Swarms listens for the setting changing).
+                _clicks.Add(() => S.ThroughBuildings.Value = now);
+            }
+            GUI.Label(new Rect(r.x + width + 8f, r.y, r.width - width - 8f, r.height), help, _dimStyle);
+        }
+
+        private void AddTakeOffRow(List<Action<Rect>> rows)
+        {
             bool canFly = Game.CanFly(_me);
             rows.Add(r =>
             {
@@ -541,6 +570,8 @@ namespace DeskSwarm
             _pickedStyle.normal = GUI.skin.button.onNormal;
             _pickedStyle.hover = GUI.skin.button.onHover;
             _pickedStyle.active = GUI.skin.button.onActive;
+
+            _toggleStyle = new GUIStyle(GUI.skin.toggle) { fontSize = 14, wordWrap = false };
         }
 
         private static GUIStyle Label(int size, Color color, TextAnchor alignment)

@@ -1,3 +1,8 @@
+## 0.3.0
+
+- Fly through buildings: a new switch in the window, on by default. Your desk flies through bridges, buildings, fences and everything else on the islands, so it doesn't get caught on them anymore, but it never goes down through the ground or water. Switch it off to land on roofs and bridges again.
+- While you lead a swarm, your followers fly through buildings when you do. Followers need 0.3.0 for this; on 0.2.0 they fly as before.
+
 ## 0.2.0
 
 - Five new flying shapes: Heart (a heart standing up over your head), Wheel (a Ferris wheel turning over your head), Twister (a spinning spiral winding up around you), Wave (a row beside you with a ripple running along it) and Stairs (steps climbing into the sky ahead of you).

@@ -14,6 +14,8 @@ namespace DeskSwarm
         public ulong Leader;
         public Formation Formation = Formation.Ring;
         public float Spread = 1f;
+        // The desks fly through buildings and bridges (the leader's ThroughBuildings switch).
+        public bool Through;
         public readonly List<ulong> Members = new List<ulong>();
     }
 
@@ -22,7 +24,8 @@ namespace DeskSwarm
     //
     // Messages (after the tag):
     //   HELLO                      I've just arrived: leaders, tell me your swarms.
-    //   SWARM <shape> <spread*10> <follower>...   my swarm as it is now (sent by its leader).
+    //   SWARM <shape> <spread*10> [THRU] <follower>...   my swarm as it is now (sent by its leader).
+    //                              THRU: fly through buildings. 0.2.0 skips it (it isn't a Steam ID).
     //   END                        my swarm is over.
     //   JOIN <leader>              I'd like to follow this leader.
     //   LEAVE <leader>             I've stopped following this leader.
@@ -49,6 +52,8 @@ namespace DeskSwarm
             _lobby.MessageReceived += OnMessage;
             _lobby.MemberLeft += OnMemberLeft;
             _lobby.LobbyChanged += OnLobbyChanged;
+            // Your followers fly through buildings when you do (the window's switch, or the settings file).
+            S.ThroughBuildings.SettingChanged += (sender, args) => Broadcast();
         }
 
         // Something happened that the player should hear about.
@@ -181,8 +186,9 @@ namespace DeskSwarm
             {
                 return;
             }
+            string through = S.ThroughBuildings.Value ? " THRU" : "";
             string members = string.Concat(Mine.Members.Select(id => " " + id));
-            _lobby.Send($"SWARM {Mine.Formation} {Mathf.RoundToInt(Mine.Spread * 10f)}{members}");
+            _lobby.Send($"SWARM {Mine.Formation} {Mathf.RoundToInt(Mine.Spread * 10f)}{through}{members}");
         }
 
         private void Tell(string text)
@@ -317,10 +323,16 @@ namespace DeskSwarm
             }
             swarm.Formation = formation;
             swarm.Spread = Mathf.Clamp(spread / 10f, MinSpread, MaxSpread);
+            // A 0.2.0 leader never sends THRU, and its own desk doesn't fly through buildings either.
+            swarm.Through = false;
             swarm.Members.Clear();
             for (int i = 3; i < words.Length && swarm.Members.Count < MaxFollowers; i++)
             {
-                if (ulong.TryParse(words[i], out ulong member) && member != from && !swarm.Members.Contains(member))
+                if (words[i] == "THRU")
+                {
+                    swarm.Through = true;
+                }
+                else if (ulong.TryParse(words[i], out ulong member) && member != from && !swarm.Members.Contains(member))
                 {
                     swarm.Members.Add(member);
                 }

@@ -22,7 +22,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
-| [Desk Swarm](#desk-swarm) | 0.2.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
+| [Desk Swarm](#desk-swarm) | 0.3.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -57,7 +57,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
-| Desk Swarm 0.2.0 | Works, including 0.2.0's new flying and landing shapes |
+| Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -187,9 +187,11 @@ When the game crashes like this, it leaves a crash file behind. On the Mac where
 
 ### Desk Swarm
 
+> **Pre-release:** 0.3.0's flying through buildings works on your own, but followers flying through them with you hasn't been tried with other players yet.
+
 Your desk becomes a drone. Press **F11** or click the icon (a desk with rotors) to open the window.
 
-**Flying your desk.** Sit at your desk (any focus activity on open ground works too, but not benches or other seat spots), then click **Take off** in the window, or right-click the icon. Fly with your movement keys (WASD), **Space** to go up and **Shift** to go down, and hold right mouse to look around as usual. The desk turns to face where it's going and tips a little as it flies. It stays above the ground and water, but flies through walls and trees. While you fly, Space doesn't stand you up: click **Stop flying** first, then Space stands you up wherever you are (in the air, you fall). You don't need anyone else to fly.
+**Flying your desk.** Sit at your desk (any focus activity on open ground works too, but not benches or other seat spots), then click **Take off** in the window, or right-click the icon. Fly with your movement keys (WASD), **Space** to go up and **Shift** to go down, and hold right mouse to look around as usual. The desk turns to face where it's going and tips a little as it flies. It flies through buildings, bridges, fences and trees, but never down through the ground or water. To land on a roof or a bridge, untick **Fly through buildings** in the window: then anything solid stops your desk flying down into it. While you fly, Space doesn't stand you up: click **Stop flying** first, then Space stands you up wherever you are (in the air, you fall). You don't need anyone else to fly.
 
 **Swarms.** Click **Start a swarm** and other players with Desk Swarm see it in their window and can click **Join**. Each follower's desk flies to its own spot around you and stays there wherever you walk or fly, bobbing slightly like a drone. As the leader you pick the shape. Flying shapes:
 
@@ -212,11 +214,11 @@ Landing shapes bring the desks down to sit on the ground. While you walk or fly 
 - **Table**: two rows facing each other across a long table, with you in the middle of one
 - **Grid**: an even square grid like drones laid out before a show, everyone facing the same way, with you in the middle of the front row
 
-**Spread** spaces the desks out or packs them closer. Followers need to sit at their desk to fly to their spot (joining doesn't sit you down), and standing up drops them out of the formation until they sit again. **Leave** or **End swarm** stops it, and the desks stay where they are.
+**Spread** spaces the desks out or packs them closer. Your **Fly through buildings** switch goes for your followers too (theirs is greyed out while they follow), and landing shapes still land on the floor you're standing on, like a deck or a bridge. Followers need to sit at their desk to fly to their spot (joining doesn't sit you down), and standing up drops them out of the formation until they sit again. **Leave** or **End swarm** stops it, and the desks stay where they are.
 
-Everyone sees the flying, mod or not, because each player's game only ever moves their own character. Everyone in a swarm, leader included, needs the mod (0.2.0 or later for the shapes added in it). Focus time counts the same as normal while you fly. When you stand up away from where you sat down, the mod tells the game you've left the areas there (so pressing F later doesn't open a bench menu from across the map).
+Everyone sees the flying, mod or not, because each player's game only ever moves their own character. Everyone in a swarm, leader included, needs the mod (0.2.0 or later for the shapes added in it, and 0.3.0 for followers to fly through buildings). Focus time counts the same as normal while you fly. When you stand up away from where you sat down, the mod tells the game you've left the areas there (so pressing F later doesn't open a bench menu from across the map).
 
-`FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, and `StartFormation` picks the shape a new swarm starts with.
+`FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, `ThroughBuildings` is the window's **Fly through buildings** switch, and `StartFormation` picks the shape a new swarm starts with.
 
 ## Installing
 
