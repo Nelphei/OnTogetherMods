@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>NameDesigner</AssemblyName>
     <RootNamespace>NameDesigner</RootNamespace>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,5 +17,7 @@
     <!-- The preview: drawn with TextMeshPro, like the name tags. -->
     <Compile Include="..\Shared\TextBox.cs" Link="Shared\TextBox.cs" />
     <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
+    <!-- Designs the session name in Session Manager's window too, when that mod is installed. -->
+    <Compile Include="..\Shared\SessionNameLink.cs" Link="Shared\SessionNameLink.cs" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,7 @@
+## 0.2.3
+
+- Works with the new Session Manager mod. While you host a session, Session Manager's **Design** button opens the Session tab beside its window, and the session name you design goes into its name box. Click **Rename** there to use it. Without Session Manager, nothing changes.
+
 ## 0.2.2
 
 - In the Normal window mode (key 1), the icon and the window also hide and show with the game's eye button in the top-right corner, as they already did in split screen and Desk mode.

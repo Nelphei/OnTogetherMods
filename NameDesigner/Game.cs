@@ -116,11 +116,16 @@ namespace NameDesigner
 
         // ---- The session name ----
 
+        // A session name goes into one of two boxes: the main menu's Create Session box, or, in a
+        // world, Session Manager's name box (when that mod is installed and its window shows the
+        // Session tab; see Shared/SessionNameLink.cs).
+
         // The name box on the main menu's Create Session panel. The game creates the session with
         // whatever text it holds (MultiplayerManager.CreateLobby).
         public static TMP_InputField SessionField => Menu != null ? Menu.CreateSessionNameInputField : null;
 
-        public static bool SessionBoxShowing
+        // The main menu's Create Session box is showing.
+        public static bool MenuBoxShowing
         {
             get
             {
@@ -129,11 +134,24 @@ namespace NameDesigner
             }
         }
 
-        // Puts a name in the Create Session box. Setting the text from code isn't cut short by the
-        // box's letter limit (TMP_InputField.SetText), and it switches the Create button on or off
-        // like typing does (MainMenuUIController.OnCreateSessionNameInputFieldChanged).
+        // Either box is showing.
+        public static bool SessionBoxShowing => MenuBoxShowing || SessionNameLink.BoxShowing;
+
+        public static string ReadSession()
+        {
+            return MenuBoxShowing ? SessionField.text : SessionNameLink.ReadBox() ?? "";
+        }
+
+        // Puts a name in the box that's showing. In the Create Session box, setting the text from code
+        // isn't cut short by the box's letter limit (TMP_InputField.SetText), and it switches the
+        // Create button on or off like typing does (MainMenuUIController.OnCreateSessionNameInputFieldChanged).
+        // Session Manager's box only renames the session when the host clicks Rename.
         public static string WriteSession(string text)
         {
+            if (!MenuBoxShowing && SessionNameLink.WriteBox(text))
+            {
+                return text;
+            }
             TMP_InputField field = SessionField;
             if (field == null)
             {
@@ -147,6 +165,10 @@ namespace NameDesigner
 
         public static int SessionLimit()
         {
+            if (!MenuBoxShowing && SessionNameLink.BoxShowing)
+            {
+                return Limit(SessionNameLink.BoxLimit);
+            }
             TMP_InputField field = SessionField;
             return Limit(field != null ? field.characterLimit : 0);
         }
@@ -157,10 +179,14 @@ namespace NameDesigner
             return field != null && field.textComponent != null ? field.textComponent.font : null;
         }
 
-        // Where the Create Session box and its Create button are on screen, in 1080p units from
-        // the top-left (like PanelStack). False if they aren't showing.
+        // Where the Create Session box and its Create button are on screen (or Session Manager's
+        // window), in 1080p units from the top-left (like PanelStack). False if they aren't showing.
         public static bool SessionBoxBounds(out Rect bounds)
         {
+            if (!MenuBoxShowing && SessionNameLink.BoxShowing)
+            {
+                return SessionNameLink.BoxBounds(out bounds);
+            }
             bounds = default;
             TMP_InputField field = SessionField;
             if (field == null)

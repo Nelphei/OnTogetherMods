@@ -18,7 +18,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Focus Anywhere](#focus-anywhere) | 0.5.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, and pick which of its objects show | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.3, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.3, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
-| [Name Designer](#name-designer) | 0.2.2, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
+| [Name Designer](#name-designer) | 0.2.3, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
@@ -53,7 +53,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Focus Anywhere 0.5.0 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air hasn't been tried yet |
 | Desk Snap 0.2.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
-| Name Designer 0.2.2 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab and presets haven't been tried in the game yet |
+| Name Designer 0.2.3 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets and 0.2.3's designing in Session Manager's name box haven't been tried in the game yet |
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
@@ -149,12 +149,12 @@ The list hides when chat is minimised and when the game's UI is hidden (includin
 
 ### Name Designer
 
-> **Pre-release:** colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding the window with the game's eye button. The Session tab and presets haven't been tried in the game yet.
+> **Pre-release:** colouring your name works, and so do 0.2.0's colon colour, the icon, and hiding the window with the game's eye button. The Session tab, presets and 0.2.3's designing in Session Manager's name box haven't been tried in the game yet.
 
 Give every letter of your name its own colour. Press **F4** or click the palette icon to open the window. It has two tabs:
 
 - **Name** designs your player name. Click **Apply name** and everyone sees it, on your name tag, in chat and in the player list. On the main menu it's saved for the next time you join.
-- **Session** designs the name of a session you create. On the main menu the window opens by itself beside the Create Session box, and whatever you design goes straight into that box, so just click Create.
+- **Session** designs the name of a session you create. On the main menu the window opens by itself beside the Create Session box, and whatever you design goes straight into that box, so just click Create. While you host a session with [Session Manager](#session-manager) installed, its **Design** button opens this tab beside its window, and the name goes into its name box instead: click **Rename** there to use it.
 
 Type the name, then click letters to pick them (drag across or Shift-click for a run, Ctrl-click to add one, or pick none to colour the whole name) and choose a colour from the square and strip, a swatch, or a hex code. **Gradient** blends from the first picked letter's colour to the last one's, and **Rainbow** spreads a rainbow across them. The preview above the window shows the name in the game's own lettering.
 

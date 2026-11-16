@@ -122,6 +122,8 @@ namespace NameDesigner
             _instance = this;
             _presets.Load();
             _blocker = new ClickBlocker("NameDesigner ClickBlocker");
+            // Lets Session Manager's Design button open the Session tab.
+            SessionNameLink.SetDesigner(OpenForSessionManager);
         }
 
         private void OnDestroy()
@@ -130,6 +132,7 @@ namespace NameDesigner
             {
                 _instance = null;
                 IsMouseOver = false;
+                SessionNameLink.SetDesigner(null);
             }
             _blocker?.Destroy();
             _preview.Destroy();
@@ -169,10 +172,10 @@ namespace NameDesigner
                     }
                 }
 
-                // Typing in the game's own box shows up here too.
+                // Typing in the game's own box (or Session Manager's) shows up here too.
                 if (_open && _tab == Tab.Session && box)
                 {
-                    string text = Game.SessionField.text;
+                    string text = Game.ReadSession();
                     if (text != _sessionWritten)
                     {
                         ImportSession(text);
@@ -206,10 +209,27 @@ namespace NameDesigner
                     StartSessionSync();
                 }
             }
-            else if (S.OpenWithCreateSession.Value)
+            // Only the main menu's box opens the window by itself. Session Manager's opens it with its
+            // Design button.
+            else if (Game.MenuBoxShowing && S.OpenWithCreateSession.Value)
             {
                 Open(Tab.Session);
                 _autoOpened = true;
+            }
+        }
+
+        // Session Manager's Design button (Shared/SessionNameLink.cs): the Session tab, beside its
+        // window. Opened this way, the window closes again when Session Manager's name box does.
+        private void OpenForSessionManager()
+        {
+            if (!_open)
+            {
+                Open(Tab.Session);
+                _autoOpened = true;
+            }
+            else if (_tab != Tab.Session)
+            {
+                SwitchTab(Tab.Session);
             }
         }
 
@@ -301,7 +321,7 @@ namespace NameDesigner
         // designing, and a box with a name in it is read into the window.
         private void StartSessionSync()
         {
-            string text = Game.SessionField.text;
+            string text = Game.ReadSession();
             if (string.IsNullOrEmpty(text) && _session.Design.Count > 0)
             {
                 WriteSession();
@@ -1046,7 +1066,8 @@ namespace NameDesigner
             else
             {
                 string text = showStatus ? _status
-                    : Game.SessionBoxShowing ? "The Create Session box uses this name."
+                    : Game.MenuBoxShowing ? "The Create Session box uses this name."
+                    : SessionNameLink.BoxShowing ? "In Session Manager's name box. Click Rename there."
                     : "Open Create Session on the main menu to use this name.";
                 GUI.Label(row, text, showStatus ? _statusStyle : _tipStyle);
             }
