@@ -37,6 +37,7 @@ namespace OnTogetherMods.Shared
         public const int NameDesignerOrder = 50;
         public const int OutfitSlotsOrder = 60;
         public const int DeskSwarmOrder = 70;
+        public const int SessionManagerOrder = 80;
         public const int FocusAnywhereOrder = 90;
 
         // Screen width in the same 1080p units the windows are laid out in.
