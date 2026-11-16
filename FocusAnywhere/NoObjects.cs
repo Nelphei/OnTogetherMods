@@ -8,14 +8,17 @@ namespace FocusAnywhere
 {
     // Shows or hides the objects of the activity you're doing, following Choices (the objects window,
     // right-click the icon): the desk, placed objects, what's in your hands, headphones, the floater
-    // or water bed, and the sleep Zzz.
+    // or water bed, and the sleep Zzz. Also shows the objects of other activities that were added to
+    // this one (a book while lying with the laptop, a latte with anything...).
     //
     // The game switches an activity's desk, objects and floatie on in SetFocus, and each of them
     // carries PurrNet's NetworkReflection, which sends its on/off state from its owner to everyone. So
-    // switching them here shows for every player, with or without the mod. Standing up switches them
-    // all off as usual. Hiding the desk also clears IsDesk, so your pet doesn't sit on the hidden desk.
-    // Every player's game lifts and spins a player on a floatie only while the floatie shows
-    // (PlayerAnimationController.Update), so a hidden floatie means sitting lower, without the spin.
+    // switching them here shows for every player, with or without the mod. Every player already has
+    // every activity's objects, each fixed to a hand, the head or a spot in front of them, so an added
+    // object sits where its own activity has it. Standing up, or picking another activity, switches
+    // all of them off as usual (added ones too). Hiding the desk also clears IsDesk, so your pet doesn't
+    // sit on the hidden desk. Every player's game lifts and spins a player on a floatie only while the
+    // floatie shows (PlayerAnimationController.Update), so a hidden floatie means sitting lower, without the spin.
     // See reference/Assembly-CSharp/PlayerFocusController.cs (SetFocus, Update) and PetManager.cs (UpdatePetState).
     internal static class NoObjects
     {
@@ -23,12 +26,19 @@ namespace FocusAnywhere
         {
             public GameObject Obj;
             public Part Part;
-            public string Name;    // the game's object name, which exceptions go by
+            public Spot Spot;
+            public string Name;    // the game's object name, which exceptions and added objects go by
             public string Label;   // as the window shows it
+            public bool Added;     // another activity's object, added to this one
         }
 
-        // The objects the game showed for the current activity, whether they're showing now or not.
+        // The objects the game showed for the current activity, whether they're showing now or not,
+        // and the ones added to it.
         private static readonly List<Item> Items = new List<Item>();
+
+        // Every other activity's objects, which can be added to this one.
+        private static readonly List<Item> AddableItems = new List<Item>();
+
         private static PlayerFocusController _player;
         private static bool _captured;
         private static int _appliedVersion = -1;
@@ -36,6 +46,14 @@ namespace FocusAnywhere
 
         // For the window's "Right now" list. Empty while you're not focusing.
         public static IReadOnlyList<Item> Current => Items;
+
+        // For the window's "Add item" list. Empty while you're not focusing.
+        public static IReadOnlyList<Item> Addable => AddableItems;
+
+        // The activity you're doing ("Read/12": its category and animation number), which added objects
+        // are kept under. Within a category every animation is used once, so the two pick out one
+        // activity. Null while you're not focusing.
+        public static string Activity { get; private set; }
 
         // True while you're focusing (once this frame's Follow has run).
         public static bool Focusing => _captured;
@@ -80,6 +98,7 @@ namespace FocusAnywhere
             _player = focus;
             _captured = true;
             _appliedVersion = -1;
+            Activity = ActivityKey(focus);
 
             GameObject desk = Game.Desk(focus);
             if (desk != null && desk.activeSelf)
@@ -118,12 +137,40 @@ namespace FocusAnywhere
                         }
                     }
                 }
+
+                // Everything else can be added. Objects shared by several activities come up once.
+                foreach (FocusProps prop in props)
+                {
+                    if (prop._GameObjects == null)
+                    {
+                        continue;
+                    }
+                    foreach (GameObject obj in prop._GameObjects)
+                    {
+                        if (obj != null && Parts.CanAdd(obj.name) && !Items.Any(item => item.Obj == obj)
+                            && !AddableItems.Any(item => item.Obj == obj))
+                        {
+                            AddableItems.Add(new Item
+                            {
+                                Obj = obj,
+                                Part = Parts.Classify(obj, focus.transform),
+                                Spot = Parts.SpotOf(obj, focus.transform),
+                                Name = obj.name,
+                                Label = Parts.Label(obj.name),
+                                Added = true,
+                            });
+                        }
+                    }
+                }
+                AddableItems.Sort((a, b) => a.Spot != b.Spot ? a.Spot.CompareTo(b.Spot)
+                    : string.Compare(Parts.ShortLabel(a.Label), Parts.ShortLabel(b.Label), StringComparison.OrdinalIgnoreCase));
             }
 
             if (Plugin.Settings.DebugLog.Value)
             {
-                Plugin.Log.LogInfo("Activity objects: " + (Items.Count == 0 ? "none"
-                    : string.Join(", ", Items.Select(item => $"{item.Label} ({item.Name}, {item.Part})"))) + ".");
+                Plugin.Log.LogInfo($"Activity {Activity ?? "(unknown)"} objects: " + (Items.Count == 0 ? "none"
+                    : string.Join(", ", Items.Select(item => $"{item.Label} ({item.Name}, {item.Part})"))) +
+                    $". {AddableItems.Count} others can be added.");
             }
         }
 
@@ -138,10 +185,56 @@ namespace FocusAnywhere
             });
         }
 
-        // Shows and hides the captured objects as chosen. Everything shows while the mod is switched off.
+        // The category and the animation the game just set for it (EmoteSync reads it the same way
+        // right after SetFocus).
+        private static string ActivityKey(PlayerFocusController focus)
+        {
+            TextChannelManager channel = NetworkSingleton<TextChannelManager>.I;
+            PlayerAnimationController animation = channel != null ? channel.MainAnimationController : null;
+            if (animation == null)
+            {
+                return null;
+            }
+            return $"{focus.FocusType}/{animation.GetState()}";
+        }
+
+        // Brings the added objects in line with the choices for this activity: switches off the ones
+        // taken out, and puts the ones put in on the list.
+        private static void FollowAdded()
+        {
+            IReadOnlyList<string> wanted = Choices.Added(Activity);
+            for (int i = Items.Count - 1; i >= 0; i--)
+            {
+                Item item = Items[i];
+                if (item.Added && !wanted.Contains(item.Name))
+                {
+                    if (item.Obj != null && item.Obj.activeSelf)
+                    {
+                        item.Obj.SetActive(false);
+                    }
+                    Items.RemoveAt(i);
+                }
+            }
+            foreach (string name in wanted)
+            {
+                if (Items.Any(item => item.Name == name))
+                {
+                    continue;   // already on the list, or one of the activity's own objects
+                }
+                Item extra = AddableItems.FirstOrDefault(item => item.Name == name);
+                if (extra != null)
+                {
+                    Items.Add(extra);
+                }
+            }
+        }
+
+        // Shows and hides the captured objects as chosen. Added objects always show. While the mod is
+        // switched off, the activity's own objects all show and added ones don't.
         private static void Apply(PlayerFocusController focus)
         {
             _appliedVersion = Choices.Version;
+            FollowAdded();
             bool on = Plugin.Settings.Enabled.Value;
             bool deskHidden = false;
             int hidden = 0;
@@ -151,12 +244,12 @@ namespace FocusAnywhere
                 {
                     continue;
                 }
-                bool show = !on || Choices.Shown(item.Part, item.Name);
+                bool show = item.Added ? on : !on || Choices.Shown(item.Part, item.Name);
                 if (item.Obj.activeSelf != show)
                 {
                     item.Obj.SetActive(show);
                 }
-                if (!show)
+                if (!show && !item.Added)
                 {
                     hidden++;
                     deskHidden |= item.Part == Part.Desk;
@@ -179,13 +272,16 @@ namespace FocusAnywhere
 
             if (Plugin.Settings.DebugLog.Value)
             {
-                Plugin.Log.LogInfo($"Activity objects: {hidden} of {Items.Count} hidden.");
+                int added = Items.Count(item => item.Added);
+                Plugin.Log.LogInfo($"Activity objects: {hidden} of {Items.Count - added} hidden, {added} added.");
             }
         }
 
         private static void Forget()
         {
             Items.Clear();
+            AddableItems.Clear();
+            Activity = null;
             _player = null;
             _captured = false;
             _clearedIsDesk = false;

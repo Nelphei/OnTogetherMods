@@ -5,17 +5,24 @@ using BepInEx.Configuration;
 
 namespace FocusAnywhere
 {
-    // What shows while you focus: one switch per group (Part), plus exceptions for single objects,
-    // all kept in the settings file ([Objects]). The objects window changes them and NoObjects follows.
+    // What shows while you focus: one switch per group (Part), exceptions for single objects, and
+    // objects added to single activities, all kept in the settings file ([Objects]). The objects
+    // window changes them and NoObjects follows.
     internal static class Choices
     {
-        // The three quick setups at the top of the window. Each also clears the exceptions.
+        // The three quick setups at the top of the window. Each also clears the exceptions (but not
+        // the added objects, which belong to one activity each).
         public enum Preset { All, HandsOnly, None }
 
         private static Settings S => Plugin.Settings;
 
         // Object name -> shown. Only objects that don't follow their group.
         private static readonly Dictionary<string, bool> ExceptionList = new Dictionary<string, bool>();
+
+        // Activity ("Read/12", see NoObjects.ActivityKey) -> object names added to it, in the order added.
+        private static readonly Dictionary<string, List<string>> AddedLists = new Dictionary<string, List<string>>();
+
+        private static readonly IReadOnlyList<string> NoneAdded = new List<string>();
 
         // Goes up whenever something that changes what shows changes, so NoObjects knows to look again.
         public static int Version { get; private set; }
@@ -25,6 +32,7 @@ namespace FocusAnywhere
         public static void Init()
         {
             Load();
+            LoadAdded();
             foreach (Part part in Parts.All)
             {
                 Entry(part).SettingChanged += Changed;
@@ -37,7 +45,94 @@ namespace FocusAnywhere
                 }
                 Version++;
             };
+            S.Added.SettingChanged += (sender, args) =>
+            {
+                if (!_saving)
+                {
+                    LoadAdded();
+                }
+                Version++;
+            };
             S.Enabled.SettingChanged += Changed;
+        }
+
+        // ---- Objects added to an activity ----
+
+        public static IReadOnlyList<string> Added(string activity)
+        {
+            return activity != null && AddedLists.TryGetValue(activity, out List<string> names) ? names : NoneAdded;
+        }
+
+        public static bool IsAdded(string activity, string objectName)
+        {
+            return activity != null && AddedLists.TryGetValue(activity, out List<string> names) && names.Contains(objectName);
+        }
+
+        public static void SetAdded(string activity, string objectName, bool added)
+        {
+            if (activity == null || IsAdded(activity, objectName) == added)
+            {
+                return;
+            }
+            if (added)
+            {
+                if (!AddedLists.TryGetValue(activity, out List<string> names))
+                {
+                    names = new List<string>();
+                    AddedLists[activity] = names;
+                }
+                names.Add(objectName);
+            }
+            else
+            {
+                List<string> names = AddedLists[activity];
+                names.Remove(objectName);
+                if (names.Count == 0)
+                {
+                    AddedLists.Remove(activity);
+                }
+            }
+            SaveAdded();
+        }
+
+        // "Read/12: MD_Latte, MD_Headphone; Write/30: fx_Sleep"
+        private static void LoadAdded()
+        {
+            AddedLists.Clear();
+            foreach (string entry in (S.Added.Value ?? "").Split(';'))
+            {
+                int colon = entry.IndexOf(':');
+                if (colon <= 0)
+                {
+                    continue;
+                }
+                string activity = entry.Substring(0, colon).Trim();
+                List<string> names = entry.Substring(colon + 1).Split(',')
+                    .Select(name => name.Trim())
+                    .Where(name => name.Length > 0)
+                    .Distinct()
+                    .ToList();
+                if (activity.Length > 0 && names.Count > 0)
+                {
+                    AddedLists[activity] = names;
+                }
+            }
+        }
+
+        private static void SaveAdded()
+        {
+            _saving = true;
+            try
+            {
+                S.Added.Value = string.Join("; ", AddedLists
+                    .OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                    .Select(pair => $"{pair.Key}: {string.Join(", ", pair.Value)}"));
+            }
+            finally
+            {
+                _saving = false;
+            }
+            Version++;
         }
 
         private static void Changed(object sender, EventArgs args) => Version++;
@@ -136,7 +231,15 @@ namespace FocusAnywhere
         public static string Summary()
         {
             string groups = string.Join(", ", Parts.All.Select(part => $"{part} {(GroupShown(part) ? "shown" : "hidden")}"));
-            return ExceptionList.Count == 0 ? groups : $"{groups}, {ExceptionList.Count} exception(s)";
+            if (ExceptionList.Count > 0)
+            {
+                groups += $", {ExceptionList.Count} exception(s)";
+            }
+            if (AddedLists.Count > 0)
+            {
+                groups += $", objects added to {AddedLists.Count} activit{(AddedLists.Count == 1 ? "y" : "ies")}";
+            }
+            return groups;
         }
 
         private static ConfigEntry<bool> Entry(Part part)

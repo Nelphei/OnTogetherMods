@@ -24,6 +24,16 @@ namespace FocusAnywhere
         Effects,
     }
 
+    // Where an object sits, for the window's list of objects to add to an activity.
+    internal enum Spot
+    {
+        LeftHand,
+        RightHand,
+        Head,
+        SetDown,
+        Other,   // the jump rope and the sleep Zzz
+    }
+
     internal static class Parts
     {
         public static readonly Part[] All =
@@ -31,8 +41,74 @@ namespace FocusAnywhere
             Part.Desk, Part.Placed, Part.Hands, Part.Headphones, Part.Floaties, Part.Effects,
         };
 
+        public static readonly Spot[] Spots =
+        {
+            Spot.LeftHand, Spot.RightHand, Spot.Head, Spot.SetDown, Spot.Other,
+        };
+
         private const string Skeleton = "AvatarArmature";
         private const string HeadBone = "mixamorig:Head";
+        private const string LeftHandBone = "mixamorig:LeftHand";
+        private const string RightHandBone = "mixamorig:RightHand";
+
+        // Objects that can't be added to another activity. The easel only paints when the game's own
+        // painting activity starts it.
+        private static readonly HashSet<string> NotAddable = new HashSet<string> { "MD_Easle" };
+
+        public static bool CanAdd(string objectName) => !NotAddable.Contains(objectName);
+
+        // Which hand holds it, or whether it's on the head or set down.
+        public static Spot SpotOf(GameObject obj, Transform player)
+        {
+            if (obj.GetComponent<ParticleSystem>() != null)
+            {
+                return Spot.Other;
+            }
+            for (Transform t = obj.transform.parent; t != null && t != player; t = t.parent)
+            {
+                switch (t.name)
+                {
+                    case LeftHandBone: return Spot.LeftHand;
+                    case RightHandBone: return Spot.RightHand;
+                    case HeadBone: return Spot.Head;
+                    case Skeleton: return Spot.Other;
+                }
+            }
+            return Spot.SetDown;
+        }
+
+        public static string SpotName(Spot spot)
+        {
+            switch (spot)
+            {
+                case Spot.LeftHand: return "LEFT HAND";
+                case Spot.RightHand: return "RIGHT HAND";
+                case Spot.Head: return "HEAD";
+                case Spot.SetDown: return "SET DOWN";
+                default: return "OTHER";
+            }
+        }
+
+        // An object's name under its hand's heading, without the "Left" or "Right" the heading says.
+        public static string ShortLabel(string label)
+        {
+            foreach (string side in new[] { "Left ", "Right " })
+            {
+                if (label.StartsWith(side) && label.Length > side.Length)
+                {
+                    string rest = label.Substring(side.Length);
+                    return char.ToUpperInvariant(rest[0]) + rest.Substring(1);
+                }
+            }
+            foreach (string side in new[] { " (left)", " (right)" })
+            {
+                if (label.EndsWith(side))
+                {
+                    return label.Substring(0, label.Length - side.Length);
+                }
+            }
+            return label;
+        }
 
         // An activity object's group. If a game update renames the bones, objects fall back to Placed.
         public static Part Classify(GameObject obj, Transform player)
@@ -93,11 +169,12 @@ namespace FocusAnywhere
             }
         }
 
-        // The game's object names (from the Player prefab) as the window shows them.
+        // The game's object names (from the Player prefab) as the window shows them. Where the game has
+        // more than one of a thing (a laptop for the desk, one for the ground...), the name says which.
         private static readonly Dictionary<string, string> Labels = new Dictionary<string, string>
         {
             { "MD_Book", "Book" },
-            { "MD_Laptop", "Laptop" },
+            { "MD_Laptop", "Laptop (desk)" },
             { "MD_Tablet", "Tablet" },
             { "MD_TabletPen", "Tablet pen" },
             { "MD_Console", "Game controller" },
@@ -117,7 +194,7 @@ namespace FocusAnywhere
             { "MD_Easle", "Easel" },
             { "MD_WatercolorBrush", "Watercolour brush" },
             { "MD_WatercolorSetup", "Watercolour set" },
-            { "MD_Drawing0Pencil", "Pencil" },
+            { "MD_Drawing0Pencil", "Drawing pencil" },
             { "MD_DrawingMiniCanvas", "Sketchpad" },
             { "MD_Knit_L", "Left knitting needle" },
             { "MD_Knit_R", "Right knitting needle" },
@@ -127,34 +204,34 @@ namespace FocusAnywhere
             { "MD_Manga", "Manga" },
             { "MD_Dactilo", "Typewriter" },
             { "MD_Write_NotePAd", "Notepad" },
-            { "MD_Write_Tablet", "Tablet" },
+            { "MD_Write_Tablet", "Tablet (writing)" },
             { "MD_Sweep", "Broom" },
             { "MD_VacuumCleaner", "Vacuum cleaner" },
             { "MD_IroinTable", "Ironing board" },
             { "MD_Iron", "Iron" },
             { "MD_Marshmallow", "Marshmallow stick" },
             { "MD_CharSheet", "Character sheet" },
-            { "MD_CharSheetL", "Character sheet" },
+            { "MD_CharSheetL", "Character sheet 2" },
             { "MD_Treadmill", "Treadmill" },
             { "MD_Cellphone", "Phone" },
-            { "MD_CellphoneBrowse", "Phone" },
-            { "MD_LaptopGround", "Laptop" },
+            { "MD_CellphoneBrowse", "Phone (browsing)" },
+            { "MD_LaptopGround", "Laptop (ground)" },
             { "fx_Sleep", "Zzz" },
-            { "fx_SleepDesk", "Zzz" },
-            { "MD_BedLaptop", "Laptop" },
-            { "MD_FloaterLaptop", "Laptop" },
-            { "MD_WaterBook", "Book" },
-            { "MD_WaterManga", "Manga" },
-            { "MD_WaterReader", "E-reader" },
-            { "MD_WaterPhone", "Phone" },
+            { "fx_SleepDesk", "Zzz (desk)" },
+            { "MD_BedLaptop", "Laptop (water bed)" },
+            { "MD_FloaterLaptop", "Laptop (floater)" },
+            { "MD_WaterBook", "Book (floating)" },
+            { "MD_WaterManga", "Manga (floating)" },
+            { "MD_WaterReader", "E-reader (floating)" },
+            { "MD_WaterPhone", "Phone (floating)" },
             { "MD_Coconut", "Coconut" },
-            { "MD_WaterPencil", "Pencil" },
-            { "MD_WaterNotebook", "Notebook" },
+            { "MD_WaterPencil", "Pencil (floating)" },
+            { "MD_WaterNotebook", "Notebook (water bed)" },
             { "MD_Watermelon", "Watermelon" },
-            { "MD_GroundLaptop_S", "Laptop" },
+            { "MD_GroundLaptop_S", "Laptop (ground, low)" },
             { "MD_Bento", "Bento box" },
             { "MD_Onigiri", "Onigiri" },
-            { "MD_LaptopBrowsingDesk", "Laptop" },
+            { "MD_LaptopBrowsingDesk", "Laptop (browsing)" },
         };
 
         // An object's name in the window. Objects a game update adds get a tidied-up version of their

@@ -10,7 +10,8 @@ namespace FocusAnywhere
 {
     // The objects window (right-click the icon): which of an activity's objects show while you focus.
     // Three quick setups, a switch per group (Choices), exceptions for the objects of the activity
-    // you're doing right now, and two of the game's own settings that only change your screen.
+    // you're doing right now, other activities' objects to add to it ("Add item"), and two of the
+    // game's own settings that only change your screen.
     // It sits in the bottom window stack (Shared/PanelStack.cs), drawn with Unity's immediate-mode
     // GUI at 1080p and scaled to the screen, and it shows only while the icon row does (in the world,
     // no game menu open), so it never sits over the game's Settings menu.
@@ -28,6 +29,14 @@ namespace FocusAnywhere
         private const float ButtonGap = 6f;
         private const float ToggleHeight = 18f;
         private const float ResetWidth = 46f;
+        private const float AddButtonWidth = 104f;
+        private const float AddedTagWidth = 60f;
+
+        // The "Add item" list: two columns in a box that scrolls once it's taller than this.
+        private const float PickRowHeight = 20f;
+        private const float MaxPickerHeight = 250f;
+        private const float ScrollbarWidth = 16f;
+        private const float ColumnGap = 6f;
 
         // The game's scenes by build index: 1 is the main menu, 2 is the world.
         private const int WorldScene = 2;
@@ -41,6 +50,10 @@ namespace FocusAnywhere
 
         private bool _open;
         private bool _canShow;
+
+        // The "Add item" list is open, and how far it's scrolled.
+        private bool _picking;
+        private Vector2 _pickScroll;
 
         // Clicks from OnGUI, acted on in Update.
         private readonly List<Action> _clicks = new List<Action>();
@@ -62,6 +75,7 @@ namespace FocusAnywhere
         private GUIStyle _dimRightStyle;
         private GUIStyle _tagStyle;
         private GUIStyle _toggleStyle;
+        private GUIStyle _pickStyle;
         private GUIStyle _buttonStyle;
         private GUIStyle _pickedStyle;
         private GUIStyle _resetStyle;
@@ -109,6 +123,12 @@ namespace FocusAnywhere
                 _clicks.Clear();
             }
 
+            // The list belongs to the activity you're doing, so it closes when you stand up.
+            if (!NoObjects.Focusing)
+            {
+                _picking = false;
+            }
+
             _canShow = false;
             if (_open && SceneManager.GetActiveScene().buildIndex == WorldScene)
             {
@@ -154,11 +174,18 @@ namespace FocusAnywhere
         private void DrawWindow()
         {
             // The activity's own objects, for the "Right now" list. The desk, floaties and Zzz have
-            // their own switch above it.
+            // their own switch above it. Then the objects added to it.
             List<NoObjects.Item> items = NoObjects.Current
-                .Where(item => item.Part == Part.Placed || item.Part == Part.Hands || item.Part == Part.Headphones)
+                .Where(item => !item.Added && (item.Part == Part.Placed || item.Part == Part.Hands || item.Part == Part.Headphones))
                 .ToList();
-            int nowRows = Mathf.Max(1, items.Count);
+            List<NoObjects.Item> added = NoObjects.Current.Where(item => item.Added).ToList();
+            int nowRows = Mathf.Max(1, items.Count + added.Count);
+            string activity = NoObjects.Activity;
+            bool canAdd = NoObjects.Focusing && activity != null && NoObjects.Addable.Count > 0;
+            bool picking = _picking && canAdd;
+            List<KeyValuePair<Spot, List<NoObjects.Item>>> groups = picking ? PickGroups() : null;
+            float pickContent = picking ? PickContentHeight(groups) : 0f;
+            float pickHeight = Mathf.Min(pickContent, MaxPickerHeight);
             bool? spin = Game.FloatieSpin;
             bool? turning = Game.CameraTurning;
             int screenRows = (spin.HasValue ? 1 : 0) + (turning.HasValue ? 1 : 0);
@@ -166,6 +193,8 @@ namespace FocusAnywhere
             float height = Pad + HeaderHeight + Gap + RowHeight + Gap + ButtonHeight
                 + SectionGap + Rows(Parts.All.Length)
                 + SectionGap + SectionHeight + Rows(nowRows)
+                + (canAdd ? ButtonGap + ButtonHeight : 0f)
+                + (picking ? Gap + pickHeight : 0f)
                 + (screenRows > 0 ? SectionGap + SectionHeight + Rows(screenRows) : 0f)
                 + Pad;
 
@@ -185,11 +214,11 @@ namespace FocusAnywhere
 
             if (S.Enabled.Value)
             {
-                GUI.Label(new Rect(x, y, w, RowHeight), "Ticked = shown. Everyone sees what you hide.", _noteStyle);
+                GUI.Label(new Rect(x, y, w, RowHeight), "Ticked = shown. Everyone sees your changes.", _noteStyle);
             }
             else
             {
-                GUI.Label(new Rect(x, y, w, RowHeight), "Focus Anywhere is off, so everything shows.", _offStyle);
+                GUI.Label(new Rect(x, y, w, RowHeight), "Focus Anywhere is off, so the game's own objects show.", _offStyle);
             }
             y += RowHeight + Gap;
 
@@ -207,7 +236,7 @@ namespace FocusAnywhere
             y += SectionGap - Gap;
             GUI.Label(new Rect(x, y, w, SectionHeight), "RIGHT NOW", _sectionStyle);
             y += SectionHeight;
-            if (items.Count == 0)
+            if (items.Count + added.Count == 0)
             {
                 string message = NoObjects.Focusing
                     ? "This activity has no objects of its own."
@@ -219,6 +248,33 @@ namespace FocusAnywhere
             {
                 ObjectRow(new Rect(x, y, w, RowHeight), item);
                 y += RowHeight + Gap;
+            }
+            foreach (NoObjects.Item item in added)
+            {
+                AddedRow(new Rect(x, y, w, RowHeight), item, activity);
+                y += RowHeight + Gap;
+            }
+
+            if (canAdd)
+            {
+                y += ButtonGap - Gap;
+                if (GUI.Button(new Rect(x, y, AddButtonWidth, ButtonHeight), picking ? "Done" : "Add item...", _buttonStyle))
+                {
+                    bool open = !picking;
+                    _clicks.Add(() =>
+                    {
+                        _picking = open;
+                        _pickScroll = Vector2.zero;
+                    });
+                }
+                string hint = picking ? "Ticked = added to this activity" : "from other activities";
+                GUI.Label(new Rect(x + AddButtonWidth + 8f, y, w - AddButtonWidth - 8f, ButtonHeight), hint, _dimStyle);
+                y += ButtonHeight + Gap;
+            }
+            if (picking)
+            {
+                DrawPicker(new Rect(x, y, w, pickHeight), groups, pickContent, activity);
+                y += pickHeight + Gap;
             }
 
             if (screenRows > 0)
@@ -303,6 +359,78 @@ namespace FocusAnywhere
             }
         }
 
+        // An object added to this activity: ticked, and unticking takes it off again.
+        private void AddedRow(Rect r, NoObjects.Item item, string activity)
+        {
+            string key = item.Name;
+            ToggleRow(new Rect(r.x, r.y, r.width - AddedTagWidth, r.height), true, item.Label, null,
+                now => Choices.SetAdded(activity, key, now));
+            GUI.Label(new Rect(r.x, r.y, r.width, r.height), "added", _tagStyle);
+        }
+
+        // The objects that can be added, under a heading for each hand, the head, set down and the rest.
+        private static List<KeyValuePair<Spot, List<NoObjects.Item>>> PickGroups()
+        {
+            var groups = new List<KeyValuePair<Spot, List<NoObjects.Item>>>();
+            foreach (Spot spot in Parts.Spots)
+            {
+                List<NoObjects.Item> list = NoObjects.Addable.Where(item => item.Spot == spot).ToList();
+                if (list.Count > 0)
+                {
+                    groups.Add(new KeyValuePair<Spot, List<NoObjects.Item>>(spot, list));
+                }
+            }
+            return groups;
+        }
+
+        private static float PickRows(int count) => count * PickRowHeight + Mathf.Max(0, count - 1) * Gap;
+
+        private static float PickContentHeight(List<KeyValuePair<Spot, List<NoObjects.Item>>> groups)
+        {
+            float height = 0f;
+            foreach (KeyValuePair<Spot, List<NoObjects.Item>> group in groups)
+            {
+                height += SectionHeight + PickRows((group.Value.Count + 1) / 2) + SectionGap;
+            }
+            return Mathf.Max(0f, height - SectionGap);
+        }
+
+        private void DrawPicker(Rect r, List<KeyValuePair<Spot, List<NoObjects.Item>>> groups, float contentHeight, string activity)
+        {
+            bool scrolls = contentHeight > r.height;
+            var content = new Rect(0f, 0f, r.width - (scrolls ? ScrollbarWidth : 0f), contentHeight);
+            _pickScroll = GUI.BeginScrollView(r, _pickScroll, content);
+            try
+            {
+                float column = (content.width - ColumnGap) / 2f;
+                float y = 0f;
+                foreach (KeyValuePair<Spot, List<NoObjects.Item>> group in groups)
+                {
+                    GUI.Label(new Rect(0f, y, content.width, SectionHeight), Parts.SpotName(group.Key), _sectionStyle);
+                    y += SectionHeight;
+                    bool hand = group.Key == Spot.LeftHand || group.Key == Spot.RightHand;
+                    for (int i = 0; i < group.Value.Count; i++)
+                    {
+                        NoObjects.Item item = group.Value[i];
+                        var cell = new Rect((i % 2) * (column + ColumnGap), y + (i / 2) * (PickRowHeight + Gap), column, PickRowHeight);
+                        string label = " " + (hand ? Parts.ShortLabel(item.Label) : item.Label);
+                        bool on = Choices.IsAdded(activity, item.Name);
+                        bool now = GUI.Toggle(cell, on, label, _pickStyle);
+                        if (now != on)
+                        {
+                            string key = item.Name;
+                            _clicks.Add(() => Choices.SetAdded(activity, key, now));
+                        }
+                    }
+                    y += PickRows((group.Value.Count + 1) / 2) + SectionGap;
+                }
+            }
+            finally
+            {
+                GUI.EndScrollView();
+            }
+        }
+
         private void MakeStyles()
         {
             _boxStyle = PanelStack.MakeStyle(TextAnchor.UpperLeft);
@@ -317,6 +445,7 @@ namespace FocusAnywhere
             _tagStyle = Label(13, new Color32(0xFF, 0xD9, 0x66, 0xFF), TextAnchor.MiddleRight);
 
             _toggleStyle = new GUIStyle(GUI.skin.toggle) { fontSize = 14, wordWrap = false, clipping = TextClipping.Clip };
+            _pickStyle = new GUIStyle(_toggleStyle) { fontSize = 13 };
             _buttonStyle = new GUIStyle(GUI.skin.button) { fontSize = 14 };
             // The preset the switches match looks pressed in.
             _pickedStyle = new GUIStyle(_buttonStyle);

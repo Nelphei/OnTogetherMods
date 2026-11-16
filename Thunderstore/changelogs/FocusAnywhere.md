@@ -1,3 +1,9 @@
+## 0.6.0
+
+- The objects window has an **Add item...** button while you focus. It lists the objects of every other activity by where they sit (left hand, right hand, head, set down, other), and ticking one adds it to the activity you're doing: a book while you lie down with the laptop (untick the laptop to swap them), a latte with anything. Each object sits where its own activity puts it, so some fit the pose better than others. Added objects are remembered for that activity and show every time you do it, and other players see them even without the mod. Untick one to take it off.
+- Where the game has more than one of an object, the window now says which: the laptop for the desk, the ground, the water bed or the floater, the phone for browsing, and so on.
+- Known issue: sleeping at your desk with the desk hidden, the Zzz don't show, even with their box ticked. Show the desk to get them back.
+
 ## 0.5.0
 
 - Right-clicking the icon now opens a small window to pick which objects show while you focus, instead of hiding them all. It has **Show all**, **Hands only** and **Hide all** buttons, a box for each group (desk, placed objects, what's in your hands, headphones, floater and water bed, sleep Zzz), and a **Right now** list to make an exception for any object of the activity you're doing. It also has the game's own floatie spin and camera turning settings. Changes work straight away, also while you're focusing, and other players see what you hide.

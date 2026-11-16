@@ -15,7 +15,7 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Teleport Spots](#teleport-spots) | 0.2.3, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.3 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.3 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
-| [Focus Anywhere](#focus-anywhere) | 0.5.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, and pick which of its objects show | Only you (others see your activity without the mod) |
+| [Focus Anywhere](#focus-anywhere) | 0.6.0, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, pick which of its objects show, and add objects from other activities | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.3, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.3, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.3, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
@@ -33,7 +33,7 @@ Each mod you've installed puts a small pixel-art icon in a row in the bottom-rig
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
-- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, Outfit Slots' icon to put on your next outfit, Desk Swarm's icon to take off or stop flying, or Focus Anywhere's icon to choose which objects show while you focus.
+- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, Outfit Slots' icon to put on your next outfit, Desk Swarm's icon to take off or stop flying, or Focus Anywhere's icon to choose which objects show (or add others) while you focus.
 - A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
 
 Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
@@ -51,7 +51,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Teleport Spots 0.2.3 | **Pre-release.** Teleporting works on your own screen, and so do 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.1's fix for keeping spots after a restart and 0.1.2's fix for where other players see you land haven't been tried yet |
 | Song Player 0.2.3 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening |
 | Trace Overlay 0.2.3 | Works, including the icon and hiding with the game's eye button in every window mode |
-| Focus Anywhere 0.5.0 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air hasn't been tried yet |
+| Focus Anywhere 0.6.0 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air and 0.6.0's **Add item...** list haven't been tried yet. Known issue: the Zzz don't show while sleeping at a hidden desk |
 | Desk Snap 0.2.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.3 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets and 0.2.3's designing in Session Manager's name box haven't been tried in the game yet |
@@ -108,7 +108,7 @@ Put `.png` or `.jpg` files in `Pictures\On-Together\Trace`, then start drawing o
 
 ### Focus Anywhere
 
-> **Pre-release:** 0.2.0 lets you focus in the air, which hasn't been tried in the game yet.
+> **Pre-release:** 0.2.0 lets you focus in the air and 0.6.0 adds the **Add item...** list. Neither has been tried in the game yet.
 
 Press the game's usual focus key wherever you are: on grass, on rocks, at the music hill, next to a seat someone else is using, or in the air. In the air you stop where you are and focus floating there. Closing the menu without picking, or standing up, lets you fall again. The focus menu also lists every activity in the game, not just the ones for where you're standing:
 
@@ -123,11 +123,14 @@ Right-click the mod's icon to open a small window where you pick which of an act
 - **Show all**, **Hands only** and **Hide all** set everything in one click.
 - One box for each group: the desk, placed objects (laptop, tablet, easel, ironing board, treadmill...), what's in your hands (book, phone, pens and brushes, iron, game controller...), headphones, the floater and water bed, and the sleep Zzz. Hiding the desk sends your pet to your head. Hiding the floater or water bed means you sit lower, at swimming height, and don't spin, because every player's game only lifts and spins you while the floatie shows.
 - **Right now** lists the objects of the activity you're doing, so one of them can go against its group, like keeping the ironing board while other placed objects are hidden. **reset** puts it back with its group. The choice counts in every activity that uses that object (the laptop, the headphones and the pencil come up in several).
+- **Add item...** (while you focus) lists every other activity's objects by where they sit: left hand, right hand, head, set down, and the rest (jump rope, Zzz). Tick one to add it to the activity you're doing, like a book while you lie down with the laptop (untick the laptop to swap them) or a latte with anything. An added object sits where its own activity puts it, in the same hand or the same spot in front of you, so some fit the pose better than others. It's remembered for that activity, shows whatever the boxes above say, and other players see it. Untick it to take it off. The easel can't be added, because it only paints in its own activity.
 - **Only on your screen** has two of the game's own settings: whether floaties spin (everyone's, as you see them) and whether the camera turns by itself while you focus.
 
-Changes work straight away, also while you're focusing. Other players see what you hide, even without the mod, and your choices are remembered between games. Right-click the icon again to close the window.
+Changes work straight away, also while you're focusing. Other players see what you hide or add, even without the mod, and your choices are remembered between games. Right-click the icon again to close the window.
 
-Click the mod's icon to switch it all off, for example to use BlueSage QoL's Focus Anywhere instead. The focus menu goes back to the game's own activities as soon as you're not focusing, and every object shows again. `AllActivities`, `AnyGround` and `MidAir` in the settings file turn each part off. `MidAir` needs `AnyGround`. The `[Objects]` settings are what the window changes.
+**Known issue:** sleeping at your desk with the desk hidden, the Zzz don't show, even with their box ticked. Show the desk to get them back.
+
+Click the mod's icon to switch it all off, for example to use BlueSage QoL's Focus Anywhere instead. The focus menu goes back to the game's own activities as soon as you're not focusing, and every object shows again. `AllActivities`, `AnyGround` and `MidAir` in the settings file turn each part off. `MidAir` needs `AnyGround`. The `[Objects]` settings are what the window changes. While it's switched off, added objects don't show.
 
 ### Desk Snap
 

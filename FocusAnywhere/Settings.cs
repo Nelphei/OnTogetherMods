@@ -22,6 +22,7 @@ namespace FocusAnywhere
         public readonly ConfigEntry<bool> ShowFloaties;
         public readonly ConfigEntry<bool> ShowEffects;
         public readonly ConfigEntry<string> Exceptions;
+        public readonly ConfigEntry<string> Added;
 
         public readonly ConfigEntry<bool> ShowIcon;
         public readonly ConfigEntry<bool> DebugLog;
@@ -66,6 +67,11 @@ namespace FocusAnywhere
             Exceptions = config.Bind("Objects", "Exceptions", "",
                 "Objects that don't follow their group, set in the window's \"Right now\" list. Each is the game's " +
                 "object name and show or hide, separated by commas, for example MD_IroinTable:show, MD_Iron:hide.");
+            Added = config.Bind("Objects", "Added", "",
+                "Objects added to an activity with the window's \"Add item\" button. They show whenever you do " +
+                "that activity, whatever the boxes above say, and everyone sees them. Each activity is its " +
+                "category and animation number, then a colon and the game's object names; activities are " +
+                "separated by semicolons, for example Read/12: MD_Latte, MD_Headphone; Write/30: fx_Sleep.");
 
             ShowIcon = config.Bind("Display", "ShowIcon", true,
                 "Show an icon in the row of mod icons at the bottom-right, with a green dot while the mod is on. " +
