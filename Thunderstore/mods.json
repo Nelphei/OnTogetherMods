@@ -54,6 +54,10 @@
     "DeskSwarm": {
       "name": "Desk_Swarm",
       "description": "Fly your desk like a drone (F11). Start a swarm and friends' desks fly around you in 10 shapes (ring, heart, Ferris wheel...) or land in 5 (row, grid, circle...). Everyone sees it. Only you need it to fly; everyone in a swarm needs it."
+    },
+    "SessionManager": {
+      "name": "Session_Manager",
+      "description": "Tools for hosting a session: rename it, change how many can join (past 16), lock it or make it private, kick or ban players (an hour, a day, a week or for good), and answer join requests. Only the host needs it."
     }
   }
 }

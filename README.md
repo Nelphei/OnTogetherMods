@@ -1,6 +1,6 @@
 # On-Together Mods
 
-Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the cozy co-working game by GigaPuff. They're client-side and cosmetic: none of them touch tickets, the shop, achievements or other players' saves.
+Small [BepInEx 5](https://github.com/BepInEx/BepInEx) mods for On-Together, the cozy co-working game by GigaPuff. They're client-side, and none of them touch tickets, the shop, achievements or other players' saves. Most are cosmetic; Session Manager gives a session's host tools to run it.
 
 This is an unofficial fan project, not made or supported by GigaPuff.
 
@@ -23,12 +23,13 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 | [Desk Swarm](#desk-swarm) | 0.3.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
+| [Session Manager](#session-manager) | 0.1.0, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide and a desk with rotors for Desk Swarm. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm and a crown for Session Manager. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -58,6 +59,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
+| Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -226,6 +228,25 @@ Landing shapes bring the desks down to sit on the ground. While you walk or fly 
 Everyone sees the flying, mod or not, because each player's game only ever moves their own character. Everyone in a swarm, leader included, needs the mod (0.2.0 or later for the shapes added in it, and 0.3.0 for followers to fly through buildings). Focus time counts the same as normal while you fly. When you stand up away from where you sat down, the mod tells the game you've left the areas there (so pressing F later doesn't open a bench menu from across the map).
 
 `FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, `ThroughBuildings` is the window's **Fly through buildings** switch, and `StartFormation` picks the shape a new swarm starts with.
+
+### Session Manager
+
+> **Pre-release:** not tried in the game yet. Sessions bigger than 16 players haven't been tried at all.
+
+Tools for running a session you host. Click the crown icon to open the window. It's greyed out unless you're the host, and players who join your session don't need the mod. The window has four tabs:
+
+- **Session** changes the session while it's running: its name, how many players it takes (Shift-click the arrows to jump by 10), **Public** (in everyone's session list) or **Private** (only friends and invites see it), **Ask to join**, and the game's tags (Focus, Mature, Chill, Break, Modded). Changes reach new players straight away, and everyone already in the session stays. **Locked** lets no one new in until you untick it. **Invite friends** opens Steam's invite window. **Save setup** remembers the name, size, listing, joining and tags, and **Use saved** puts them all back in a later session.
+- **Players** lists who's here and for how long, and who has left this session. **Kick** sends a player back to the main menu, and they can join again. **Ban** keeps them out for 1 hour, 1 day, 1 week or forever (pick at the top): the game turns them away and turns down their requests to join. You can also ban someone who has already left, which the game can't do. Both buttons ask "Sure?" first.
+- **Requests** lists everyone asking to join (with **Ask to join** on), with **Accept** and **Reject** for each, and **Accept all**. The game's own popup still shows them one at a time too. **Let Steam friends in** accepts your friends straight away, and **Away** turns everyone down while you're busy. A locked session turns requests down too.
+- **Bans** lists everyone you've banned, with how long each ban has left and **Unban**. Click a name to see when they were banned, copy their Steam ID, open their profile, or write a note to yourself. Timed bans end by themselves, even while you're on the main menu.
+
+The game has no "you were kicked" screen, so a kicked player sees the game's "banned" screen, though they can join again straight away. A player whose game doesn't leave when told to (a modded game can ignore it) is disconnected a few seconds later.
+
+**Bigger sessions.** The game's Create Session panel stops at 16 players. With Session Manager its arrows go up to 128 (Shift-click jumps by 10), and so does the Session tab. Sessions bigger than 16 haven't been tried: the game, its voice chat or its text chat may struggle with that many players. If BlueSage's (or officerballs') **PlayerLimitLift** is installed, Session Manager leaves the Create Session panel to it, and its Session tab goes as high as PlayerLimitLift does.
+
+**With [Name Designer](#name-designer)** installed, the Session tab has a **Design** button next to the name. It opens Name Designer beside the window, and the name you design goes straight into the name box. Click **Rename** to use it.
+
+Session Manager uses the game's own ban list, so bans made in the game's player list (or with BlueSage QoL) show up here too, and the other way round. Ban lengths and notes, and your saved setup, are kept in `BepInEx\config\SessionManager.json`. In the settings file, `MaxPlayers` sets the biggest session (16 to 249), `SizeStep` the Shift-click jump, `LetFriendsIn` is the Requests tab's switch, `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key), and `Icon` swaps the crown for one of two other pictures: `Friends` (a crown over three friends) or `Clipboard` (a guest list).
 
 ## Installing
 
