@@ -56,5 +56,62 @@ namespace FocusAnywhere
         public static void SetWaterProp(PlayerFocusController focus, WaterPropType prop) => SetWaterPropMethod(focus, prop);
 
         public static void SetIsDesk(PlayerFocusController focus, bool value) => SetIsDeskMethod(focus, value);
+
+        // ---- The game's own settings for what only you see (its Settings menu) ----
+        // Floatie spin: PlayerAnimationController.Update reads DataManager's copy every frame, for every
+        // player. Camera turning while focusing: PlayerMovementController.CameraMoveOnFocusRoutine reads
+        // SettingsController's copy, which the Settings menu remakes from DataManager's each time it
+        // opens. Both copies are changed, then saved the way the menu's Apply button does.
+        // Only called in the world, where MonoSingleton.I is a stored instance.
+
+        public static bool? FloatieSpin
+        {
+            get
+            {
+                SettingsData data = SavedSettings();
+                return data != null ? data.IsFloaterRotate : (bool?)null;
+            }
+        }
+
+        public static bool? CameraTurning
+        {
+            get
+            {
+                SettingsData data = SavedSettings();
+                return data != null ? !data.IsAutoRotateOff : (bool?)null;
+            }
+        }
+
+        public static void SetFloatieSpin(bool on)
+        {
+            ChangeSettings(data => data.IsFloaterRotate = on);
+        }
+
+        public static void SetCameraTurning(bool on)
+        {
+            ChangeSettings(data => data.IsAutoRotateOff = !on);
+        }
+
+        private static SettingsData SavedSettings()
+        {
+            DataManager manager = MonoSingleton<DataManager>.I;
+            return manager != null ? manager.SettingsData : null;
+        }
+
+        private static void ChangeSettings(Action<SettingsData> change)
+        {
+            DataManager manager = MonoSingleton<DataManager>.I;
+            if (manager == null || manager.SettingsData == null)
+            {
+                return;
+            }
+            change(manager.SettingsData);
+            SettingsController menu = MonoSingleton<SettingsController>.I;
+            if (menu != null && menu.SettingsData != null)
+            {
+                change(menu.SettingsData);
+            }
+            manager.SaveSettings();
+        }
     }
 }

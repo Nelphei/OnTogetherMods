@@ -1,3 +1,9 @@
+## 0.5.0
+
+- Right-clicking the icon now opens a small window to pick which objects show while you focus, instead of hiding them all. It has **Show all**, **Hands only** and **Hide all** buttons, a box for each group (desk, placed objects, what's in your hands, headphones, floater and water bed, sleep Zzz), and a **Right now** list to make an exception for any object of the activity you're doing. It also has the game's own floatie spin and camera turning settings. Changes work straight away, also while you're focusing, and other players see what you hide.
+- If you had the desk and objects hidden in 0.4.0, they stay hidden. The floater and Zzz still show.
+- Hiding objects at a classroom seat no longer moves your pet off the classroom desk.
+
 ## 0.4.0
 
 - Right-click the icon to do focus activities without their desk or objects: sleep at a desk with no desk, type with no laptop, paint with no easel. Effects like the sleep Zzz stay. Other players see it too, even without the mod. It works while you're already focusing, and it's remembered between games. Right-click again to bring them back.

@@ -11,7 +11,7 @@ namespace FocusAnywhere
     {
         public const string PluginGuid = "nelphei.ontogether.focusanywhere";
         public const string PluginName = "Focus Anywhere";
-        public const string PluginVersion = "0.4.0";
+        public const string PluginVersion = "0.5.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -22,20 +22,23 @@ namespace FocusAnywhere
         {
             Log = Logger;
             Settings = new Settings(Config);
+            Choices.Init();
 
             new Harmony(PluginGuid).PatchAll();
             // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
             // mod loads first.
             IconBar.Patch();
 
-            // The icon runs on its own object so it survives scene loads.
+            // The icon and the objects window run on their own object so they survive scene loads.
             _host = new GameObject("FocusAnywhere");
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<IconButton>();
+            _host.AddComponent<ObjectsWindow>();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. On: {Settings.Enabled.Value}, every activity: " +
-                $"{Settings.AllActivities.Value}, any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}, objects off: {Settings.HideObjects.Value}.");
+                $"{Settings.AllActivities.Value}, any ground: {Settings.AnyGround.Value}, mid-air: {Settings.MidAir.Value}. " +
+                $"Objects: {Choices.Summary()}.");
         }
 
         private void OnDestroy()

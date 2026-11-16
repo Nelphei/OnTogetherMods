@@ -29,7 +29,8 @@ namespace FocusAnywhere
             }
             try
             {
-                // Hides or brings back the desk and objects when the icon switches them (or the mod).
+                // Hides or brings back the activity's objects when the objects window (or the icon)
+                // changes what shows.
                 NoObjects.Follow(__instance);
 
                 if (!Plugin.Settings.Enabled.Value)
@@ -239,6 +240,9 @@ namespace FocusAnywhere
             }
         }
 
+        // Before NoObjectsSetFocusPatch (Priority.First), so the floater shown here is one of the
+        // activity's objects the objects window can hide.
+        [HarmonyPriority(Priority.First + 1)]
         private static void Postfix(PlayerFocusController __instance, int __state)
         {
             if (__state < 0 || __state >= ActivityList.LandWaterProps.Count || !__instance.IsFocus)
