@@ -253,15 +253,29 @@ Session Manager uses the game's own ban list, so bans made in the game's player 
 
 ## Installing
 
+### Windows: all the mods at once
+
+This installs [r2modman](https://github.com/ebkr/r2modmanPlus) (a mod manager) and every mod from [Thunderstore](https://thunderstore.io/c/on-together/), set up in an r2modman profile called **SoapieScripts**. Open PowerShell (press the Windows key, type `powershell`, press Enter), paste this line and press Enter:
+
+```
+irm https://raw.githubusercontent.com/Nelphei/OnTogetherMods/master/Installer/Install.ps1 | iex
+```
+
+Or download [Install.cmd](Installer/Install.cmd) and double-click it. When it's done, r2modman opens: pick On-Together, then the SoapieScripts profile, then **Start modded**.
+
+Run it again any time to update the mods. Other mods in the profile, your mod settings and mods you've switched off in r2modman stay as they are. Thunderstore can be a version or two behind the releases below.
+
+### Windows or Mac, one mod at a time
+
 Download a mod's zip from the [Releases](https://github.com/Nelphei/OnTogetherMods/releases) page. There's one release per mod, always its newest version, and the ones that haven't been tried in the game yet are marked **Pre-release**. Each mod is a single DLL, and the same download works on Windows and Mac. To update a mod, unzip the new version over the old one.
 
-### Windows
+#### Windows
 
 1. Install [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) (the `win_x64` zip) into the game folder, next to `On-Together.exe`, and start the game once so it sets itself up.
 2. Unzip the mod into the game folder. It puts the DLL in `BepInEx\plugins\<mod>\`.
 3. Start the game. Each mod writes a line to the BepInEx console when it loads.
 
-### Mac
+#### Mac
 
 The Mac version of the game runs on Apple Silicon, where plain BepInEx can't load mods yet. [r2modmac](https://github.com/Zard-Studios/r2modmac) sets BepInEx up so it works.
 
