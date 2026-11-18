@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>NameDesigner</AssemblyName>
     <RootNamespace>NameDesigner</RootNamespace>
-    <Version>0.2.3</Version>
+    <Version>0.2.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,5 +19,9 @@
     <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
     <!-- Designs the session name in Session Manager's window too, when that mod is installed. -->
     <Compile Include="..\Shared\SessionNameLink.cs" Link="Shared\SessionNameLink.cs" />
+    <!-- Opens beside Card Designer's window for the name line of the ID card, when that mod is installed. -->
+    <Compile Include="..\Shared\NameDesignerLink.cs" Link="Shared\NameDesignerLink.cs" />
+    <!-- The colour square and hue strip (shared with Card Designer). -->
+    <Compile Include="..\Shared\ColorPicker.cs" Link="Shared\ColorPicker.cs" />
   </ItemGroup>
 </Project>

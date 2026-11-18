@@ -84,6 +84,8 @@ namespace NameDesigner
         private bool _iconClicked;
         private Tab _tab;
         private bool _autoOpened;
+        // Opened by Card Designer's "Design name" button: sits beside its window, and closes with it.
+        private bool _openedForCard;
         private bool _boxWasShowing;
         private bool _nameLoaded;
         // What the Create Session box held after the window last wrote to it or read it.
@@ -124,6 +126,8 @@ namespace NameDesigner
             _blocker = new ClickBlocker("NameDesigner ClickBlocker");
             // Lets Session Manager's Design button open the Session tab.
             SessionNameLink.SetDesigner(OpenForSessionManager);
+            // Lets Card Designer's "Design name" button open the Name tab.
+            NameDesignerLink.SetDesigner(OpenForCard);
         }
 
         private void OnDestroy()
@@ -133,6 +137,7 @@ namespace NameDesigner
                 _instance = null;
                 IsMouseOver = false;
                 SessionNameLink.SetDesigner(null);
+                NameDesignerLink.SetDesigner(null);
             }
             _blocker?.Destroy();
             _preview.Destroy();
@@ -170,6 +175,12 @@ namespace NameDesigner
                     {
                         Open(_tab);
                     }
+                }
+
+                // Opened for Card Designer: closes with its window.
+                if (_open && _openedForCard && !NameDesignerLink.CardShowing)
+                {
+                    Close();
                 }
 
                 // Typing in the game's own box (or Session Manager's) shows up here too.
@@ -233,10 +244,27 @@ namespace NameDesigner
             }
         }
 
+        // Card Designer's "Design name" button (Shared/NameDesignerLink.cs): the Name tab, beside its
+        // window. Opened this way, the window closes again when Card Designer's does.
+        private void OpenForCard()
+        {
+            if (!_open)
+            {
+                Open(Tab.Name);
+            }
+            else if (_tab != Tab.Name)
+            {
+                SwitchTab(Tab.Name);
+            }
+            _autoOpened = false;
+            _openedForCard = true;
+        }
+
         private void Open(Tab tab)
         {
             _open = true;
             _autoOpened = false;
+            _openedForCard = false;
             _status = null;
             if (!_nameLoaded)
             {
@@ -250,6 +278,7 @@ namespace NameDesigner
         {
             _open = false;
             _autoOpened = false;
+            _openedForCard = false;
             _typing = false;
             _dragFrom = -1;
             _confirmSlot = -1;
@@ -590,6 +619,11 @@ namespace NameDesigner
             previewSize.x = Mathf.Clamp(previewSize.x, 160f, Width);
 
             Rect area = Place(new Vector2(Width, previewSize.y + Gap + height), screenWidth);
+            if (_openedForCard)
+            {
+                // Card Designer moves its window over to make room.
+                NameDesignerLink.ShowDesigner(area);
+            }
             _preview.Draw(new Rect(area.x + (Width - previewSize.x) / 2f, area.y, previewSize.x, previewSize.y), previewText);
             var panel = new Rect(area.x, area.y + previewSize.y + Gap, Width, height);
 
@@ -624,10 +658,25 @@ namespace NameDesigner
             _typing = focused == TextFieldName || focused == HexFieldName;
         }
 
-        // Beside the Create Session box while it shows (right of it, or left if there's no room),
-        // otherwise in the bottom window stack.
-        private static Rect Place(Vector2 size, float screenWidth)
+        // Beside Card Designer's window when opened for it, beside the Create Session box while it
+        // shows (right of it, or left if there's no room), otherwise in the bottom window stack.
+        private Rect Place(Vector2 size, float screenWidth)
         {
+            if (_openedForCard && NameDesignerLink.CardBounds(out Rect card))
+            {
+                float x = card.xMax + BoxGap;
+                if (x + size.x > screenWidth - 10f)
+                {
+                    x = card.x - BoxGap - size.x;
+                }
+                // No room on either side (a narrow screen): over the card window's right-hand side.
+                if (x < 10f)
+                {
+                    x = Mathf.Max(10f, screenWidth - 10f - size.x);
+                }
+                float y = Mathf.Clamp(card.center.y - size.y / 2f, 10f, Mathf.Max(10f, 1080f - size.y - 10f));
+                return new Rect(x, y, size.x, size.y);
+            }
             if (Game.SessionBoxShowing && Game.SessionBoxBounds(out Rect box))
             {
                 float x = box.xMax + BoxGap;

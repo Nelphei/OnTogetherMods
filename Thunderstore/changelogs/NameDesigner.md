@@ -1,3 +1,7 @@
+## 0.2.4
+
+- Works with the new Card Designer mod. Its **Design name** button (on the name line of your ID card) opens the Name tab beside its window, and the window closes again with Card Designer's. Without Card Designer, nothing changes.
+
 ## 0.2.3
 
 - Works with the new Session Manager mod. While you host a session, Session Manager's **Design** button opens the Session tab beside its window, and the session name you design goes into its name box. Click **Rename** there to use it. Without Session Manager, nothing changes.

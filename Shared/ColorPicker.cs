@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace NameDesigner
+namespace OnTogetherMods.Shared
 {
     // A colour picker for Unity's immediate-mode GUI: a square for how strong and how bright the
-    // colour is, and a strip beside it for the hue. Drag in either one.
+    // colour is, and a strip beside it for the hue. Drag in either one. Used by Name Designer and
+    // Card Designer.
     internal sealed class ColorPicker
     {
         private const int SquareSize = 64;
