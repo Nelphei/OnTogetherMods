@@ -6,6 +6,57 @@ This is an unofficial fan project, not made or supported by GigaPuff.
 
 > **Early days.** Mods marked **pre-release** haven't been tried in the game yet in their current version. Most of the others have only been tried on their own, not in a full lobby with other players, so expect rough edges. See [What's been tested](#whats-been-tested).
 
+## Installing
+
+### Windows: all the mods at once
+
+This installs [r2modman](https://github.com/ebkr/r2modmanPlus) (a mod manager) and every mod from [Thunderstore](https://thunderstore.io/c/on-together/), set up in an r2modman profile called **SoapieScripts**. Open PowerShell (press the Windows key, type `powershell`, press Enter), paste this line and press Enter:
+
+```
+irm https://raw.githubusercontent.com/Nelphei/OnTogetherMods/master/Installer/Install.ps1 | iex
+```
+
+Or download [Install.cmd](Installer/Install.cmd) and double-click it. When it's done, r2modman opens: pick On-Together, then the SoapieScripts profile, then **Start modded**.
+
+Run it again any time to update the mods. Other mods in the profile, your mod settings and mods you've switched off in r2modman stay as they are. Thunderstore can be a version or two behind the releases below.
+
+### Mac: all the mods at once
+
+This installs [r2modmac](https://github.com/Zard-Studios/r2modmac) (a Mac mod manager) if you don't have it, and saves `SoapieScripts.r2z` in your Downloads folder: a profile file listing every mod from [Thunderstore](https://thunderstore.io/c/on-together/). Open Terminal (press Cmd + Space, type `terminal`, press Enter), paste this line and press Enter:
+
+```
+curl -fsSL https://raw.githubusercontent.com/Nelphei/OnTogetherMods/master/Installer/install-mac.sh | bash
+```
+
+When it's done, r2modmac opens. In r2modmac:
+
+1. Pick On-Together.
+2. Click **Import Profile**, then **Select .r2z or .zip file**, and pick `SoapieScripts.r2z` from Downloads.
+3. Choose **MacOS** and click **Import**. r2modmac downloads the mods itself.
+4. Click **Apply to Game**, then **Launch Modded**.
+
+To update the mods later, use the profile's **Updates** tab in r2modmac. To get mods that came out since, run the line again and drag the new `SoapieScripts.r2z` onto the open profile. If you copied mods into r2modmac's `BepInEx/plugins` folder by hand before, delete those folders so they don't load twice.
+
+### Windows or Mac, one mod at a time
+
+Download a mod's zip from the [Releases](https://github.com/Nelphei/OnTogetherMods/releases) page. There's one release per mod, always its newest version, and the ones that haven't been tried in the game yet are marked **Pre-release**. Each mod is a single DLL, and the same download works on Windows and Mac. To update a mod, unzip the new version over the old one.
+
+#### Windows
+
+1. Install [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) (the `win_x64` zip) into the game folder, next to `On-Together.exe`, and start the game once so it sets itself up.
+2. Unzip the mod into the game folder. It puts the DLL in `BepInEx\plugins\<mod>\`.
+3. Start the game. Each mod writes a line to the BepInEx console when it loads.
+
+#### Mac
+
+The Mac version of the game runs on Apple Silicon, where plain BepInEx can't load mods yet. [r2modmac](https://github.com/Zard-Studios/r2modmac) sets BepInEx up so it works.
+
+1. Add On-Together in r2modmac and launch the game through it once, so BepInEx is installed.
+2. Unzip the mod and copy its folder (for example `PhotoMode`) into the `BepInEx/plugins` folder of your r2modmac profile, next to your other mods.
+3. Launch the game through r2modmac.
+
+The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brightness and volume, so hold **Fn** with the mod keys (for example Fn + F9).
+
 ## The mods
 
 | Mod | Version | Open with | What it does | Who needs it |
@@ -250,40 +301,6 @@ The game has no "you were kicked" screen, so a kicked player sees the game's "ba
 **With [Name Designer](#name-designer)** installed, the Session tab has a **Design** button next to the name. It opens Name Designer beside the window, and the name you design goes straight into the name box. Click **Rename** to use it.
 
 Session Manager uses the game's own ban list, so bans made in the game's player list (or with BlueSage QoL) show up here too, and the other way round. Ban lengths and notes, and your saved setup, are kept in `BepInEx\config\SessionManager.json`. In the settings file, `MaxPlayers` sets the biggest session (16 to 249), `SizeStep` the Shift-click jump, `LetFriendsIn` is the Requests tab's switch, `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key), and `Icon` swaps the crown for one of two other pictures: `Friends` (a crown over three friends) or `Clipboard` (a guest list).
-
-## Installing
-
-### Windows: all the mods at once
-
-This installs [r2modman](https://github.com/ebkr/r2modmanPlus) (a mod manager) and every mod from [Thunderstore](https://thunderstore.io/c/on-together/), set up in an r2modman profile called **SoapieScripts**. Open PowerShell (press the Windows key, type `powershell`, press Enter), paste this line and press Enter:
-
-```
-irm https://raw.githubusercontent.com/Nelphei/OnTogetherMods/master/Installer/Install.ps1 | iex
-```
-
-Or download [Install.cmd](Installer/Install.cmd) and double-click it. When it's done, r2modman opens: pick On-Together, then the SoapieScripts profile, then **Start modded**.
-
-Run it again any time to update the mods. Other mods in the profile, your mod settings and mods you've switched off in r2modman stay as they are. Thunderstore can be a version or two behind the releases below.
-
-### Windows or Mac, one mod at a time
-
-Download a mod's zip from the [Releases](https://github.com/Nelphei/OnTogetherMods/releases) page. There's one release per mod, always its newest version, and the ones that haven't been tried in the game yet are marked **Pre-release**. Each mod is a single DLL, and the same download works on Windows and Mac. To update a mod, unzip the new version over the old one.
-
-#### Windows
-
-1. Install [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) (the `win_x64` zip) into the game folder, next to `On-Together.exe`, and start the game once so it sets itself up.
-2. Unzip the mod into the game folder. It puts the DLL in `BepInEx\plugins\<mod>\`.
-3. Start the game. Each mod writes a line to the BepInEx console when it loads.
-
-#### Mac
-
-The Mac version of the game runs on Apple Silicon, where plain BepInEx can't load mods yet. [r2modmac](https://github.com/Zard-Studios/r2modmac) sets BepInEx up so it works.
-
-1. Add On-Together in r2modmac and launch the game through it once, so BepInEx is installed.
-2. Unzip the mod and copy its folder (for example `PhotoMode`) into the `BepInEx/plugins` folder of your r2modmac profile, next to your other mods.
-3. Launch the game through r2modmac.
-
-The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brightness and volume, so hold **Fn** with the mod keys (for example Fn + F9).
 
 ## Settings
 

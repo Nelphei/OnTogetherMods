@@ -331,7 +331,7 @@ function Install-Package($Package, $Version, [bool]$Enabled, [string]$Temp) {
 # ---------- Main ----------
 
 if ($env:OS -ne 'Windows_NT') {
-    throw 'This installer is for Windows. On a Mac, use r2modmac: https://github.com/Zard-Studios/r2modmac'
+    throw 'This installer is for Windows. On a Mac, use install-mac.sh (see the README).'
 }
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
