@@ -35,6 +35,7 @@ namespace OnTogetherMods.Shared
         public const int SongPlayerOrder = 30;
         public const int TraceOverlayOrder = 40;
         public const int NameDesignerOrder = 50;
+        public const int CardDesignerOrder = 55;
         public const int OutfitSlotsOrder = 60;
         public const int DeskSwarmOrder = 70;
         public const int SessionManagerOrder = 80;

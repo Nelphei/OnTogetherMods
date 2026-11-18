@@ -36,6 +36,7 @@ namespace OnTogetherMods.Shared
         public const int EmoteSyncOrder = 10;
         public const int TeleportSpotsOrder = 20;
         public const int NameDesignerOrder = 30;
+        public const int CardDesignerOrder = 32;
         public const int OutfitSlotsOrder = 35;
         public const int DeskSnapOrder = 40;
         public const int DeskSwarmOrder = 45;
