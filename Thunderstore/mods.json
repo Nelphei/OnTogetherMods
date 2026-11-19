@@ -62,6 +62,10 @@
     "SessionManager": {
       "name": "Session_Manager",
       "description": "Tools for hosting a session: rename it, change how many can join (past 16), lock it or make it private, kick or ban players (an hour, a day, a week or for good), and answer join requests. Only the host needs it."
+    },
+    "DoomTogether": {
+      "name": "Doom_Together",
+      "description": "Play DOOM in a window over the game. Comes with Freedoom, a free DOOM-style game, or add your own DOOM.WAD. Your character sits down with a handheld console while you play. Only you need it."
     }
   }
 }

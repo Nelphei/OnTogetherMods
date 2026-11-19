@@ -76,12 +76,13 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 | [Desk Swarm](#desk-swarm) | 0.3.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 | [Session Manager](#session-manager) | 0.1.0, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
+| [Doom Together](#doom-together) | 0.1.0, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm and a crown for Session Manager. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager and a horned demon for Doom Together. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -113,6 +114,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 | Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
+| Doom Together 0.1.0 | **Pre-release.** DOOM plays in the game, and your character sits down with the handheld console. The volume slider, moving the window, the controls card, saves and the rest haven't all been tried yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -320,6 +322,23 @@ The game has no "you were kicked" screen, so a kicked player sees the game's "ba
 **With [Name Designer](#name-designer)** installed, the Session tab has a **Design** button next to the name. It opens Name Designer beside the window, and the name you design goes straight into the name box. Click **Rename** to use it.
 
 Session Manager uses the game's own ban list, so bans made in the game's player list (or with BlueSage QoL) show up here too, and the other way round. Ban lengths and notes, and your saved setup, are kept in `BepInEx\config\SessionManager.json`. In the settings file, `MaxPlayers` sets the biggest session (16 to 249), `SizeStep` the Shift-click jump, `LetFriendsIn` is the Requests tab's switch, `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key), and `Icon` swaps the crown for one of two other pictures: `Friends` (a crown over three friends) or `Clipboard` (a guest list).
+
+### Doom Together
+
+> **Pre-release:** DOOM plays in the game, and your character sits down with the handheld console. The volume slider, moving the window, the controls card, saves and the rest haven't all been tried yet.
+
+Play DOOM in a window over the game. Click the demon icon to open it. It comes with **Freedoom**, a free game made to play like DOOM: Freedoom 1 has four episodes like The Ultimate DOOM, and Freedoom 2 has 32 levels like DOOM II. You can add your own copy of DOOM too.
+
+- **Playing.** Opening the window gives DOOM the keyboard: **WASD** or the arrow keys to move and turn, **Ctrl** to shoot, **Space** to open doors and press switches, **Alt** + arrows to sidestep, **1-7** for weapons, **Tab** for the map and **Esc** for DOOM's menu (new game, save, load, options, quit). DOOM always runs; hold **Shift** to walk. It's keyboard only, like the original: the mouse doesn't aim. The F keys are left to the other mods, since DOOM's menu does everything they would.
+- **Back to the game.** Click anywhere outside the window and the keyboard goes back to the game, and DOOM freezes (sound and music too) until you click the window again. Opening chat or a game menu does the same.
+- **Your character.** If you're standing when you open DOOM, your character sits down and plays the handheld console, so other players see you gaming. If you're already sitting (at your desk, on a bench, flying with Desk Swarm...), nothing changes. Closing DOOM doesn't stand you up: press Space as usual once you're back in the game. With [Desk Swarm](#desk-swarm), flying your own desk waits while DOOM has the keyboard, and following someone's swarm carries on while you play.
+- **The window.** The title row shows the game you're playing (click it to pick another), a speaker for DOOM's volume (click it for a slider: drag it or scroll over it, and the speaker shows a cross at 0), **?** for a card listing DOOM's keys (it also shows by itself the first time you open DOOM; DOOM waits while it's up, and any key or a click closes it), the size (**S**, **M** or **L**) and **X** to close. Drag the title row to move the window anywhere on screen; it stays there next time. Double-click the title row to put it back with the other mods' windows. Closing keeps your game where it is: open the window again to carry on. Quitting from DOOM's menu ends it.
+- **Your own DOOM.** Put `DOOM.WAD`, `DOOM2.WAD`, `TNT.WAD`, `PLUTONIA.WAD` or the shareware `DOOM1.WAD` in `Documents\On-Together\Doom` (the game list's **Open WAD folder** button opens it). They're in the folder you installed DOOM to, for example Steam's DOOM + DOOM II. Picking another game starts it over, so save first. Add-on maps (PWADs) aren't supported yet.
+- **Saves and options.** Saved games are kept for each game separately in `BepInEx\config\DoomTogether\saves`, and DOOM's own options (its volumes, and key bindings in `managed-doom.cfg`) in `BepInEx\config\DoomTogether`.
+
+In the settings file, `Volume` is the speaker slider's setting (on top of DOOM's own volume options), `Music` turns the music off, `SitDown` stops your character sitting down, `PauseWithoutKeys` keeps DOOM running when it doesn't have the keyboard, `Size` and `Smooth` change the picture, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `ControlsSeen` set back to false shows the controls card by itself again, `WadFolder` moves the folder for your own WADs, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
+
+**Credits and licences.** DOOM runs on [Managed Doom](https://github.com/sinshu/managed-doom) by Nobuaki Tanaka, a C# version of id Software's DOOM source code, under the GNU GPL version 2, so Doom Together is GPL version 2 as well, and its source is in this repo. The music plays through [MeltySynth](https://github.com/sinshu/meltysynth) (MIT licence) with the TimGM6mb sound bank (GPL). [Freedoom](https://freedoom.github.io/) is made by the Freedoom project (BSD licence). The licence texts are in the mod's folder, beside its DLL. DOOM is a trademark of id Software. This mod isn't made or supported by id Software or Bethesda.
 
 ## Settings
 

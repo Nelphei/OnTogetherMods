@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionManager", "SessionMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardDesigner", "CardDesigner\CardDesigner.csproj", "{CF306E55-157F-4F0B-B371-86FCF02E0B30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoomTogether", "DoomTogether\DoomTogether.csproj", "{5E04EA45-9B09-4B70-9542-54CA0F165D1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,5 +110,9 @@ Global
 		{CF306E55-157F-4F0B-B371-86FCF02E0B30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF306E55-157F-4F0B-B371-86FCF02E0B30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF306E55-157F-4F0B-B371-86FCF02E0B30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E04EA45-9B09-4B70-9542-54CA0F165D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E04EA45-9B09-4B70-9542-54CA0F165D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E04EA45-9B09-4B70-9542-54CA0F165D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E04EA45-9B09-4B70-9542-54CA0F165D1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

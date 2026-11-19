@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references and target framework come from ..\Directory.Build.props.
+       Deploying to the game is opt-in: see ..\Directory.Build.targets. It also copies the
+       Content folder (Freedoom, the music sound bank, licence texts) beside the DLL.
+
+       Licence: this mod is GPL-2.0-or-later, because it includes Managed Doom (Engine\, GPLv2).
+       MeltySynth\ is MIT. See Content\LICENSE.txt and README.md. -->
+  <PropertyGroup>
+    <AssemblyName>DoomTogether</AssemblyName>
+    <RootNamespace>DoomTogether</RootNamespace>
+    <Version>0.1.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Engine\ and MeltySynth\ are other people's code, kept as close to the original as possible:
+         unused variables and nullable annotations aren't worth warnings. -->
+    <NoWarn>$(NoWarn);CS0162;CS0168;CS0219;CS0414;CS0649;CS8632</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Stacks this mod's window with other mods' windows. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- This mod's icon in the row of mod icons at the bottom-right. -->
+    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
+    <!-- Keeps clicks on the window from reaching the game's UI. -->
+    <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+  </ItemGroup>
+</Project>
