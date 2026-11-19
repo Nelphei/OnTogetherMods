@@ -287,6 +287,12 @@ def pack(folder, config, colours):
         print(f"  note: {folder} or Shared has changes that aren't committed yet")
     dll = build(folder)
     files[f"{folder}.dll"] = dll.read_bytes()
+    # A mod's Content folder (game data, licence texts...) goes beside its DLL, like deploying does.
+    content = ROOT / folder / "Content"
+    if content.is_dir():
+        for path in sorted(content.iterdir()):
+            if path.is_file():
+                files[path.name] = path.read_bytes()
 
     for name, data in files.items():
         check_private(f"{folder}: {name}", data)

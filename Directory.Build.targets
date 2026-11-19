@@ -12,10 +12,13 @@
     <ItemGroup>
       <DeployFiles Include="$(TargetPath)" />
       <DeployFiles Include="$(TargetDir)$(TargetName).pdb" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+      <!-- A mod's Content folder (game data, licence texts...) goes beside its DLL. -->
+      <DeployContent Include="$(MSBuildProjectDirectory)\Content\*.*" />
     </ItemGroup>
 
     <!-- If this fails with "file is being used by another process", close the game and build again. -->
     <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(PluginDeployDir)" Retries="2" RetryDelayMilliseconds="500" />
+    <Copy SourceFiles="@(DeployContent)" DestinationFolder="$(PluginDeployDir)" SkipUnchangedFiles="true" Retries="2" RetryDelayMilliseconds="500" />
     <Message Importance="high" Text="Deployed $(TargetFileName) -> $(PluginDeployDir)" />
   </Target>
 </Project>
