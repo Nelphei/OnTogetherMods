@@ -77,7 +77,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Desk Swarm](#desk-swarm) | 0.3.1, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 | [Session Manager](#session-manager) | 0.1.1, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
-| [Card Table](#card-table) | 0.1.0 | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire now, with multiplayer and more games coming | Only you |
+| [Card Table](#card-table) | 0.1.1 | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire now, with multiplayer and more games coming | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -120,7 +120,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Desk Swarm 0.3.1 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 | Session Manager 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
-| Card Table 0.1.0 | Works in the game. The "You won!" box hasn't been seen yet, since nobody has won a game in it so far. The Solitaire rules were also checked outside the game over thousands of random games |
+| Card Table 0.1.1 | Works in the game. The "You won!" box hasn't been seen yet, since nobody has won a game in it so far. The Solitaire rules were also checked outside the game over thousands of random games |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 

@@ -13,7 +13,7 @@ namespace CardTable
     {
         public const string PluginGuid = "nelphei.ontogether.cardtable";
         public const string PluginName = "Card Table";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
