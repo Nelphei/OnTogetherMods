@@ -11,7 +11,7 @@ namespace PhotoMode
     {
         public const string PluginGuid = "nelphei.ontogether.photomode";
         public const string PluginName = "Photo Mode";
-        public const string PluginVersion = "0.4.3";
+        public const string PluginVersion = "0.4.4";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
