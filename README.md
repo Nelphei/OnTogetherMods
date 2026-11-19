@@ -72,7 +72,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Name Designer](#name-designer) | 0.2.5, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Card Designer](#card-designer) | 0.1.2, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.3 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
-| [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
+| [Quick Hide](#quick-hide) | 0.1.1 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 | [Desk Swarm](#desk-swarm) | 0.3.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 | [Session Manager](#session-manager) | 0.1.0, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
@@ -115,7 +115,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Name Designer 0.2.5 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
 | Card Designer 0.1.2 | **Pre-release.** Opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
 | Outfit Slots 0.1.3 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
-| Quick Hide 0.1.0 | Works, in split screen and mini mode |
+| Quick Hide 0.1.1 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 | Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
