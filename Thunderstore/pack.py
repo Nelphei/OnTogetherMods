@@ -192,7 +192,7 @@ def readme(display, guid, description, website, others, game_icon):
 
     icon_part = f"""## The icon
 
-Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. The mods' icons and windows also hide and show with the game's eye button, in every window mode.
+Like the other mods in this set, {display} puts a small pixel-art icon in a row at the bottom-right of the screen. Click it to do what the mod's key does (or to switch the mod on and off, for mods without a key), and hover over it to see its name and key. A green dot means it's on, and a greyed-out icon means it's off. The gear button at the row's right end opens the tray, which holds the icons you've tucked away. Right-click it to arrange the row: drag icons to reorder them or tuck them into the tray. The arrangement is saved in `BepInEx/config/IconRow.json` and is shared by every mod in this set. The row only shows in a world, while no game menu is open, and hides while Photo Mode is on. The mods' icons and windows also hide and show with the game's eye button, in every window mode.
 
 """ if game_icon else ""
     show_icon = " `ShowIcon` hides the mod's icon." if game_icon else ""

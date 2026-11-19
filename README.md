@@ -92,7 +92,11 @@ Each mod you've installed puts a small pixel-art icon in a row in the bottom-rig
 
 Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
 
-The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel) and while Photo Mode is on. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon.
+**The tray.** The gear button at the right end of the row opens the tray, where the icons you've tucked away wait. They work there just like in the row, and clicking one closes the tray again. A green dot on the tray button means a tucked-away mod is switched on.
+
+**Arranging the row.** Right-click the tray button, or click **Arrange icons** in the tray. Then drag icons left or right to reorder them, drag them up into the tray to tuck them away or back down into the row, or click one to send it to the other place. **Done** finishes, and **Reset** puts every icon back in the row in its usual place. The arrangement is saved in `BepInEx\config\IconRow.json`, and it's the same for every mod. A mod you install later starts in the row, about where it would usually be. An icon from a mod version older than the tray stays in its usual place in the row until that mod is updated.
+
+The row only shows in a world, and hides while a game menu or panel is open (pause menu, inventory, shop, player list, focus menu, emote wheel) and while Photo Mode is on. When it reaches under the mods' windows, they sit just above it. `ShowIcon` in each mod's settings file hides that mod's icon completely (it isn't in the tray either).
 
 The game has an eye button that hides its UI (top-right in the Normal window mode, and in split-screen and Desk mode too). Every mod's icons, windows and messages hide and show with it. The mods keep working meanwhile, and their keys still work.
 
@@ -117,6 +121,8 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
 | Doom Together 0.1.0 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.1.0 | Works in the game. The "You won!" box hasn't been seen yet, since nobody has won a game in it so far. The Solitaire rules were also checked outside the game over thousands of random games |
+
+The icon row's tray and arranging the row work, in every mod's newest version.
 
 None of the mods have been tried on a Mac yet.
 
