@@ -108,13 +108,13 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Desk Snap 0.2.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.4 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
-| Card Designer 0.1.1 | **Pre-release.** Opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players, the Name Designer link and 0.1.1's Symbols tab fix haven't all been confirmed yet |
+| Card Designer 0.1.1 | **Pre-release.** Opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 | Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
-| Doom Together 0.1.0 | **Pre-release.** DOOM plays in the game, and your character sits down with the handheld console. The volume slider, moving the window, the controls card, saves and the rest haven't all been tried yet |
+| Doom Together 0.1.0 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 
 None of the mods have been tried on a Mac yet.
 
@@ -226,7 +226,7 @@ The colours are the same colour tags players can type into their names by hand, 
 
 ### Card Designer
 
-> **Pre-release:** opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players, the Name Designer link and 0.1.1's Symbols tab fix haven't all been confirmed in the game yet.
+> **Pre-release:** opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed in the game yet.
 
 Style the lines of your ID card (the card other players see when they click you) the way you would in a word processor. Click the ID card icon, or the **Design card** button on the game's own ID card page (on the main menu or in a world), to open the window.
 
@@ -325,7 +325,7 @@ Session Manager uses the game's own ban list, so bans made in the game's player 
 
 ### Doom Together
 
-> **Pre-release:** DOOM plays in the game, and your character sits down with the handheld console. The volume slider, moving the window, the controls card, saves and the rest haven't all been tried yet.
+> **Pre-release:** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet.
 
 Play DOOM in a window over the game. Click the demon icon to open it. It comes with **Freedoom**, a free game made to play like DOOM: Freedoom 1 has four episodes like The Ultimate DOOM, and Freedoom 2 has 32 levels like DOOM II. You can add your own copy of DOOM too.
 
