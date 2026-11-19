@@ -70,6 +70,10 @@
     "CardTable": {
       "name": "Card_Table",
       "description": "Card games in a window over the game, with pixel-art cards. Solitaire: drag or click cards, draw 1 or 3, undo, auto-finish, stats, and your game keeps. Multiplayer and more card games are coming. Only you need it."
+    },
+    "BuddyUp": {
+      "name": "Buddy_Up",
+      "description": "Pair up with a friend, then ride around on their head (riders can stack into a totem pole), walk together beside or behind them, and sit down side by side. Everyone sees it. You and your buddy both need the mod."
     }
   }
 }

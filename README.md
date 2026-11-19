@@ -78,16 +78,17 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Session Manager](#session-manager) | 0.1.1, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.1.1 | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire now, with multiplayer and more games coming | Only you |
+| [Buddy Up](#buddy-up) | 0.1.0, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together and two playing cards for Card Table. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together, two playing cards for Card Table and someone riding on a friend's head for Buddy Up. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
-- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, Outfit Slots' icon to put on your next outfit, Desk Swarm's icon to take off or stop flying, or Focus Anywhere's icon to choose which objects show (or add others) while you focus.
+- **Right-click** Emote Sync's icon to show or hide its window (F6) while sync is on, Outfit Slots' icon to put on your next outfit, Desk Swarm's icon to take off or stop flying, Buddy Up's icon to get off a head or stop walking together, or Focus Anywhere's icon to choose which objects show (or add others) while you focus.
 - A **green dot** means the mod is switched on. A **greyed-out** icon means it's off.
 
 Song Player, Trace Overlay, Chat Range and Focus Anywhere have no key, so their icon is how you switch them off and on. Your choice is remembered between games.
@@ -121,6 +122,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Session Manager 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.1.1 | Works in the game. The "You won!" box hasn't been seen yet, since nobody has won a game in it so far. The Solitaire rules were also checked outside the game over thousands of random games |
+| Buddy Up 0.1.0 | **Pre-release.** Not tried in the game yet |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 
@@ -360,6 +362,23 @@ Card games in a window over the game, with the mod's own pixel-art cards to matc
 - **The window.** **?** shows how to play (it also shows by itself the first time), **M** / **L** changes the size, and **X** closes. The cards grow in whole pixel steps, so they stay sharp. Drag the title row to move the window anywhere on screen; double-click the title row to put it back with the other mods' windows. It's mouse only: the keyboard stays the game's, and your character carries on doing whatever it was doing.
 
 The game in progress and your stats are kept in `BepInEx\config\CardTable.json`. In the settings file, `DrawThree` is the Draw button's setting, `Animations` turns off the cards sliding and the dealing animation, `Size` is the M / L button, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `HelpSeen` set back to false shows the how-to-play card by itself again, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
+
+### Buddy Up
+
+> **Pre-release:** not tried in the game yet.
+
+Pair up with a friend, then ride around on their head, walk together and sit down side by side. Click the buddies icon to open the window.
+
+- **Buddying up.** The window lists everyone in your session who has Buddy Up. Click **Buddy up** next to a name and they get a **Yes** / **No** in their window (it opens by itself). Once they say yes you're buddies, until one of you clicks **x** or leaves the session. You can have more than one buddy.
+- **Riding.** Click **Ride** next to a buddy and you climb onto their head. If you're standing, you sit down up there (in a meditation pose; the focus menu still lets you pick another activity while you ride). If you're already sitting, you keep doing what you're doing, desk and all. You go wherever they go: walking, jumping, swimming and sitting down. Press **Space** (the game's stand-up key) to hop off onto your feet beside them, or click **Get off** (or right-click the icon) to sit down on the ground beside them. Riders can ride riders, so you can build a totem pole. **-** and **+** change how high you sit, for big hats. Your buddy sees who's on their head and can **Shake off** everyone.
+- **Walking together.** Click **Walk** and your character walks with your buddy by itself, **Beside** them or in a line **Behind** them, going round corners the way they did. Your own keys always win: walk off, and when you let go you head back to them. If you get stuck you jump, and if you're still stuck or fall far behind, you hop over to them. **Stop** (or right-clicking the icon) ends it.
+- **Sitting together.** While you walk with a buddy and they sit down, you walk up beside them and sit down in the same activity, facing the same way, with your desk beside theirs. If they switch activity, you switch too, unless you've picked your own. Standing up is up to you, and then you walk with them again. Untick **Sit down together** to stop this.
+
+Everyone sees you riding and walking, mod or not, because each player's game only moves their own character. Players without the mod may see you sitting a little behind your buddy's head while they walk; players with it see you right on top. You and your buddy both need the mod. Focus time counts the same as normal while you ride.
+
+With [Desk Snap](#desk-snap), sitting down together lines your desk up the Desk Snap way. With [Focus Anywhere](#focus-anywhere), you can sit down together on any ground. Flying your desk with [Desk Swarm](#desk-swarm) gets you off a head first.
+
+In the settings file, `RideHeight` is the riding height, `RideActivity` and `RideChoice` pick what you sit down to do when you climb on, `Walk` and `WalkGap` set where and how far from your buddy you walk, `SitTogether` is the window's switch, `CatchUp` and `CatchUpDistance` control hopping over to your buddy, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
 
 ## Settings
 
