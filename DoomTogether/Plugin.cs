@@ -14,7 +14,7 @@ namespace DoomTogether
     {
         public const string PluginGuid = "nelphei.ontogether.doomtogether";
         public const string PluginName = "Doom Together";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

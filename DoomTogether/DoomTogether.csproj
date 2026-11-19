@@ -8,7 +8,7 @@
   <PropertyGroup>
     <AssemblyName>DoomTogether</AssemblyName>
     <RootNamespace>DoomTogether</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- Engine\ and MeltySynth\ are other people's code, kept as close to the original as possible:
          unused variables and nullable annotations aren't worth warnings. -->
