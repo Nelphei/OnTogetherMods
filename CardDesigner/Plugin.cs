@@ -11,7 +11,7 @@ namespace CardDesigner
     {
         public const string PluginGuid = "nelphei.ontogether.carddesigner";
         public const string PluginName = "Card Designer";
-        public const string PluginVersion = "0.1.1";
+        public const string PluginVersion = "0.1.2";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
