@@ -3,7 +3,7 @@ using ManagedDoom;
 using ManagedDoom.Audio;
 using UnityEngine;
 
-namespace HellDesk
+namespace DoomTogether
 {
     // DOOM's sound effects through Unity AudioSources: 8 channels for sounds in the world, panned
     // left and right by where they come from, and one for menu sounds. Ported from Managed Doom's

@@ -3,7 +3,7 @@ using ManagedDoom;
 using ManagedDoom.UserInput;
 using UnityEngine;
 
-namespace HellDesk
+namespace DoomTogether
 {
     // The keyboard, for DOOM. DoomWindow passes keys on only while DOOM has the keyboard; this keeps
     // which ones are down and turns them into DOOM's movement each tic. Keyboard only, like the

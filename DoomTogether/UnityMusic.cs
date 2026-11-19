@@ -5,7 +5,7 @@ using ManagedDoom.Audio;
 using MeltySynth;
 using UnityEngine;
 
-namespace HellDesk
+namespace DoomTogether
 {
     // DOOM's music: the WAD's MUS (or MIDI) tracks played on MeltySynth, a SoundFont synthesizer,
     // with the TimGM6mb sound bank that sits beside the DLL. The synthesizer runs on Unity's audio
@@ -46,14 +46,14 @@ namespace HellDesk
 
             // OnAudioFilterRead only runs while the AudioSource beside it plays, so it plays a
             // looping second of silence that the filter writes the music over.
-            _object = new GameObject("HellDesk Music");
+            _object = new GameObject("DoomTogether Music");
             _object.hideFlags = HideFlags.HideAndDontSave;
             _object.transform.SetParent(host.transform, false);
             AudioSource source = _object.AddComponent<AudioSource>();
             source.playOnAwake = false;
             source.loop = true;
             source.spatialBlend = 0f;
-            source.clip = AudioClip.Create("HellDesk Silence", _sampleRate, 2, _sampleRate, false);
+            source.clip = AudioClip.Create("DoomTogether Silence", _sampleRate, 2, _sampleRate, false);
             source.clip.hideFlags = HideFlags.HideAndDontSave;
             _filter = _object.AddComponent<MusicFilter>();
             _filter.Setup(synthesizer, config, MaxVolume, master);

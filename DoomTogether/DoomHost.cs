@@ -5,7 +5,7 @@ using ManagedDoom.UserInput;
 using UnityEngine;
 using EventType = ManagedDoom.EventType;
 
-namespace HellDesk
+namespace DoomTogether
 {
     // One running game of DOOM: Managed Doom's engine with this mod's video, sound, music and
     // keyboard. DOOM's world runs 35 tics a second; with FpsScale 2 the picture is drawn twice a

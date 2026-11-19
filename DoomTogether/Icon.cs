@@ -1,4 +1,4 @@
-namespace HellDesk
+namespace DoomTogether
 {
     // This mod's icon in the icon bar (Shared/IconBar.cs): 16 x 16 pixels, one palette letter each,
     // '.' see-through. A red demon face with yellow eyes, fangs and bone-grey horns.

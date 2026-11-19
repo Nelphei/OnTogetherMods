@@ -4,7 +4,7 @@ using HarmonyLib;
 using OnTogetherMods.Shared;
 using UnityEngine;
 
-namespace HellDesk
+namespace DoomTogether
 {
     // Plays DOOM in a window over the game, with Managed Doom (a C# port of the original DOOM,
     // GPLv2) running inside the mod. Freedoom (free DOOM-compatible game files) comes with it; players
@@ -12,11 +12,8 @@ namespace HellDesk
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     public class Plugin : BaseUnityPlugin
     {
-        // The mod was called Doom Together until 2026-11-19. The GUID keeps that name so the settings
-        // file (named after it) carries over, and so an old DoomTogether folder left in the plugins
-        // folder is skipped as a duplicate instead of running a second copy.
         public const string PluginGuid = "nelphei.ontogether.doomtogether";
-        public const string PluginName = "Hell Desk";
+        public const string PluginName = "Doom Together";
         public const string PluginVersion = "0.1.0";
 
         internal static ManualLogSource Log;
@@ -38,7 +35,7 @@ namespace HellDesk
             IconBar.Patch();
 
             // Runs on its own object so it survives scene loads.
-            _host = new GameObject("HellDesk");
+            _host = new GameObject("DoomTogether");
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<DoomWindow>();
