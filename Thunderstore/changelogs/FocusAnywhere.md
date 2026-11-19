@@ -1,3 +1,8 @@
+## 0.6.1
+
+- The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
+- Right-click the gear (or click **Arrange icons** in the tray) to arrange the row: drag icons to reorder them, drag them into the tray and back, or click one to tuck it away or put it back. **Reset** puts every icon back. The arrangement is saved in `BepInEx/config/IconRow.json` and shared by every mod in this set. Update the other mods too, so all their icons can be arranged.
+
 ## 0.6.0
 
 - The objects window has an **Add item...** button while you focus. It lists the objects of every other activity by where they sit (left hand, right hand, head, set down, other), and ticking one adds it to the activity you're doing: a book while you lie down with the laptop (untick the laptop to swap them), a latte with anything. Each object sits where its own activity puts it, so some fit the pose better than others. Added objects are remembered for that activity and show every time you do it, and other players see them even without the mod. Untick one to take it off.
