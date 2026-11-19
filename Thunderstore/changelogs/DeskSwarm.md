@@ -1,3 +1,8 @@
+## 0.3.1
+
+- The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
+- Right-click the gear (or click **Arrange icons** in the tray) to arrange the row: drag icons to reorder them, drag them into the tray and back, or click one to tuck it away or put it back. **Reset** puts every icon back. The arrangement is saved in `BepInEx/config/IconRow.json` and shared by every mod in this set. Update the other mods too, so all their icons can be arranged.
+
 ## 0.3.0
 
 - Fly through buildings: a new switch in the window, on by default. Your desk flies through bridges, buildings, fences and everything else on the islands, so it doesn't get caught on them anymore, but it never goes down through the ground or water. Switch it off to land on roofs and bridges again.
