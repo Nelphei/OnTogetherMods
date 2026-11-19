@@ -70,7 +70,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Desk Snap](#desk-snap) | 0.2.3, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.3, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.4, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
-| [Card Designer](#card-designer) | 0.1.0, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
+| [Card Designer](#card-designer) | 0.1.1, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.2 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.0 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
@@ -108,7 +108,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Desk Snap 0.2.3 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
 | Chat Range 0.2.3 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.4 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
-| Card Designer 0.1.0 | **Pre-release.** Opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
+| Card Designer 0.1.1 | **Pre-release.** Opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players, the Name Designer link and 0.1.1's Symbols tab fix haven't all been confirmed yet |
 | Outfit Slots 0.1.2 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
 | Quick Hide 0.1.0 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
@@ -226,7 +226,7 @@ The colours are the same colour tags players can type into their names by hand, 
 
 ### Card Designer
 
-> **Pre-release:** opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed in the game yet.
+> **Pre-release:** opening the window on the game's ID card page works. The styling tools, emoji, presets, **Apply card** reaching other players, the Name Designer link and 0.1.1's Symbols tab fix haven't all been confirmed in the game yet.
 
 Style the lines of your ID card (the card other players see when they click you) the way you would in a word processor. Click the ID card icon, or the **Design card** button on the game's own ID card page (on the main menu or in a world), to open the window.
 

@@ -275,7 +275,11 @@ namespace CardDesigner
         {
             if (_nextCell >= _cells.Count)
             {
-                _cells.Add(NewText("Cell", _root.transform, size, TextAlignmentOptions.Center));
+                TextMeshProUGUI added = NewText("Cell", _root.transform, size, TextAlignmentOptions.Center);
+                // Placed from the top-left like everything else here; left centred, the symbols
+                // landed off the screen while their buttons still worked.
+                TopLeft(added.gameObject);
+                _cells.Add(added);
                 _cellFrames.Add(-100);
             }
             TextMeshProUGUI cell = _cells[_nextCell];
