@@ -66,6 +66,10 @@
     "DoomTogether": {
       "name": "Doom_Together",
       "description": "Play DOOM in a window over the game. Comes with Freedoom, a free DOOM-style game, or add your own DOOM.WAD. Your character sits down with a handheld console while you play. Only you need it."
+    },
+    "CardTable": {
+      "name": "Card_Table",
+      "description": "Card games in a window over the game, with pixel-art cards. Solitaire: drag or click cards, draw 1 or 3, undo, auto-finish, stats, and your game keeps. Multiplayer and more card games are coming. Only you need it."
     }
   }
 }

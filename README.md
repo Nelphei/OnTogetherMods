@@ -77,12 +77,13 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Desk Swarm](#desk-swarm) | 0.3.0 | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 | [Session Manager](#session-manager) | 0.1.0, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.0, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
+| [Card Table](#card-table) | 0.1.0 | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire now, with multiplayer and more games coming | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager and a horned demon for Doom Together. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together and two playing cards for Card Table. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -115,6 +116,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Desk Swarm 0.3.0 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so does 0.3.0's flying through buildings on your own. Followers flying through buildings with you hasn't been tried yet |
 | Session Manager 0.1.0 | **Pre-release.** Not tried in the game yet |
 | Doom Together 0.1.0 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
+| Card Table 0.1.0 | Works in the game. The "You won!" box hasn't been seen yet, since nobody has won a game in it so far. The Solitaire rules were also checked outside the game over thousands of random games |
 
 None of the mods have been tried on a Mac yet.
 
@@ -339,6 +341,19 @@ Play DOOM in a window over the game. Click the demon icon to open it. It comes w
 In the settings file, `Volume` is the speaker slider's setting (on top of DOOM's own volume options), `Music` turns the music off, `SitDown` stops your character sitting down, `PauseWithoutKeys` keeps DOOM running when it doesn't have the keyboard, `Size` and `Smooth` change the picture, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `ControlsSeen` set back to false shows the controls card by itself again, `WadFolder` moves the folder for your own WADs, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
 
 **Credits and licences.** DOOM runs on [Managed Doom](https://github.com/sinshu/managed-doom) by Nobuaki Tanaka, a C# version of id Software's DOOM source code, under the GNU GPL version 2, so Doom Together is GPL version 2 as well, and its source is in this repo. The music plays through [MeltySynth](https://github.com/sinshu/meltysynth) (MIT licence) with the TimGM6mb sound bank (GPL). [Freedoom](https://freedoom.github.io/) is made by the Freedoom project (BSD licence). The licence texts are in the mod's folder, beside its DLL. DOOM is a trademark of id Software. This mod isn't made or supported by id Software or Bethesda.
+
+### Card Table
+
+Card games in a window over the game, with the mod's own pixel-art cards to match the icon row. Click the cards icon to open it.
+
+> **Coming soon:** Solitaire is the first game. Multiplayer card games are on the way, starting with Go Fish at tables you can join with other players in your session (with computer players to fill empty seats), and more card games after that.
+
+- **Solitaire.** The classic kind (Klondike). Build the four piles at the top right up from Ace to King, one suit each. In the seven piles below, stack cards downwards in alternating colours (red on black, black on red); you can move a run of cards together, and only a King (or a run starting with one) goes on an empty pile.
+- **Playing.** Drag a card, with the cards on it, onto a pile, or just click it to send it where it fits (up top first, if it can go there). Click the deck at the top left to turn cards over, and click its empty spot to turn the pile back over. **Draw 1** / **Draw 3** picks how many cards the deck turns over, straight away. **Undo** takes back as many moves as you like. **Auto-finish** shows up once no card is face down and it can finish the game for you.
+- **Your game keeps.** Close the window, or the game, and your game is waiting next time, clock included (it only runs while the window is open). **Stats** shows games played and won, your winning streak, best time and fewest moves. A game counts as played from its first move, and starting a new one before you've won ends your streak, so **New game** asks for a second click.
+- **The window.** **?** shows how to play (it also shows by itself the first time), **M** / **L** changes the size, and **X** closes. The cards grow in whole pixel steps, so they stay sharp. Drag the title row to move the window anywhere on screen; double-click the title row to put it back with the other mods' windows. It's mouse only: the keyboard stays the game's, and your character carries on doing whatever it was doing.
+
+The game in progress and your stats are kept in `BepInEx\config\CardTable.json`. In the settings file, `DrawThree` is the Draw button's setting, `Animations` turns off the cards sliding and the dealing animation, `Size` is the M / L button, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `HelpSeen` set back to false shows the how-to-play card by itself again, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
 
 ## Settings
 
