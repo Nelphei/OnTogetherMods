@@ -1,3 +1,8 @@
+## 0.2.5
+
+- The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
+- Right-click the gear (or click **Arrange icons** in the tray) to arrange the row: drag icons to reorder them, drag them into the tray and back, or click one to tuck it away or put it back. **Reset** puts every icon back. The arrangement is saved in `BepInEx/config/IconRow.json` and shared by every mod in this set. Update the other mods too, so all their icons can be arranged.
+
 ## 0.2.4
 
 - Works with the new Card Designer mod. Its **Design name** button (on the name line of your ID card) opens the Name tab beside its window, and the window closes again with Card Designer's. Without Card Designer, nothing changes.
