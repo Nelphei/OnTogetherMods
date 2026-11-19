@@ -41,7 +41,7 @@ namespace OnTogetherMods.Shared
         public const int SessionManagerOrder = 80;
         public const int FocusAnywhereOrder = 90;
         // The biggest window, so it goes on top of the stack.
-        public const int DoomTogetherOrder = 100;
+        public const int HellDeskOrder = 100;
 
         // Screen width in the same 1080p units the windows are laid out in.
         public static float Width => Screen.width * 1080f / Screen.height;

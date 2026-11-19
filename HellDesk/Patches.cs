@@ -2,7 +2,7 @@ using System;
 using HarmonyLib;
 using UnityEngine;
 
-namespace DoomTogether
+namespace HellDesk
 {
     // While DOOM has the keyboard, tell the game "the player is typing", so its InputManager zeroes
     // every input: WASD doesn't walk you away, Space doesn't stand you up, Esc doesn't open the

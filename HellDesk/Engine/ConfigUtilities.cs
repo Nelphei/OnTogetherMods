@@ -12,7 +12,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// Changed for Doom Together (2026-11-18): GetExeDirectory returns DataDirectory, a folder the
+// Changed for Hell Desk (2026-11-18, then called Doom Together): GetExeDirectory returns DataDirectory, a folder the
 // mod sets, so saved games go there instead of next to the game's .exe.
 //
 
@@ -39,7 +39,7 @@ namespace ManagedDoom
             "FREEDOOM1.WAD"
         };
 
-        // Where saved games (and managed-doom.cfg) go. Set by Doom Together before the engine starts.
+        // Where saved games (and managed-doom.cfg) go. Set by Hell Desk before the engine starts.
         public static string DataDirectory;
 
         public static string GetExeDirectory()

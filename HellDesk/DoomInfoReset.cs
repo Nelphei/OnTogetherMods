@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using ManagedDoom;
 
-namespace DoomTogether
+namespace HellDesk
 {
     // Managed Doom was made to play one game per run: a WAD's DEHACKED patch (Freedoom has one)
     // changes DOOM's global tables (monsters, frames, weapons, ammo, cheats' armour, par times and

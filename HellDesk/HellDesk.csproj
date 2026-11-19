@@ -6,8 +6,8 @@
        Licence: this mod is GPL-2.0-or-later, because it includes Managed Doom (Engine\, GPLv2).
        MeltySynth\ is MIT. See Content\LICENSE.txt and README.md. -->
   <PropertyGroup>
-    <AssemblyName>DoomTogether</AssemblyName>
-    <RootNamespace>DoomTogether</RootNamespace>
+    <AssemblyName>HellDesk</AssemblyName>
+    <RootNamespace>HellDesk</RootNamespace>
     <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- Engine\ and MeltySynth\ are other people's code, kept as close to the original as possible:

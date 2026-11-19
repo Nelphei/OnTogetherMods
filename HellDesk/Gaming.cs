@@ -5,7 +5,7 @@ using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
 
-namespace DoomTogether
+namespace HellDesk
 {
     // Sits your character down with the handheld console (the Connect activity with the game deck)
     // when you open DOOM, the same way the game does when you pick it in the focus menu. Only from

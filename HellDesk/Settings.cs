@@ -4,7 +4,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using UnityEngine;
 
-namespace DoomTogether
+namespace HellDesk
 {
     internal enum ScreenSize
     {
@@ -15,7 +15,8 @@ namespace DoomTogether
 
     // Everything here shows up in BepInEx\config\nelphei.ontogether.doomtogether.cfg after the first
     // launch. DOOM's own settings (its menu's volumes, key bindings...) are in
-    // BepInEx\config\DoomTogether\managed-doom.cfg, and saved games in the folders beside it.
+    // BepInEx\config\DoomTogether\managed-doom.cfg, and saved games in the folders beside it. Both
+    // names are from before the mod became Hell Desk (2026-11-19), kept so settings and saves carry over.
     internal sealed class Settings
     {
         public readonly ConfigEntry<KeyCode> WindowKey;

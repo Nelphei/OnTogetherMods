@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using EventType = UnityEngine.EventType;
 
-namespace DoomTogether
+namespace HellDesk
 {
     // The DOOM window: a title row (game file, volume, controls, size, close) over DOOM's picture,
     // stacked with the other mods' windows. DOOM gets the keyboard while you play in it: opening the
@@ -17,7 +17,7 @@ namespace DoomTogether
     // game menu) gives them back to the game, which freezes DOOM until you click it again.
     internal sealed class DoomWindow : MonoBehaviour
     {
-        private const string PanelId = "DoomTogether";
+        private const string PanelId = "HellDesk";
         // The game's scenes by build index: 1 is the main menu, 2 is the world.
         private const int WorldScene = 2;
 
@@ -96,7 +96,7 @@ namespace DoomTogether
         private void Awake()
         {
             _instance = this;
-            _blocker = new ClickBlocker(PanelStack.CanvasPrefix + "DoomTogether ClickBlocker");
+            _blocker = new ClickBlocker(PanelStack.CanvasPrefix + "HellDesk ClickBlocker");
             _volume = Mathf.Clamp(S.Volume.Value, 0, 100);
         }
 
@@ -427,7 +427,7 @@ namespace DoomTogether
             if (S.ShowIcon.Value)
             {
                 IconBar.State state = _open ? IconBar.State.Open : IconBar.State.Plain;
-                if (IconBar.Draw("DoomTogether", IconBar.DoomTogetherOrder, Icon.Pixels, state, "Doom Together",
+                if (IconBar.Draw("HellDesk", IconBar.HellDeskOrder, Icon.Pixels, state, "Hell Desk",
                         S.WindowKey.Value) == IconBar.Click.Left)
                 {
                     _iconClicked = true;   // acted on in Update
@@ -476,7 +476,7 @@ namespace DoomTogether
             bool moved = _dragging || S.WindowX.Value >= 0f;
             Rect panel = moved
                 ? new Rect(Clamp(_dragging ? _dragPos : new Vector2(S.WindowX.Value, S.WindowY.Value), size), size)
-                : PanelStack.Place(PanelId, PanelStack.DoomTogetherOrder, size);
+                : PanelStack.Place(PanelId, PanelStack.HellDeskOrder, size);
             float scale = Screen.height / 1080f;
             _screenRect = new Rect(panel.x * scale, panel.y * scale, panel.width * scale, panel.height * scale);
             _drawnFrame = Time.frameCount;

@@ -12,7 +12,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// Changed for Doom Together (2026-11-18): reads the slot names with a loop instead of
+// Changed for Hell Desk (2026-11-18, then called Doom Together): reads the slot names with a loop instead of
 // Stream.ReadExactly, which .NET Standard 2.1 doesn't have.
 //
 

@@ -4,7 +4,7 @@ using ManagedDoom.Video;
 using UnityEngine;
 using Renderer = ManagedDoom.Video.Renderer;
 
-namespace DoomTogether
+namespace HellDesk
 {
     // DOOM's picture, as a Unity texture. Managed Doom's renderer writes 32-bit colours column by
     // column (x * height + y), so the texture is the picture turned on its side: Renderer.Height
@@ -23,7 +23,7 @@ namespace DoomTogether
             _buffer = new byte[4 * _renderer.Width * _renderer.Height];
             Texture = new Texture2D(_renderer.Height, _renderer.Width, TextureFormat.RGBA32, false, false)
             {
-                name = "DoomTogether Screen",
+                name = "HellDesk Screen",
                 filterMode = FilterMode.Point,
                 wrapMode = TextureWrapMode.Clamp,
                 hideFlags = HideFlags.HideAndDontSave,
