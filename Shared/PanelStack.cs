@@ -38,6 +38,7 @@ namespace OnTogetherMods.Shared
         public const int CardDesignerOrder = 55;
         public const int OutfitSlotsOrder = 60;
         public const int DeskSwarmOrder = 70;
+        public const int BuddyUpOrder = 75;
         public const int SessionManagerOrder = 80;
         public const int FocusAnywhereOrder = 90;
         // Big windows, so they go on top of the stack.

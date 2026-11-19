@@ -40,6 +40,7 @@ namespace OnTogetherMods.Shared
         public const int OutfitSlotsOrder = 35;
         public const int DeskSnapOrder = 40;
         public const int DeskSwarmOrder = 45;
+        public const int BuddyUpOrder = 47;
         public const int FocusAnywhereOrder = 50;
         public const int SongPlayerOrder = 60;
         public const int TraceOverlayOrder = 70;
