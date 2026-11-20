@@ -11,7 +11,7 @@ namespace SongPlayer
     {
         public const string PluginGuid = "nelphei.ontogether.songplayer";
         public const string PluginName = "Song Player";
-        public const string PluginVersion = "0.2.4";
+        public const string PluginVersion = "0.2.5";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace SongPlayer
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<SongWindow>();
+
+            // The song command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Sit at an instrument to open the song list. Songs folder: {Settings.Folder()}");
         }

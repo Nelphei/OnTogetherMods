@@ -1,3 +1,7 @@
+## 0.2.5
+
+- With Bubble Shell (the new dev console mod): `song` lists your songs, `song <name>` plays one at the instrument you're sitting at, and `song stop` stops it. Not tried in the game yet.
+
 ## 0.2.4
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.

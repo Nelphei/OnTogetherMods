@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>SongPlayer</AssemblyName>
     <RootNamespace>SongPlayer</RootNamespace>
-    <Version>0.2.4</Version>
+    <Version>0.2.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,5 +13,7 @@
     <!-- This mod's icon in the row of mod icons at the bottom-right. -->
     <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
     <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+    <!-- The song command in Bubble Shell's console. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
   </ItemGroup>
 </Project>

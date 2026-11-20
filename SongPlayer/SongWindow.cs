@@ -153,6 +153,40 @@ namespace SongPlayer
             _blocker?.Update(shown, _screenRect);
         }
 
+        // ---- For Bubble Shell's song command (ShellCommands) ----
+
+        internal static SongWindow Instance => _instance;
+
+        // At an instrument, with Song Player switched on (the window is showing).
+        internal bool AtInstrument => _active;
+
+        internal string PlayingName => _performer.IsPlaying && _song != null ? _song.Name : null;
+
+        // The songs folder's files, read again.
+        internal List<string> SongFiles()
+        {
+            RefreshList();
+            return new List<string>(_files);
+        }
+
+        // Plays a file like clicking it in the list. Null when it's playing, else why not.
+        internal string CommandPlay(string path)
+        {
+            _status = null;
+            PlayFile(path);
+            return _performer.IsPlaying && path == _songPath ? null : _status ?? "It didn't start.";
+        }
+
+        internal bool CommandStop()
+        {
+            if (!_performer.IsPlaying)
+            {
+                return false;
+            }
+            _performer.Stop();
+            return true;
+        }
+
         // ---- Actions ----
 
         private void RefreshList()

@@ -64,7 +64,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Photo Mode](#photo-mode) | 0.4.5, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.3.6, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.5, pre-release | F5 | Save spots and teleport back to them | Only you |
-| [Song Player](#song-player) | 0.2.4 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
+| [Song Player](#song-player) | 0.2.5 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.4 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.6.1, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, pick which of its objects show, and add objects from other activities | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.5, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
@@ -109,7 +109,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Photo Mode 0.4.5 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and so do 0.4.0's icon, 0.4.1 hiding the icon row while Photo Mode is on, and hiding with the game's eye button in every window mode. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet, and neither has 0.4.5's `photo` command for Bubble Shell |
 | Emote Sync 0.3.6 | **Pre-release.** 0.1.0 worked with a friend, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, and 0.3.4's fix for players twitching in an innertube pose. 0.2.0's joining once you're free and the **Join now** button, 0.2.1's styled names and 0.3.6's `sync` command for Bubble Shell haven't been tried yet |
 | Teleport Spots 0.2.5 | **Pre-release.** Teleporting works on your own screen, and so do 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.1's fix for keeping spots after a restart, 0.1.2's fix for where other players see you land and 0.2.5's `spot` command for Bubble Shell haven't been tried yet |
-| Song Player 0.2.4 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening |
+| Song Player 0.2.5 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening, and 0.2.5's `song` command for Bubble Shell hasn't been tried yet |
 | Trace Overlay 0.2.4 | Works, including the icon and hiding with the game's eye button in every window mode |
 | Focus Anywhere 0.6.1 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air and 0.6.0's **Add item...** list haven't been tried yet. Known issue: the Zzz don't show while sleeping at a hidden desk |
 | Desk Snap 0.2.5 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet, and neither has 0.2.5's `snap` command for Bubble Shell |
@@ -174,6 +174,8 @@ Put `.mid` files in `Music\On-Together`, then sit at an instrument. The song win
 - Big chords are trimmed to 6 notes at once (`MaxNotesAtOnce`)
 
 Everyone nearby hears the song, with or without the mod. Click **Stop**, or stand up (Space or Esc), to stop. Switching the mod off with its icon also stops the song and closes the window until you switch it back on.
+
+With [Bubble Shell](#bubble-shell), `song` lists your songs, `song <name>` plays one at the instrument you're sitting at, and `song stop` stops it.
 
 ### Trace Overlay
 
