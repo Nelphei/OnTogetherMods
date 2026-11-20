@@ -72,6 +72,8 @@ namespace SessionManager
                 return false;
             }
             Name = name;
+            // The game never updates the player list's session name by itself.
+            LobbyNameText.CheckSoon();
             return true;
         }
 

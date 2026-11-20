@@ -180,6 +180,8 @@ namespace SessionManager
                     RefreshRequests();
                 }
                 _log.Update(_host ? _lobby : CSteamID.Nil);
+                // For everyone, host or not.
+                LobbyNameText.Update(_lobby);
                 JoinRequests.Rule = _host ? _rule : null;
 
                 bool clicked = _iconClicked;
@@ -353,7 +355,7 @@ namespace SessionManager
                 return;
             }
             _nameEdited = false;
-            Status("Renamed. Everyone sees the new name.");
+            Status("Renamed. Players without this mod see it after rejoining.");
         }
 
         // From Name Designer, while its Session tab is open beside the window.
