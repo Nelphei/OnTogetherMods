@@ -1,3 +1,7 @@
+## 0.1.4
+
+- With Bubble Shell (the new dev console mod): `outfit` lists your outfits, `outfit 4` (or an outfit's name) puts one on, `outfit next` the next one, and `outfit copy 2 5` copies the outfit in slot 2 into slot 5. Not tried in the game yet.
+
 ## 0.1.3
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.

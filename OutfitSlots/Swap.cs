@@ -64,6 +64,33 @@ namespace OutfitSlots
             }
         }
 
+        // After the outfit in the slot you're on was changed by something else (Bubble Shell's outfit
+        // copy): put it on again, so you're wearing what the slot now holds and everyone sees it.
+        public static void PutOnAgain()
+        {
+            DataManager data = Game.Data;
+            PlayerDataZip zip = data != null ? data.PlayerDataZip : null;
+            if (zip == null)
+            {
+                return;
+            }
+            data.CustomizationData = new CustomizationData(zip.CurrentCustomizationDataIDs);
+            CustomizationUIController screen = Game.Customization;
+            if (screen != null)
+            {
+                // So closing the outfit screen later doesn't put the old outfit back.
+                screen._customizationData = new CustomizationData(data.CustomizationData);
+            }
+            if (Game.InWorld)
+            {
+                TextChannelManager channel = NetworkSingleton<TextChannelManager>.I;
+                if (channel != null && channel.MainCustomizationController != null)
+                {
+                    channel.MainCustomizationController.ApplyCustomization(data.CustomizationData);
+                }
+            }
+        }
+
         // The slot after the one you're on, going round, skipping slots you haven't used.
         public static int NextSlot()
         {

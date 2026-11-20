@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>OutfitSlots</AssemblyName>
     <RootNamespace>OutfitSlots</RootNamespace>
-    <Version>0.1.3</Version>
+    <Version>0.1.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,5 +14,7 @@
     <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
     <!-- Keeps clicks on the window from reaching the game's UI. -->
     <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+    <!-- The outfit command in Bubble Shell's console. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
   </ItemGroup>
 </Project>

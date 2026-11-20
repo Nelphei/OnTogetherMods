@@ -14,7 +14,7 @@ namespace OutfitSlots
     {
         public const string PluginGuid = "nelphei.ontogether.outfitslots";
         public const string PluginName = "Outfit Slots";
-        public const string PluginVersion = "0.1.3";
+        public const string PluginVersion = "0.1.4";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -61,6 +61,9 @@ namespace OutfitSlots
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<OutfitWindow>();
+
+            // The outfit command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             if (Slots.Active)
             {

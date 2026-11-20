@@ -71,7 +71,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Chat Range](#chat-range) | 0.2.4, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.5, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Card Designer](#card-designer) | 0.1.2, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
-| [Outfit Slots](#outfit-slots) | 0.1.3 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
+| [Outfit Slots](#outfit-slots) | 0.1.4 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.1 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 | [Desk Swarm](#desk-swarm) | 0.3.2, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
@@ -116,7 +116,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Chat Range 0.2.4 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
 | Name Designer 0.2.5 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
 | Card Designer 0.1.2 | **Pre-release.** Opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
-| Outfit Slots 0.1.3 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching |
+| Outfit Slots 0.1.4 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching, and 0.1.4's `outfit` command for Bubble Shell hasn't been tried yet |
 | Quick Hide 0.1.1 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.2 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so do 0.3.0's flying through buildings on your own and 0.3.2's fix for leaving a session while flying. Followers flying through buildings with you hasn't been tried yet |
@@ -263,6 +263,7 @@ Slots 4-9 are kept in `BepInEx\config\OutfitSlots.json`. The game's own save onl
 
 **BlueSage QoL** has its own style slots 4-9, which change the same part of the game, so Outfit Slots stays off while they're on. To switch them off, set `EnableExtendedAvatarStyles = false` in `BepInEx\config\com.bluesage.ontogether.qoltweaks.beta.cfg` (or use BlueSage's menu) and restart the game. The first time Outfit Slots runs, it copies BlueSage's slots 4-9 (outfits and names) into its own, and leaves BlueSage's file as it was.
 
+With [Bubble Shell](#bubble-shell), `outfit` lists your outfits, `outfit 4` (or an outfit's name) puts one on, `outfit next` the next one, and `outfit copy 2 5` copies the outfit in slot 2 into slot 5.
 ### Quick Hide
 
 For the game's split-screen and mini window modes (keys 2-4), where the game sits over your desktop. Press **F10** or click the crossed-out eye icon and the whole game disappears at once: the world, every character, the game's UI and the mods' windows. Clicks go straight through to whatever is behind it, and if you were using the game, the keyboard goes back to the app you were in before. Press **F10** again to bring it all back. The key works even while you're in another app, and clicking On-Together in the taskbar (or picking it with Alt+Tab) brings the game back too.
