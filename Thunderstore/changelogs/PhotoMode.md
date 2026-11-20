@@ -1,3 +1,7 @@
+## 0.4.5
+
+- With Bubble Shell (the new dev console mod): `photo` starts or ends Photo Mode and `photo shot` takes a photo. The free camera stays put while you type in Bubble Shell's console. Not tried in the game yet.
+
 ## 0.4.4
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.

@@ -11,7 +11,7 @@ namespace PhotoMode
     {
         public const string PluginGuid = "nelphei.ontogether.photomode";
         public const string PluginName = "Photo Mode";
-        public const string PluginVersion = "0.4.4";
+        public const string PluginVersion = "0.4.5";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -34,6 +34,9 @@ namespace PhotoMode
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<PhotoModeController>();
+
+            // The photo command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Press {Settings.ToggleKey.Value} in a lobby to start.");
         }

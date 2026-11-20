@@ -59,6 +59,38 @@ namespace PhotoMode
 
         private static Settings S => Plugin.Settings;
 
+        // ---- For Bubble Shell's photo command (ShellCommands) ----
+
+        internal static PhotoModeController Instance { get; private set; }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        // Starts photo mode (true if it did), or asks it to end.
+        internal bool CommandToggle()
+        {
+            if (IsActive)
+            {
+                _exitRequested = true;
+                return false;
+            }
+            TryEnter();
+            return IsActive;
+        }
+
+        // Takes a photo now, if photo mode is on. False if it isn't, or one is being taken.
+        internal bool CommandShot()
+        {
+            if (!IsActive || _capturing)
+            {
+                return false;
+            }
+            StartCoroutine(Capture());
+            return true;
+        }
+
         private void Update()
         {
             string saved = _saveResult;
@@ -94,6 +126,12 @@ namespace PhotoMode
             {
                 _refreshTimer = RefreshInterval;
                 _ui.Refresh();
+            }
+
+            // While you type in Bubble Shell's console, the keys are the console's (Esc closes it).
+            if (ShellLink.ConsoleTyping)
+            {
+                return;
             }
 
             // While you type in chat, keys go to the chat box, and Esc stops typing instead of
@@ -162,7 +200,7 @@ namespace PhotoMode
 
             float dt = Time.unscaledDeltaTime;
             UpdateLook();
-            if (!typing)
+            if (!typing && !ShellLink.ConsoleTyping)
             {
                 UpdateMove(dt);
             }

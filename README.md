@@ -61,7 +61,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 
 | Mod | Version | Open with | What it does | Who needs it |
 |---|---|---|---|---|
-| [Photo Mode](#photo-mode) | 0.4.4, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
+| [Photo Mode](#photo-mode) | 0.4.5, pre-release | F9 | Free camera, hidden UI and PNG photos | Only you |
 | [Emote Sync](#emote-sync) | 0.3.6, pre-release | F7 | Emotes and focus activities start together | Everyone in the group |
 | [Teleport Spots](#teleport-spots) | 0.2.5, pre-release | F5 | Save spots and teleport back to them | Only you |
 | [Song Player](#song-player) | 0.2.4 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
@@ -106,7 +106,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 
 | Mod | Tried in the game |
 |---|---|
-| Photo Mode 0.4.4 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and so do 0.4.0's icon, 0.4.1 hiding the icon row while Photo Mode is on, and hiding with the game's eye button in every window mode. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet |
+| Photo Mode 0.4.5 | **Pre-release.** 0.2.1 worked, including in a lobby with other players, and so do 0.4.0's icon, 0.4.1 hiding the icon row while Photo Mode is on, and hiding with the game's eye button in every window mode. 0.2.2 keeps other mods' messages and windows on screen while Photo Mode hides the game's UI, and 0.3.0 lets you type in chat. Neither has been tried yet, and neither has 0.4.5's `photo` command for Bubble Shell |
 | Emote Sync 0.3.6 | **Pre-release.** 0.1.0 worked with a friend, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, and 0.3.4's fix for players twitching in an innertube pose. 0.2.0's joining once you're free and the **Join now** button, 0.2.1's styled names and 0.3.6's `sync` command for Bubble Shell haven't been tried yet |
 | Teleport Spots 0.2.5 | **Pre-release.** Teleporting works on your own screen, and so do 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.1's fix for keeping spots after a restart, 0.1.2's fix for where other players see you land and 0.2.5's `spot` command for Bubble Shell haven't been tried yet |
 | Song Player 0.2.4 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening |
@@ -132,7 +132,7 @@ None of the mods have been tried on a Mac yet.
 
 ### Photo Mode
 
-> **Pre-release:** 0.3.0 lets you type in chat while Photo Mode is on. 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI, and they still stay out of your photos. Neither has been tried in the game yet.
+> **Pre-release:** 0.3.0 lets you type in chat while Photo Mode is on. 0.2.2 keeps other mods' messages and windows (like Emote Sync's) on screen while Photo Mode hides the game's UI, and they still stay out of your photos. 0.4.5 adds the `photo` command for [Bubble Shell](#bubble-shell). None of these has been tried in the game yet.
 
 Press **F9** (or click the camera icon) in a lobby to detach the camera and hide the game's UI, then **P** to save a photo.
 
@@ -144,6 +144,7 @@ Press **F9** (or click the camera icon) in a lobby to detach the camera and hide
 
 Photos are saved to `Pictures\On-Together`. You can save them bigger than your screen with `ResolutionMultiplier` (2 on a 1080p screen gives 4K). Photo Mode only works in the game's Normal window mode, not Landscape, Portrait or Desk. If you've hidden the game's UI with its eye button, the controls panel and messages stay hidden in Photo Mode too.
 
+With [Bubble Shell](#bubble-shell), `photo` starts or ends Photo Mode and `photo shot` takes a photo. The free camera stays put while you type in its console.
 
 ### Emote Sync
 
