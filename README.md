@@ -74,7 +74,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Outfit Slots](#outfit-slots) | 0.1.4 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
 | [Quick Hide](#quick-hide) | 0.1.1 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
-| [Desk Swarm](#desk-swarm) | 0.3.2, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
+| [Desk Swarm](#desk-swarm) | 0.3.3, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
 | [Session Manager](#session-manager) | 0.1.2, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
@@ -119,7 +119,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Outfit Slots 0.1.4 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching, and 0.1.4's `outfit` command for Bubble Shell hasn't been tried yet |
 | Quick Hide 0.1.1 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
-| Desk Swarm 0.3.2 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so do 0.3.0's flying through buildings on your own and 0.3.2's fix for leaving a session while flying. Followers flying through buildings with you hasn't been tried yet |
+| Desk Swarm 0.3.3 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so do 0.3.0's flying through buildings on your own and 0.3.2's fix for leaving a session while flying. Followers flying through buildings with you, 0.3.3's `swarm` command for Bubble Shell and flying on after a teleport haven't been tried yet |
 | Session Manager 0.1.2 | **Pre-release.** Renaming reached Steam but not the player list (fixed in 0.1.2, not tried yet). The rest hasn't been tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
@@ -269,6 +269,7 @@ Slots 4-9 are kept in `BepInEx\config\OutfitSlots.json`. The game's own save onl
 **BlueSage QoL** has its own style slots 4-9, which change the same part of the game, so Outfit Slots stays off while they're on. To switch them off, set `EnableExtendedAvatarStyles = false` in `BepInEx\config\com.bluesage.ontogether.qoltweaks.beta.cfg` (or use BlueSage's menu) and restart the game. The first time Outfit Slots runs, it copies BlueSage's slots 4-9 (outfits and names) into its own, and leaves BlueSage's file as it was.
 
 With [Bubble Shell](#bubble-shell), `outfit` lists your outfits, `outfit 4` (or an outfit's name) puts one on, `outfit next` the next one, and `outfit copy 2 5` copies the outfit in slot 2 into slot 5.
+
 ### Quick Hide
 
 For the game's split-screen and mini window modes (keys 2-4), where the game sits over your desktop. Press **F10** or click the crossed-out eye icon and the whole game disappears at once: the world, every character, the game's UI and the mods' windows. Clicks go straight through to whatever is behind it, and if you were using the game, the keyboard goes back to the app you were in before. Press **F10** again to bring it all back. The key works even while you're in another app, and clicking On-Together in the taskbar (or picking it with Alt+Tab) brings the game back too.
@@ -289,7 +290,7 @@ When the game crashes like this, it leaves a crash file behind. On the Mac where
 
 ### Desk Swarm
 
-> **Pre-release:** 0.3.0's flying through buildings works on your own, but followers flying through them with you hasn't been tried with other players yet.
+> **Pre-release:** 0.3.0's flying through buildings works on your own, but followers flying through them with you hasn't been tried with other players yet. 0.3.3's `swarm` command for [Bubble Shell](#bubble-shell), and flying on after a teleport, haven't been tried yet either.
 
 Your desk becomes a drone. Press **F11** or click the icon (a desk with rotors) to open the window.
 
@@ -322,6 +323,7 @@ Everyone sees the flying, mod or not, because each player's game only ever moves
 
 `FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, `ThroughBuildings` is the window's **Fly through buildings** switch, and `StartFormation` picks the shape a new swarm starts with.
 
+With [Bubble Shell](#bubble-shell), `swarm` shows what's going on, `swarm fly` / `swarm land`, `swarm lead` / `swarm end`, `swarm join <name>` / `swarm leave`, `swarm form heart` (any shape) and `swarm spread 1.4`. Its `tp` works while you fly too: you carry on flying from the new spot, and your swarm catches up.
 ### Session Manager
 
 > **Pre-release:** apart from opening the window and a first rename (which found the bug 0.1.2 fixes; the fix itself hasn't been tried yet), not tried in the game yet. Sessions bigger than 16 players haven't been tried at all.

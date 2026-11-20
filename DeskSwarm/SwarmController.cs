@@ -130,6 +130,22 @@ namespace DeskSwarm
             _noticeBox.LateUpdate();
         }
 
+        // ---- For Bubble Shell's swarm command (ShellCommands) ----
+
+        internal Swarms SwarmList => _swarms;
+        internal bool Piloting => _flight.Piloting;
+        internal bool CanFly => Game.CanFly(_me);
+        internal void CommandToggleFlying() => ToggleFlying();
+
+        internal void CommandJoin(ulong leader)
+        {
+            if (_flight.Piloting)
+            {
+                _flight.StopPiloting(_me);
+            }
+            _swarms.Join(leader);
+        }
+
         private void ToggleFlying()
         {
             if (_flight.Piloting)

@@ -1,3 +1,8 @@
+## 0.3.3
+
+- With Bubble Shell (the new dev console mod): `swarm` shows what's going on, `swarm fly` / `swarm land`, `swarm lead` / `swarm end`, `swarm join <name>` / `swarm leave`, `swarm form heart` (any shape) and `swarm spread 1.4`. Not tried in the game yet.
+- Teleporting while you fly (Bubble Shell's `tp`) carries on flying from the new spot instead of snapping back, and your swarm catches up. Not tried in the game yet.
+
 ## 0.3.2
 
 - Fixed: leaving a session while your desk was flying (on your own or in a swarm) made your next sit-down, in any session, put you back where you had been flying.

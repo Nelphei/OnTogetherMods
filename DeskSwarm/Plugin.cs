@@ -11,7 +11,7 @@ namespace DeskSwarm
     {
         public const string PluginGuid = "nelphei.ontogether.deskswarm";
         public const string PluginName = "Desk Swarm";
-        public const string PluginVersion = "0.3.2";
+        public const string PluginVersion = "0.3.3";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace DeskSwarm
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<SwarmController>();
+
+            // The swarm command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Press {Settings.WindowKey.Value} to open its window.");
         }

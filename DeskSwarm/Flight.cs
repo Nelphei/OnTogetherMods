@@ -70,6 +70,12 @@ namespace DeskSwarm
         // you slow to a stop.
         private bool _through;
 
+        // Where the last frame put you. If you're somewhere else now, something else moved you (a
+        // teleport, like Bubble Shell's tp), and the flight carries on from there.
+        private Vector3 _placed;
+        private bool _hasPlaced;
+        private const float MovedAway = 0.5f;
+
         // Where the leader has been, newest first, for the Trail formation.
         private readonly List<Vector3> _path = new List<Vector3>();
         private ulong _pathLeader;
@@ -161,6 +167,16 @@ namespace DeskSwarm
                 return;
             }
 
+            // Teleported while flying (Bubble Shell's tp): fly on from the new spot instead of
+            // snapping back. A leader's followers see the jump and hurry to catch up.
+            if (_managing && _hasPlaced && (me.transform.position - _placed).sqrMagnitude > MovedAway * MovedAway)
+            {
+                _base = me.transform.position;
+                _velocity = Vector3.zero;
+                _yaw = me.transform.eulerAngles.y;
+                Plugin.Log.LogInfo("Your desk was moved while flying (a teleport?), so it flies on from there.");
+            }
+
             Swarm followed = swarms.Followed;
             int spot = swarms.MySpot;
             if (followed != null && spot >= 0)
@@ -233,6 +249,7 @@ namespace DeskSwarm
             if (!_managing)
             {
                 _managing = true;
+                _hasPlaced = false;
                 Transform t = me.transform;
                 _base = t.position;
                 _yaw = t.eulerAngles.y;
@@ -351,6 +368,8 @@ namespace DeskSwarm
 
             Quaternion rotation = Quaternion.Euler(0f, _yaw, 0f) * Quaternion.Euler(_pitch, 0f, _roll);
             Game.MoveSeated(me, _base + Vector3.up * bob, rotation, _yaw);
+            _placed = me.transform.position;
+            _hasPlaced = true;
         }
 
         private void RecordPath(Swarm swarm, Vector3 leaderAt)
