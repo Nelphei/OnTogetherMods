@@ -1,0 +1,9 @@
+monogram-extended.ttf is Monogram, a pixel font by Vinícius Menézio (datagoblin).
+
+It's free and released under Creative Commons Zero (CC0 1.0, public domain):
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Font page: https://datagoblin.itch.io/monogram
+Source: https://gitlab.com/datagoblin/monogram
+
+Thank you, datagoblin! The font's own credits are in monogram-credits.txt.

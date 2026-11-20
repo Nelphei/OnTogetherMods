@@ -79,12 +79,13 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
 | [Buddy Up](#buddy-up) | 0.2.0, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
+| [Bubble Shell](#bubble-shell) | 0.1.0, pre-release | The ` key | A dev console that drops down from the top: type commands to teleport, sit, emote, look things up, play with silly looks and more | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together, two playing cards for Card Table and someone riding on a friend's head for Buddy Up. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together, two playing cards for Card Table, someone riding on a friend's head for Buddy Up and a shimmering soap bubble with a `>_` prompt for Bubble Shell. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -123,6 +124,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
 | Buddy Up 0.2.0 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes haven't been yet |
+| Bubble Shell 0.1.0 | **Pre-release.** Opening it and its look work (the slide, the pixel font, the colours and the bubbles). The commands haven't all been tried yet. Outside the game, the commands' typing, aliases, binds, Tab completion, history and the animated commands were checked |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 
@@ -382,6 +384,35 @@ Everyone sees you riding and walking, mod or not, because each player's game onl
 With [Desk Snap](#desk-snap), sitting down together lines your desk up the Desk Snap way. With [Focus Anywhere](#focus-anywhere), you can sit down together on any ground. With [Emote Sync](#emote-sync) on, its focus join counts as sitting down together, and you're moved beside your buddy. Flying your desk with [Desk Swarm](#desk-swarm) gets you off a head first, and while your buddy flies their desk, you walk along below instead of sitting down beside it.
 
 In the settings file, `RideHeight` is the riding height, `RideActivity` and `RideChoice` pick what you sit down to do when you climb on, `Walk` and `WalkGap` set where and how far from your buddy you walk, `SitTogether` is the window's switch, `CatchUp` and `CatchUpDistance` control hopping over to your buddy, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
+
+### Bubble Shell
+
+> **Pre-release:** opening it and its look work; the commands haven't all been tried in the game yet.
+
+A dev console, like the ones in old PC games: press the **`** key (left of 1 on US keyboards) or click the bubble icon, and a dark panel drops down from the top of the screen with soft teal pixel text and little bubbles drifting up behind it. Type a command and press **Enter**. Press **`** or **Esc** to close it.
+
+- **Typing.** **Tab** finishes command names (and players, kinds of activity, files), **↑** / **↓** bring back what you typed before, **PageUp** / **PageDown** or the mouse wheel scroll back, **Ctrl+V** pastes, **Ctrl+L** clears the screen and **Ctrl+C** stops a running command. Put several commands on one line with `;`, and "quotes" keep words together. While the console has the keyboard, the game ignores your keys; click the world to give them back (the console stays open), and click the console to type again.
+- **You.** `where` says where you are; `tp x y z` takes you to a spot (`~` means where you are now, so `tp ~ ~3 ~` hops you up 3), and `tp <name>` takes you beside a player. Standing, you land on the ground; sitting at your desk (or any activity on open ground) you go as you are, desk and all, at their height, so you can teleport around while flying with [Desk Swarm](#desk-swarm). Not at a seat spot like a bench. `emote 3` plays an emote (numbered around the emote wheel from the top). `sit read` sits you down reading, like the focus menu (`sit list` shows the kinds, `sit list read` what's in one, `sit read 2` picks one); `stand` stands you up. `say hello!` says it in chat.
+- **Info.** `players` lists everyone in the session (how far away, who's sitting, who hosts), `session` tells you about the session, `net` shows your ping to the host, `mods` lists every mod you have loaded, `fps` turns on a frames-a-second counter, and `version` says what you're running.
+- **Laughs.** `fortune`, `roll 2d6`, `flip`, `8ball <question>`, `duck <your bug>` (rubber duck debugging), `sudo`, `hack` and `train`.
+- **Looks only you see.** `bighead` gives everyone big heads, and `tiny` makes you small. Only on your screen: nobody else sees a thing.
+- **Your own commands.** `alias hi "emote 1; say hello!"` makes a new command, and `bind g "emote 3"` runs commands when you press a key in the game (not while typing in chat). They're kept in `BepInEx\config\BubbleShell\config.cfg`. Commands in `autoexec.cfg` in the same folder run every time you enter the world, `reload` reads both files again after you've edited them, and `exec <file>` runs any `.cfg` file there. `help` lists every command and `help <command>` explains one.
+- **The welcome.** `motd` shows the welcome message again (after `clear`), with a new tip each time. Write your own message in `motd.txt` in the same folder and it shows under the welcome.
+- **Other mods.** `open` lists every mod with an icon in the row, and `open doomtogether` does what clicking its icon does (`open outfitslots right` does its right-click, so you put on your next outfit). Opening a window hands the keyboard back to the game. Several mods also add their own commands, listed under each mod's name in `help` (they need that mod's newest version):
+  - [Outfit Slots](#outfit-slots): `outfit` lists your outfits, `outfit 4` puts one on, `outfit next`, `outfit copy 2 5`.
+  - [Teleport Spots](#teleport-spots): `spot` lists your spots, `spot home` takes you there, `spot save home`, `spot delete home`, `spot rename home house`.
+  - [Buddy Up](#buddy-up): `buddy` shows your buddies, `buddy <name>` asks someone (or says yes), `buddy no`, `buddy bye`, `ride <buddy>`, `walk <buddy>`, `buddy stop`, `buddy shake`.
+  - [Emote Sync](#emote-sync): `sync`, `sync on`, `sync off`. While it's on, `emote` and `sit` start in sync with your group too.
+  - [Desk Swarm](#desk-swarm): `swarm`, `swarm fly`, `swarm land`, `swarm lead`, `swarm end`, `swarm join <name>`, `swarm leave`, `swarm form heart`, `swarm spread 1.4`.
+  - [Session Manager](#session-manager), while you host: `kick <name>`, `ban <name> 1h` (or `1d`, `1w`, `forever`), `unban <name>`, `bans`, `lock`, `unlock`, `rename <name>`, `cap 20`.
+  - [Chat Range](#chat-range): `range` lists who's close enough to see your local chat.
+  - [Desk Snap](#desk-snap): `snap` lines your desk up now; `snap on`, `snap off`.
+  - [Photo Mode](#photo-mode): `photo` starts or ends it, `photo shot` takes a photo.
+  - [Song Player](#song-player): `song` lists your songs, `song <name>` plays one at your instrument, `song stop`.
+
+Only you need the mod. In the settings file, `ConsoleKey` is the key that opens it, `Height` is how far down it drops, `Opacity` how dark it is, `TextScale` how big the pixels of the text are (0 picks one for your screen), `PixelFont` switches to the game's own font, and `Bubbles` turns the bubbles off.
+
+**Credits.** The text uses [Monogram](https://datagoblin.itch.io/monogram), a free pixel font by datagoblin (CC0). It's in the mod's folder with its credits.
 
 ## Settings
 

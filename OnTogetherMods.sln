@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardTable", "CardTable\Card
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuddyUp", "BuddyUp\BuddyUp.csproj", "{111D6CB8-4AE8-4D5F-8F53-281E9128A650}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleShell", "BubbleShell\BubbleShell.csproj", "{FFBCC664-5BC1-4E57-A2AB-D708EDDE6F7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,5 +128,9 @@ Global
 		{111D6CB8-4AE8-4D5F-8F53-281E9128A650}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{111D6CB8-4AE8-4D5F-8F53-281E9128A650}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{111D6CB8-4AE8-4D5F-8F53-281E9128A650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFBCC664-5BC1-4E57-A2AB-D708EDDE6F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFBCC664-5BC1-4E57-A2AB-D708EDDE6F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFBCC664-5BC1-4E57-A2AB-D708EDDE6F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFBCC664-5BC1-4E57-A2AB-D708EDDE6F7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

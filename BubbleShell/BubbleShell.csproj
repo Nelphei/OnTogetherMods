@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references, target framework and auto-deploy come from ..\Directory.Build.props/.targets.
+       Deploying also copies the Content folder (the Monogram pixel font and its credits) beside the DLL. -->
+  <PropertyGroup>
+    <AssemblyName>BubbleShell</AssemblyName>
+    <RootNamespace>BubbleShell</RootNamespace>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- PanelStack.Hidden (Photo Mode, the eye button) and the mod canvas name prefix. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- This mod's icon in the row of mod icons at the bottom-right. -->
+    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
+    <!-- Keeps clicks on the console from reaching the game's UI. -->
+    <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+    <!-- Players' names from their name tags (players, tp). -->
+    <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
+    <!-- Commands other mods add to the console (outfit, spot, swarm...). -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
+  </ItemGroup>
+</Project>
