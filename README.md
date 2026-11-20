@@ -75,7 +75,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Quick Hide](#quick-hide) | 0.1.1 | F10, in split screen and mini mode | Hides the whole game at once (world, characters and UI) and brings it back | Only you |
 | [Network Crash Fix](#network-crash-fix) | 0.1.1, pre-release | Nothing to open, it's always on | Stops a crash in the game's networking code (seen on a Mac) | Only you |
 | [Desk Swarm](#desk-swarm) | 0.3.3, pre-release | F11 | Fly your desk around, and fly in formation with friends like a drone swarm | Only you to fly (others see it without the mod); everyone in a swarm needs it |
-| [Session Manager](#session-manager) | 0.1.2, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
+| [Session Manager](#session-manager) | 0.1.3, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
 | [Buddy Up](#buddy-up) | 0.2.1, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
@@ -120,7 +120,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Quick Hide 0.1.1 | Works, in split screen and mini mode |
 | Network Crash Fix 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Desk Swarm 0.3.3 | **Pre-release.** 0.2.0 works, including its new flying and landing shapes, and so do 0.3.0's flying through buildings on your own and 0.3.2's fix for leaving a session while flying. Followers flying through buildings with you, 0.3.3's `swarm` command for Bubble Shell and flying on after a teleport haven't been tried yet |
-| Session Manager 0.1.2 | **Pre-release.** Renaming reached Steam but not the player list (fixed in 0.1.2, not tried yet). The rest hasn't been tried in the game yet |
+| Session Manager 0.1.3 | **Pre-release.** Opening the window and renaming work (0.1.2 fixed the new name not showing in the player list). The rest, and 0.1.3's host commands for Bubble Shell, haven't been tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
 | Buddy Up 0.2.1 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes and 0.2.1's `buddy`, `ride` and `walk` commands for Bubble Shell haven't been yet |
@@ -324,9 +324,10 @@ Everyone sees the flying, mod or not, because each player's game only ever moves
 `FlyKey` in the settings file sets a key for taking off (there's none by default), `UpKey` and `DownKey` change Space and Shift, `FlySpeed` and `ClimbSpeed` set how fast you fly, `Tilt` stops the tipping, `ThroughBuildings` is the window's **Fly through buildings** switch, and `StartFormation` picks the shape a new swarm starts with.
 
 With [Bubble Shell](#bubble-shell), `swarm` shows what's going on, `swarm fly` / `swarm land`, `swarm lead` / `swarm end`, `swarm join <name>` / `swarm leave`, `swarm form heart` (any shape) and `swarm spread 1.4`. Its `tp` works while you fly too: you carry on flying from the new spot, and your swarm catches up.
+
 ### Session Manager
 
-> **Pre-release:** apart from opening the window and a first rename (which found the bug 0.1.2 fixes; the fix itself hasn't been tried yet), not tried in the game yet. Sessions bigger than 16 players haven't been tried at all.
+> **Pre-release:** only opening the window and renaming have been tried in the game so far. Sessions bigger than 16 players haven't been tried at all, and 0.1.3's host commands for [Bubble Shell](#bubble-shell) haven't been tried yet.
 
 Tools for running a session you host. Click the crown icon to open the window. It's greyed out unless you're the host, and players who join your session don't need the mod. The window has four tabs:
 
@@ -342,6 +343,8 @@ The game has no "you were kicked" screen, so a kicked player sees the game's "ba
 **With [Name Designer](#name-designer)** installed, the Session tab has a **Design** button next to the name. It opens Name Designer beside the window, and the name you design goes straight into the name box. Click **Rename** to use it.
 
 Session Manager uses the game's own ban list, so bans made in the game's player list (or with BlueSage QoL) show up here too, and the other way round. Ban lengths and notes, and your saved setup, are kept in `BepInEx\config\SessionManager.json`. In the settings file, `MaxPlayers` sets the biggest session (16 to 249), `SizeStep` the Shift-click jump, `LetFriendsIn` is the Requests tab's switch, `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key), and `Icon` swaps the crown for one of two other pictures: `Friends` (a crown over three friends) or `Clipboard` (a guest list).
+
+With [Bubble Shell](#bubble-shell), while you host: `kick <name>`, `ban <name> 1h` (or `1d`, `1w`, `forever`), `unban <name>`, `bans`, `lock`, `unlock`, `rename <name>` and `cap <players>`.
 
 ### Doom Together
 

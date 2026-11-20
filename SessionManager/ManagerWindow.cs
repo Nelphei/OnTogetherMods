@@ -334,6 +334,45 @@ namespace SessionManager
             RefreshRequests();
         }
 
+        // ---- For Bubble Shell's host commands (ShellCommands) ----
+        // Each does what the window's button does and returns the window's status line.
+
+        internal static ManagerWindow Instance => _instance;
+        internal bool Hosting => _host;
+        internal Session SessionInfo => _session;
+        internal PlayerLog Players => _log;
+
+        internal string CommandKick(LoggedPlayer player)
+        {
+            Kick(player);
+            return _status;
+        }
+
+        // length: 0 = an hour, 1 = a day, 2 = a week, 3 = for good.
+        internal string CommandBan(LoggedPlayer player, int length)
+        {
+            Ban(player, (BanLength)Mathf.Clamp(length, 0, 3));
+            return _status;
+        }
+
+        internal string CommandUnban(string steamId, string name)
+        {
+            Unban(steamId, name);
+            return _status;
+        }
+
+        internal string CommandRename(string name)
+        {
+            _nameText = name ?? "";
+            _nameEdited = true;
+            Rename();
+            return _status;
+        }
+
+        internal bool CommandCap(int players) => _session.SetCap(Mathf.Clamp(players, 1, Lift.Max));
+
+        internal bool CommandLock(bool locked) => _session.SetLocked(locked);
+
         // ---- Session settings ----
 
         private void Rename()
@@ -442,11 +481,13 @@ namespace SessionManager
             Status($"Kicked {player.Name}. They can join again.");
         }
 
-        private void Ban(LoggedPlayer player)
+        private void Ban(LoggedPlayer player) => Ban(player, _banLength);
+
+        private void Ban(LoggedPlayer player, BanLength banLength)
         {
             DateTime now = DateTime.UtcNow;
             DateTime? until;
-            switch (_banLength)
+            switch (banLength)
             {
                 case BanLength.Hour:
                     until = now.AddHours(1);
@@ -479,7 +520,7 @@ namespace SessionManager
                 Game.SendAway(id);
                 WatchLeaving(player.SteamId, id);
             }
-            string length = until.HasValue ? "for " + BanLengthNames[(int)_banLength] : "for good";
+            string length = until.HasValue ? "for " + BanLengthNames[(int)banLength] : "for good";
             Status($"Banned {player.Name} {length}");
         }
 

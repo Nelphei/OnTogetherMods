@@ -1,3 +1,7 @@
+## 0.1.3
+
+- With Bubble Shell (the new dev console mod), while you host: `kick <name>`, `ban <name> 1h` (or 1d, 1w, forever), `unban <name>`, `bans`, `lock`, `unlock`, `rename <name>` and `cap <players>`. Not tried in the game yet.
+
 ## 0.1.2
 
 - Renaming the session now shows the new name in the player list. The game only reads the name when you arrive, so before this nobody in the session saw it change, not even the host. Everyone with Session Manager installed now sees it within a second; players without it see it once they rejoin. The session list and new joiners always got the new name.

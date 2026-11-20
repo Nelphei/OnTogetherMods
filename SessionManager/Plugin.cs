@@ -11,7 +11,7 @@ namespace SessionManager
     {
         public const string PluginGuid = "nelphei.ontogether.sessionmanager";
         public const string PluginName = "Session Manager";
-        public const string PluginVersion = "0.1.2";
+        public const string PluginVersion = "0.1.3";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace SessionManager
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<ManagerWindow>();
+
+            // The host commands (kick, ban, lock...), for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             string key = Settings.WindowKey.Value == KeyCode.None ? "" : $" (or press {Settings.WindowKey.Value})";
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Click the crown icon{key} while you host a session.");

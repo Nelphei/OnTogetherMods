@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>SessionManager</AssemblyName>
     <RootNamespace>SessionManager</RootNamespace>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,5 +19,7 @@
     <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
     <!-- Lets Name Designer design the session name in the window. -->
     <Compile Include="..\Shared\SessionNameLink.cs" Link="Shared\SessionNameLink.cs" />
+    <!-- The host commands in Bubble Shell's console. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
   </ItemGroup>
 </Project>
