@@ -78,7 +78,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Session Manager](#session-manager) | 0.1.2, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
-| [Buddy Up](#buddy-up) | 0.2.0, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
+| [Buddy Up](#buddy-up) | 0.2.1, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
 | [Bubble Shell](#bubble-shell) | 0.1.0, pre-release | The ` key | A dev console that drops down from the top: type commands to teleport, sit, emote, look things up, play with silly looks and more | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
@@ -123,7 +123,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Session Manager 0.1.2 | **Pre-release.** Renaming reached Steam but not the player list (fixed in 0.1.2, not tried yet). The rest hasn't been tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
-| Buddy Up 0.2.0 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes haven't been yet |
+| Buddy Up 0.2.1 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes and 0.2.1's `buddy`, `ride` and `walk` commands for Bubble Shell haven't been yet |
 | Bubble Shell 0.1.0 | **Pre-release.** Opening it and its look work (the slide, the pixel font, the colours and the bubbles). The commands haven't all been tried yet. Outside the game, the commands' typing, aliases, binds, Tab completion, history and the animated commands were checked |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
@@ -373,7 +373,7 @@ Only you need the mod for Solitaire; everyone at a Go Fish table needs it. The S
 
 ### Buddy Up
 
-> **Pre-release:** 0.1.0's riding and walking were tried in the game; this version's fixes haven't been yet.
+> **Pre-release:** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes and 0.2.1's commands for [Bubble Shell](#bubble-shell) haven't been yet.
 
 Pair up with a friend, then ride around on their head, walk together and sit down side by side. Click the buddies icon to open the window.
 
@@ -388,6 +388,8 @@ Everyone sees you riding and walking, mod or not, because each player's game onl
 With [Desk Snap](#desk-snap), sitting down together lines your desk up the Desk Snap way. With [Focus Anywhere](#focus-anywhere), you can sit down together on any ground. With [Emote Sync](#emote-sync) on, its focus join counts as sitting down together, and you're moved beside your buddy. Flying your desk with [Desk Swarm](#desk-swarm) gets you off a head first, and while your buddy flies their desk, you walk along below instead of sitting down beside it.
 
 In the settings file, `RideHeight` is the riding height, `RideActivity` and `RideChoice` pick what you sit down to do when you climb on, `Walk` and `WalkGap` set where and how far from your buddy you walk, `SitTogether` is the window's switch, `CatchUp` and `CatchUpDistance` control hopping over to your buddy, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
+
+With [Bubble Shell](#bubble-shell), `buddy` shows your buddies, `buddy <name>` asks someone (or says yes), `buddy no <name>` / `buddy bye <name>`, `ride <buddy>`, `walk <buddy>`, `buddy stop` and `buddy shake`.
 
 ### Bubble Shell
 

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>BuddyUp</AssemblyName>
     <RootNamespace>BuddyUp</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,5 +17,7 @@
     <!-- The messages at the top of the screen, and player names in the window. -->
     <Compile Include="..\Shared\TextBox.cs" Link="Shared\TextBox.cs" />
     <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
+    <!-- The buddy, ride and walk commands in Bubble Shell's console. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
   </ItemGroup>
 </Project>

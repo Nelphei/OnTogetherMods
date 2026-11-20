@@ -11,7 +11,7 @@ namespace BuddyUp
     {
         public const string PluginGuid = "nelphei.ontogether.buddyup";
         public const string PluginName = "Buddy Up";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.2.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace BuddyUp
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<BuddyController>();
+
+            // The buddy, ride and walk commands, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Click its icon to open its window.");
         }

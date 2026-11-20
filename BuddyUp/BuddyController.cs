@@ -215,6 +215,17 @@ namespace BuddyUp
             }
         }
 
+        // ---- For Bubble Shell's commands (ShellCommands) ----
+
+        internal Buddies BuddyList => _buddies;
+        internal ulong RidingOn => _riding.Carrier;
+        internal ulong WalkingWith => _following.Target;
+        internal void CommandRide(ulong id) => Ride(id);
+        internal void CommandWalk(ulong id) => Walk(id);
+        internal void CommandGetOff() => GetOff();
+        internal void CommandStopWalking() => StopWalking();
+        internal void CommandShakeOff() => ShakeOff();
+
         // ---- Actions ----
 
         // Right-click on the icon: hop off, or stop walking, or open the window.
