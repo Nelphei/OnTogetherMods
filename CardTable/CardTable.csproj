@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>CardTable</AssemblyName>
     <RootNamespace>CardTable</RootNamespace>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,5 +13,7 @@
     <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
     <!-- Keeps clicks on the window from reaching the game's UI. -->
     <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+    <!-- Players' names from their name tags (Go Fish). -->
+    <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
   </ItemGroup>
 </Project>

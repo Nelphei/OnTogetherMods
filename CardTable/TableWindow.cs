@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Configuration;
 using OnTogetherMods.Shared;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,9 +9,10 @@ using EventType = UnityEngine.EventType;
 
 namespace CardTable
 {
-    // The Card Table window: a title row, the green table with the Solitaire cards on it, and a row of
+    // The Card Table window: a title row with a tab for each game, the green table, and a row of
     // buttons under it. It sits in the stack with the other mods' windows until you drag its title row.
-    // Mouse only: the keyboard stays the game's.
+    // Mouse only: the keyboard stays the game's. Solitaire is drawn here; Go Fish by GoFishBoard, whose
+    // tables keep running (and talking to other players) while the window is closed.
     //
     // The cards are pixel art, so the table is laid out in screen pixels, at a whole number of screen
     // pixels per art pixel (the rest of the window scales with the screen like other mods' windows).
@@ -71,6 +73,12 @@ namespace CardTable
         private readonly Solitaire _game = new Solitaire();
         private readonly System.Random _random = new System.Random();
         private CardArt _art;
+
+        private CardNet _net;
+        private GoFishTables _tables;
+        private GoFishBoard _fish;
+
+        private static bool FishTab => S.Game.Value == TableGame.GoFish;
 
         private bool _open;
         private bool _iconClicked;
@@ -157,6 +165,7 @@ namespace CardTable
         private GUIStyle _titleStyle;
         private GUIStyle _hintStyle;
         private GUIStyle _buttonStyle;
+        private GUIStyle _tabOnStyle;
         private GUIStyle _statusStyle;
         private GUIStyle _bigStyle;
         private GUIStyle _centreStyle;
@@ -179,6 +188,14 @@ namespace CardTable
             }
             _game.DrawThree = S.DrawThree.Value;
             RebuildWhere();
+
+            _net = new CardNet();
+            _tables = new GoFishTables(_net, _random);
+            _fish = new GoFishBoard(_tables, _store, MarkDirty);
+            _net.Broadcasted += (from, words) => _tables.OnBroadcast(from, words, Time.unscaledTime);
+            _net.Direct += (from, words) => _tables.OnDirect(from, words, Time.unscaledTime);
+            _net.MemberLeft += id => _tables.OnMemberLeft(id, Time.unscaledTime);
+            _net.LobbyChanged += hadLobby => _tables.OnLobbyChanged(hadLobby, Time.unscaledTime);
         }
 
         private void OnDestroy()
@@ -192,6 +209,7 @@ namespace CardTable
             {
                 SaveNow();
             }
+            LeaveGoFish();
             _art?.Destroy();
             _blocker?.Destroy();
         }
@@ -199,6 +217,20 @@ namespace CardTable
         private void OnApplicationQuit()
         {
             SaveNow();
+            LeaveGoFish();
+        }
+
+        // Tells the other players at your Go Fish table that you've gone.
+        private void LeaveGoFish()
+        {
+            try
+            {
+                _tables?.LeaveTable(Time.unscaledTime);
+            }
+            catch (Exception e)
+            {
+                Plugin.Log.LogError(e);
+            }
         }
 
         // ---- Every frame ----
@@ -228,8 +260,18 @@ namespace CardTable
 
                 _game.DrawThree = S.DrawThree.Value;
                 float now = Time.unscaledTime;
-                // The clock runs from the first move while the window shows.
-                if (_open && !PanelStack.Hidden && _game.Started && !_game.Won)
+
+                // Go Fish runs with the window closed too: other players are waiting on your table.
+                _net.Update();
+                if (!inWorld && (_tables.Hosting != null || _tables.Joined != null))
+                {
+                    _tables.LeaveTable(now);
+                }
+                _tables.Update(now);
+                _fish.Update(now, _open && FishTab && !PanelStack.Hidden);
+
+                // The clock runs from the first move while the window shows Solitaire.
+                if (_open && !FishTab && !PanelStack.Hidden && _game.Started && !_game.Won)
                 {
                     _game.Seconds += Time.unscaledDeltaTime;
                 }
@@ -276,11 +318,34 @@ namespace CardTable
         private void Open()
         {
             _open = true;
-            if (!S.HelpSeen.Value)
+            ShowHelpOnce();
+        }
+
+        // Each game's how-to-play card shows by itself the first time you see that game.
+        private void ShowHelpOnce()
+        {
+            ConfigEntry<bool> seen = FishTab ? S.GoFishHelpSeen : S.HelpSeen;
+            if (!seen.Value)
             {
                 _help = true;
-                S.HelpSeen.Value = true;
+                _statsBox = false;
+                seen.Value = true;
             }
+        }
+
+        private void SwitchTo(TableGame game)
+        {
+            if (S.Game.Value == game)
+            {
+                return;
+            }
+            S.Game.Value = game;
+            _help = false;
+            _statsBox = false;
+            _pressed = false;
+            _dragging = false;
+            _confirmUntil = -1f;
+            ShowHelpOnce();
         }
 
         // Closing keeps your game; opening again carries on.
@@ -749,9 +814,11 @@ namespace CardTable
             // First, so it lines up with the other mods' icons. Only shows in a world.
             if (S.ShowIcon.Value)
             {
-                IconBar.State state = _open ? IconBar.State.Open : IconBar.State.Plain;
+                // A dot while it's your turn at Go Fish with the window closed.
+                bool yourTurn = !_open && _fish.YourTurn;
+                IconBar.State state = _open ? IconBar.State.Open : yourTurn ? IconBar.State.On : IconBar.State.Plain;
                 if (IconBar.Draw("CardTable", IconBar.CardTableOrder, Icon.Pixels, state, "Card Table",
-                        S.WindowKey.Value) == IconBar.Click.Left)
+                        S.WindowKey.Value, yourTurn ? "Your turn at Go Fish" : null) == IconBar.Click.Left)
                 {
                     _iconClicked = true;   // acted on in Update
                 }
@@ -883,19 +950,32 @@ namespace CardTable
                 _help = false;
             });
 
+            // A tab for each game, after the title.
+            var title = new GUIContent("<b>CARD TABLE</b>");
+            float titleWidth = _titleStyle.CalcSize(title).x + Units(10f);
+            float tabs = TabButton(x + titleWidth, y, "Solitaire", TableGame.Solitaire);
+            tabs = TabButton(tabs, y, "Go Fish", TableGame.GoFish);
+
             // The rest of the title row moves the window (the buttons above have taken their clicks).
             HandleWindowDrag(new Rect(_panel.x, _panel.y, right - _panel.x, _pad + _header));
 
-            var title = new GUIContent("<b>CARD TABLE</b>");
-            float titleWidth = _titleStyle.CalcSize(title).x + Units(10f);
             GUI.Label(new Rect(x, y, titleWidth, _header), title, _titleStyle);
-            GUI.Label(new Rect(x + titleWidth, y, Mathf.Max(0f, right - x - titleWidth - Units(ButtonGapUnits)), _header),
-                "Solitaire  ·  click or drag the cards", _hintStyle);
+            float hintX = tabs + Units(4f);
+            GUI.Label(new Rect(hintX, y, Mathf.Max(0f, right - hintX - Units(ButtonGapUnits)), _header),
+                FishTab ? _fish.Hint() : "click or drag the cards", _hintStyle);
 
-            DrawTable();
-            DrawStatusRow();
+            if (FishTab)
+            {
+                _fish.DrawTable(_table, _scale, _unit, _art, _help || _statsBox);
+                _fish.DrawStatus(new Rect(_panel.x + _pad, _table.yMax + _gap, _panel.width - 2 * _pad, _status), _unit);
+            }
+            else
+            {
+                DrawTable();
+                DrawStatusRow();
+            }
 
-            if (_showWin)
+            if (_showWin && !FishTab)
             {
                 DrawWin();
             }
@@ -1121,6 +1201,18 @@ namespace CardTable
             return rect.x - Units(ButtonGapUnits);
         }
 
+        // Returns where the next tab goes.
+        private float TabButton(float x, float y, string label, TableGame game)
+        {
+            float width = Mathf.Max(Units(40f), _buttonStyle.CalcSize(new GUIContent(label)).x + Units(16f));
+            var rect = new Rect(x, y + Units(2f), width, _header - Units(4f));
+            if (GUI.Button(rect, label, S.Game.Value == game ? _tabOnStyle : _buttonStyle))
+            {
+                _clicks.Add(() => SwitchTo(game));
+            }
+            return rect.xMax + Units(ButtonGapUnits);
+        }
+
         private float HeaderButton(float right, float y, string label, Action action)
         {
             float width = Mathf.Max(Units(28f), _buttonStyle.CalcSize(new GUIContent(label)).x + Units(12f));
@@ -1268,8 +1360,11 @@ namespace CardTable
             {
                 _clicks.Add(() => _help = false);
             }
-            Rect box = CentreBox(Mathf.Min(_table.width - Units(24f), Units(520f)), Mathf.Min(_table.height - Units(24f), Units(390f)), true);
-            GUI.Label(new Rect(box.x + Units(16f), box.y + Units(12f), box.width - Units(32f), box.height - Units(24f)), HelpText, _helpStyle);
+            string text = FishTab ? GoFishBoard.HelpText : HelpText;
+            float width = Mathf.Min(_table.width - Units(24f), Units(520f));
+            float height = _helpStyle.CalcHeight(new GUIContent(text), width - Units(32f)) + Units(24f);
+            Rect box = CentreBox(width, Mathf.Min(_table.height - Units(24f), height), true);
+            GUI.Label(new Rect(box.x + Units(16f), box.y + Units(12f), box.width - Units(32f), box.height - Units(24f)), text, _helpStyle);
         }
 
         private void DrawStats()
@@ -1277,6 +1372,13 @@ namespace CardTable
             if (GUI.Button(_table, GUIContent.none, GUIStyle.none))
             {
                 _clicks.Add(() => _statsBox = false);
+            }
+            if (FishTab)
+            {
+                Rect fishBox = CentreBox(Units(300f), Units(210f), true);
+                GUI.Label(new Rect(fishBox.x + Units(16f), fishBox.y + Units(12f), fishBox.width - Units(32f), fishBox.height - Units(24f)),
+                    _fish.StatsText(), _helpStyle);
+                return;
             }
             SolitaireStats stats = _store.Stats;
             int rate = stats.Played > 0 ? Mathf.RoundToInt(100f * stats.Won / stats.Played) : 0;
@@ -1325,9 +1427,15 @@ namespace CardTable
                 alignment = TextAnchor.MiddleLeft,
                 wordWrap = false,
                 clipping = TextClipping.Clip,
+                richText = true,   // player names (see RichName)
             };
             _hintStyle.normal.textColor = Dim;
             _buttonStyle = new GUIStyle(GUI.skin.button) { fontSize = Font(14f) };
+            // The game you're looking at: pressed in.
+            _tabOnStyle = new GUIStyle(_buttonStyle);
+            _tabOnStyle.normal = GUI.skin.button.onNormal;
+            _tabOnStyle.hover = GUI.skin.button.onHover;
+            _tabOnStyle.active = GUI.skin.button.onActive;
             _statusStyle = new GUIStyle(GUI.skin.label)
             {
                 fontSize = Font(14f),

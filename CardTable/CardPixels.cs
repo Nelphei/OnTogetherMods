@@ -463,24 +463,26 @@ namespace CardTable
 
         private static uint Ink(int suit) => Cards.IsRedSuit(suit) ? Red : Outline;
 
+        private static string[] RankGlyph(int rank)
+        {
+            if (rank != 10)
+            {
+                return Glyph(Cards.RankText(rank)[0]);
+            }
+            string[] one = Glyph('1');
+            string[] zero = Glyph('0');
+            var glyph = new string[7];
+            for (int y = 0; y < 7; y++)
+            {
+                glyph[y] = one[y] + "." + zero[y];
+            }
+            return glyph;
+        }
+
         // The rank and suit side by side, as in the top-left corner.
         private static Picture Corner(int rank, int suit)
         {
-            string[] glyph;
-            if (rank == 10)
-            {
-                string[] one = Glyph('1');
-                string[] zero = Glyph('0');
-                glyph = new string[7];
-                for (int y = 0; y < 7; y++)
-                {
-                    glyph[y] = one[y] + "." + zero[y];
-                }
-            }
-            else
-            {
-                glyph = Glyph(Cards.RankText(rank)[0]);
-            }
+            string[] glyph = RankGlyph(rank);
             int width = glyph[0].Length;
             var corner = new Picture(width + 2 + 7, 7);
             uint ink = Ink(suit);
@@ -649,6 +651,136 @@ namespace CardTable
             var picture = new Picture(7, 7);
             picture.Stamp(SmallSuits[suit], 0, 0, c => Cards.IsRedSuit(suit) ? Red : Outline);
             return picture;
+        }
+
+        // ---- Go Fish ----
+
+        public const int BookTileHeight = 12;
+        private const uint Ripple = 0x8CC0F0FF;
+        private const uint LilyDark = 0x4F9A4CFF;
+
+        // A finished book: a little card with the rank on it, and a second card peeking out behind.
+        public static Picture BookTile(int rank)
+        {
+            string[] glyph = RankGlyph(rank);
+            int w = glyph[0].Length + 4;
+            int h = BookTileHeight - 1;
+            var tile = new Picture(w + 1, h + 1);
+            void Card(int left, int top, bool front)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        if ((x == 0 || x == w - 1) && (y == 0 || y == h - 1))
+                        {
+                            continue;   // rounded corner
+                        }
+                        bool edge = x == 0 || y == 0 || x == w - 1 || y == h - 1;
+                        tile[left + x, top + y] = edge ? Outline : !front || y == h - 2 ? LightGrey : White;
+                    }
+                }
+            }
+            Card(1, 1, false);
+            Card(0, 0, true);
+            tile.Stamp(glyph, 2, 2, c => Outline);
+            return tile;
+        }
+
+        // The round badge a hand's card count goes on (the number is drawn over it as text).
+        public static Picture Badge(int size)
+        {
+            var badge = new Picture(size, size);
+            double r = size / 2.0;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    double dx = x + 0.5 - r;
+                    double dy = y + 0.5 - r;
+                    double d = Math.Sqrt(dx * dx + dy * dy);
+                    if (d <= r - 1.2)
+                    {
+                        badge[x, y] = Outline;
+                    }
+                    else if (d <= r - 0.1)
+                    {
+                        badge[x, y] = White;
+                    }
+                }
+            }
+            return badge;
+        }
+
+        // The Go Fish table: the plain table with a pond on it, where the draw pile sits.
+        public static Picture FishTable(int width, int height, int rim, int pondX, int pondY, int pondRX, int pondRY)
+        {
+            Picture table = Table(width, height, rim);
+            Pond(table, pondX, pondY, pondRX, pondRY);
+            return table;
+        }
+
+        // Water in a dark outline, deeper along the top edge, with a few ripples and a lily pad.
+        private static void Pond(Picture p, int cx, int cy, int rx, int ry)
+        {
+            for (int y = cy - ry - 2; y <= cy + ry + 2; y++)
+            {
+                for (int x = cx - rx - 2; x <= cx + rx + 2; x++)
+                {
+                    double dx = x - cx + 0.5;
+                    double dy = y - cy + 0.5;
+                    double d = dx * dx / (rx * rx) + dy * dy / (ry * ry);
+                    double outer = dx * dx / ((rx + 1.0) * (rx + 1.0)) + dy * dy / ((ry + 1.0) * (ry + 1.0));
+                    double inner = dx * dx / ((rx - 3.0) * (rx - 3.0)) + dy * dy / ((ry - 3.0) * (ry - 3.0));
+                    if (d <= 1)
+                    {
+                        p[x, y] = inner > 1 && dy < 0 ? DarkBlue : Blue;
+                    }
+                    else if (outer <= 1)
+                    {
+                        p[x, y] = Outline;
+                    }
+                }
+            }
+
+            void Line(int x, int y, int length)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    p[x + i, y] = Ripple;
+                }
+            }
+            Line(cx - rx + 8, cy + 6, 7);
+            Line(cx - rx + 11, cy + 9, 5);
+            Line(cx + rx - 18, cy - 10, 8);
+            Line(cx + rx - 15, cy - 7, 4);
+            Line(cx - 6, cy + ry - 5, 9);
+
+            // The lily pad, with a notch cut toward the top-right.
+            int lx = cx - rx + 13;
+            int ly = cy + ry - 11;
+            const int radius = 5;
+            for (int y = ly - radius - 1; y <= ly + radius + 1; y++)
+            {
+                for (int x = lx - radius - 1; x <= lx + radius + 1; x++)
+                {
+                    double dx = x - lx + 0.5;
+                    double dy = y - ly + 0.5;
+                    double d = Math.Sqrt(dx * dx + dy * dy);
+                    if (dx > 0 && dy < 0 && Math.Abs(dx + dy) < 1.6)
+                    {
+                        continue;
+                    }
+                    if (d <= radius - 0.5)
+                    {
+                        p[x, y] = (x + y) % 5 == 0 ? LilyDark : Green;
+                    }
+                    else if (d <= radius + 0.6)
+                    {
+                        p[x, y] = Outline;
+                    }
+                }
+            }
         }
 
         // The table: green felt with a few darker specks, in a wooden rim with a dark outline,

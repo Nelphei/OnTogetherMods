@@ -18,6 +18,11 @@ namespace CardTable
         // A plain white pixel, tinted when drawn (the shade behind the help card and the win box).
         public readonly Texture2D Pixel;
 
+        // Go Fish: the table with its pond, finished books by rank (1-13), and the card count badge.
+        public readonly Texture2D FishTable;
+        public readonly Texture2D[] BookTiles = new Texture2D[Cards.King + 1];
+        public readonly Texture2D Badge;
+
         private readonly List<Texture2D> _all = new List<Texture2D>();
 
         public CardArt(int tableWidth, int tableHeight, int rim)
@@ -39,6 +44,14 @@ namespace CardTable
             var white = new Picture(1, 1);
             white[0, 0] = 0xFFFFFFFF;
             Pixel = Make(white);
+
+            FishTable = Make(CardPixels.FishTable(tableWidth, tableHeight, rim,
+                GoFishBoard.PondX, GoFishBoard.PondY, GoFishBoard.PondRX, GoFishBoard.PondRY));
+            for (int rank = Cards.Ace; rank <= Cards.King; rank++)
+            {
+                BookTiles[rank] = Make(CardPixels.BookTile(rank));
+            }
+            Badge = Make(CardPixels.Badge(GoFishBoard.BadgeSize));
         }
 
         private Texture2D Make(Picture picture)

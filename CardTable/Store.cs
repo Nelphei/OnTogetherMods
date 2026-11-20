@@ -18,8 +18,18 @@ namespace CardTable
         public int FewestMoves;
     }
 
+    // Go Fish games played to the end (a game joined after it ended doesn't count).
+    internal sealed class GoFishStats
+    {
+        public int Played;
+        public int Won;   // ties for the most books count
+        public int Books;
+        public int MostBooks;
+    }
+
     // BepInEx\config\CardTable.json: the Solitaire game in progress (so closing the window or the game
     // doesn't lose it) and the stats. Saved with Json.NET (Unity's JsonUtility leaves out nested classes).
+    // Go Fish games aren't saved: a table ends when you leave the world.
     internal sealed class Store
     {
         private sealed class StoreFile
@@ -27,10 +37,12 @@ namespace CardTable
             public int Version = 1;
             public Solitaire.Saved Solitaire;
             public SolitaireStats SolitaireStats;
+            public GoFishStats GoFishStats;
         }
 
         public Solitaire.Saved SavedGame;
         public SolitaireStats Stats = new SolitaireStats();
+        public GoFishStats FishStats = new GoFishStats();
 
         public string FilePath { get; } = Path.Combine(Paths.ConfigPath, "CardTable.json");
 
@@ -45,6 +57,7 @@ namespace CardTable
                 StoreFile file = JsonConvert.DeserializeObject<StoreFile>(File.ReadAllText(FilePath));
                 SavedGame = file?.Solitaire;
                 Stats = file?.SolitaireStats ?? new SolitaireStats();
+                FishStats = file?.GoFishStats ?? new GoFishStats();
             }
             catch (Exception e)
             {
@@ -66,7 +79,7 @@ namespace CardTable
         {
             try
             {
-                var file = new StoreFile { Solitaire = game.Save(), SolitaireStats = Stats };
+                var file = new StoreFile { Solitaire = game.Save(), SolitaireStats = Stats, GoFishStats = FishStats };
                 // Written beside the old file and swapped in, so quitting halfway can't leave half a file.
                 string temp = FilePath + ".tmp";
                 File.WriteAllText(temp, JsonConvert.SerializeObject(file, Formatting.Indented));

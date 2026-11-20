@@ -9,6 +9,12 @@ namespace CardTable
         Large,
     }
 
+    internal enum TableGame
+    {
+        Solitaire,
+        GoFish,
+    }
+
     // Everything here shows up in BepInEx\config\nelphei.ontogether.cardtable.cfg after the first
     // launch. The game in progress and the stats are in BepInEx\config\CardTable.json.
     internal sealed class Settings
@@ -21,6 +27,10 @@ namespace CardTable
         public readonly ConfigEntry<float> WindowY;
         public readonly ConfigEntry<bool> HelpSeen;
         public readonly ConfigEntry<bool> ShowIcon;
+        public readonly ConfigEntry<TableGame> Game;
+        public readonly ConfigEntry<int> GoFishSeats;
+        public readonly ConfigEntry<bool> GoFishHelpSeen;
+        public readonly ConfigEntry<bool> DebugLog;
 
         public Settings(ConfigFile config)
         {
@@ -47,6 +57,20 @@ namespace CardTable
                 "remembers that it has. Set it to false to see it by itself again.");
             ShowIcon = config.Bind("Display", "ShowIcon", true,
                 "Show a cards icon in the row of mod icons at the bottom-right. Clicking it opens and closes the window.");
+            Game = config.Bind("Display", "Game", TableGame.Solitaire,
+                "The game the window shows: Solitaire or GoFish. Also the tabs in the window's title row, which " +
+                "remember the last one you picked.");
+
+            GoFishSeats = config.Bind("GoFish", "Players", 4,
+                new ConfigDescription("How many seats a Go Fish table you start has, you included (2 to 6). Computer " +
+                                      "players fill the ones nobody's in. Also the Players buttons in the window.",
+                    new AcceptableValueRange<int>(GoFish.MinSeats, GoFish.MaxSeats)));
+            GoFishHelpSeen = config.Bind("GoFish", "HelpSeen", false,
+                "The how-to-play card for Go Fish shows by itself the first time you open the Go Fish tab, and this " +
+                "remembers that it has.");
+
+            DebugLog = config.Bind("Debug", "LogMessages", false,
+                "Write every Go Fish message sent to and from other players to the BepInEx log.");
         }
     }
 }

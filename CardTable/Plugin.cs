@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace CardTable
 {
-    // Card games in a window over the game. Solitaire (Klondike) for now; Go Fish with other
-    // players comes next.
+    // Card games in a window over the game: Solitaire (Klondike), and Go Fish with computer players
+    // and anyone else in the session who has the mod.
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     public class Plugin : BaseUnityPlugin
     {
         public const string PluginGuid = "nelphei.ontogether.cardtable";
         public const string PluginName = "Card Table";
-        public const string PluginVersion = "0.1.1";
+        public const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -24,6 +24,8 @@ namespace CardTable
         {
             Log = Logger;
             Settings = new Settings(Config);
+            FishLog.Info = message => Log.LogInfo(message);
+            FishLog.Warn = message => Log.LogWarning(message);
 
             new Harmony(PluginGuid).PatchAll();
             // Stops clicks on the row of mod icons reaching the game. Done once, by whichever
