@@ -136,7 +136,10 @@ namespace DeskSwarm
             Landed = false;
 
             bool sitting = me != null && me.IsFocus;
-            if (_sitter != null && (_sitter != me || !sitting))
+            // Leaving a session destroys your character, and Unity's == calls a destroyed object
+            // null, so check the reference itself. Otherwise the flight carries over to the next
+            // session and your next sit there puts you back where you were flying.
+            if (!ReferenceEquals(_sitter, null) && (_sitter != me || !sitting))
             {
                 EndSit();
             }

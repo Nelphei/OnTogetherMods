@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Fixed: leaving a session while your desk was flying (on your own or in a swarm) made your next sit-down, in any session, put you back where you had been flying.
+
 ## 0.3.1
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
