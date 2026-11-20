@@ -62,6 +62,7 @@ namespace OnTogetherMods.Shared
         public const int DoomTogetherOrder = 85;
         public const int CardTableOrder = 87;
         public const int QuickHideOrder = 90;
+        public const int BubbleShellOrder = 93;
         public const int SessionManagerOrder = 95;
 
         // The newest copy's host draws the row for every mod, so bump this whenever this file changes how
@@ -221,6 +222,52 @@ namespace OnTogetherMods.Shared
         private static bool Inside(double[] r, int i, Vector2 point)
         {
             return point.x >= r[i] && point.x < r[i] + r[i + 2] && point.y >= r[i + 1] && point.y < r[i + 1] + r[i + 3];
+        }
+
+        // ---- For Bubble Shell's open command ----
+
+        public struct IconInfo
+        {
+            public string Id;
+            public string Name;
+            public State State;
+            public string Hint;   // the tooltip's second line, if any (often what right-click does)
+        }
+
+        // Every mod icon drawn in the last couple of frames, whether it's in the row or the tray. Any
+        // mod's copy can ask: the icons are in shared data.
+        public static List<IconInfo> ShownIcons()
+        {
+            var icons = new List<IconInfo>();
+            int frame = Time.frameCount;
+            foreach (DictionaryEntry pair in Table(EntriesKey))
+            {
+                if (pair.Key is string id && pair.Value is object[] entry && entry.Length >= EntrySize &&
+                    entry[EntryNumbers] is double[] numbers && numbers.Length >= NumSize && frame - numbers[NumFrame] <= 2)
+                {
+                    icons.Add(new IconInfo
+                    {
+                        Id = id,
+                        Name = entry[EntryName] as string ?? id,
+                        State = (State)(int)numbers[NumState],
+                        Hint = entry[EntryHint] as string,
+                    });
+                }
+            }
+            return icons;
+        }
+
+        // Clicks a mod's icon as if the player had (right = right-click): its mod gets the click from
+        // its next Draw, as usual. False if the icon isn't being drawn.
+        public static bool ClickIcon(string id, bool right)
+        {
+            if (Table(EntriesKey)[id] is object[] entry && entry.Length >= EntrySize && entry[EntryNumbers] is double[] numbers &&
+                numbers.Length >= NumSize && Time.frameCount - numbers[NumFrame] <= 2)
+            {
+                numbers[NumClick] = right ? 2 : 1;
+                return true;
+            }
+            return false;
         }
 
         private static object[] Entry(string id)
