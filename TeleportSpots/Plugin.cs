@@ -11,7 +11,7 @@ namespace TeleportSpots
     {
         public const string PluginGuid = "nelphei.ontogether.teleportspots";
         public const string PluginName = "Teleport Spots";
-        public const string PluginVersion = "0.2.4";
+        public const string PluginVersion = "0.2.5";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace TeleportSpots
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<SpotsWindow>();
+
+            // The spot command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Press {Settings.ToggleKey.Value} to open the teleport window.");
         }

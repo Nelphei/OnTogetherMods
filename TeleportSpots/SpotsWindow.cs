@@ -38,6 +38,10 @@ namespace TeleportSpots
         // Read by the patches. True while the mouse is over the window, so clicks don't reach the world.
         internal static bool IsMouseOver { get; private set; }
 
+        // The saved spots, for Bubble Shell's spot command (ShellCommands). The window shows changes
+        // straight away, since it draws from the same list.
+        internal static SpotStore Store => _instance != null ? _instance._store : null;
+
         private static Settings S => Plugin.Settings;
 
         private readonly SpotStore _store = new SpotStore();
