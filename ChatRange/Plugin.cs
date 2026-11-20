@@ -10,7 +10,7 @@ namespace ChatRange
     {
         public const string PluginGuid = "nelphei.ontogether.chatrange";
         public const string PluginName = "Chat Range";
-        public const string PluginVersion = "0.2.4";
+        public const string PluginVersion = "0.2.5";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -30,6 +30,9 @@ namespace ChatRange
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<RangeDisplay>();
+
+            // The range command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. The list shows next to the chat box " +
                 $"while its Local tab is open.");

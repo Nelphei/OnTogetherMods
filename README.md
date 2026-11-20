@@ -68,7 +68,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Trace Overlay](#trace-overlay) | 0.2.4 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.6.1, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, pick which of its objects show, and add objects from other activities | Only you (others see your activity without the mod) |
 | [Desk Snap](#desk-snap) | 0.2.4, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
-| [Chat Range](#chat-range) | 0.2.4, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
+| [Chat Range](#chat-range) | 0.2.5, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.5, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Card Designer](#card-designer) | 0.1.2, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
 | [Outfit Slots](#outfit-slots) | 0.1.4 | F2, or the outfit screen's style list | 6 more outfit slots (9 in all), and a window to swap outfits with one click | Only you (everyone sees your outfit without the mod) |
@@ -113,7 +113,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Trace Overlay 0.2.4 | Works, including the icon and hiding with the game's eye button in every window mode |
 | Focus Anywhere 0.6.1 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air and 0.6.0's **Add item...** list haven't been tried yet. Known issue: the Zzz don't show while sleeping at a hidden desk |
 | Desk Snap 0.2.4 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
-| Chat Range 0.2.4 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself hasn't been tried in the game yet |
+| Chat Range 0.2.5 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself and 0.2.5's `range` command for Bubble Shell haven't been tried in the game yet |
 | Name Designer 0.2.5 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
 | Card Designer 0.1.2 | **Pre-release.** Opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
 | Outfit Slots 0.1.4 | Works, including staying in your slot after a restart and hiding with the game's eye button in every window mode. Not yet checked with other players watching, and 0.1.4's `outfit` command for Bubble Shell hasn't been tried yet |
@@ -216,13 +216,16 @@ It also works when [Emote Sync](#emote-sync) starts your activity because a frie
 
 **F3** or the desk icon turns snapping on or off (it starts on, and the game remembers your choice). If you're sitting at your desk when you press it, it snaps you right away, or moves you back to where you sat down. It won't put you inside the ground or a wall, or next to a classroom desk. `Gap` and `Range` in the settings file change the space between desks and how close you need to sit.
 
+
 ### Chat Range
 
-> **Pre-release:** the icon and hiding it with the game's eye button work, but the list itself hasn't been tried in the game yet.
+> **Pre-release:** the icon and hiding it with the game's eye button work, but the list itself and 0.2.5's `range` command for [Bubble Shell](#bubble-shell) haven't been tried in the game yet.
 
 Local chat messages (and their chat bubbles) only reach players within 5 m of you, counting height too. While the chat box is open on its **Local** tab, a small box just above it lists everyone in that range, with their names styled the way their name tags are. It says so when nobody's close enough. If the chat box is dragged to the top of the screen, the list sits beside it instead.
 
 The list hides when chat is minimised and when the game's UI is hidden (including with its eye button). In [Photo Mode](#photo-mode) it shows only while the chat box does, and it stays out of your photos. Someone who has muted you is still listed, but won't see your messages. The speech bubble icon switches the list off and on. `ShowOnGlobalTab` in the settings file shows the list on the Global tab too, and `MaxNames` sets how many names it lists before counting the rest.
+
+With [Bubble Shell](#bubble-shell), `range` prints who's within local chat range, and how far away, in its console.
 
 ### Name Designer
 
