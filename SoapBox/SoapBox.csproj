@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references and target framework come from ..\Directory.Build.props.
+       Deploying to the game is opt-in: see ..\Directory.Build.targets. It also copies the
+       Content folder (the bundled carts, MoonSharp's licence) beside the DLL.
+
+       Machine\ is the console itself (no Unity: the screen, font, carts, the Lua runner).
+       MoonSharp\ is MoonSharp's Lua interpreter (moonsharp-devs/moonsharp, BSD-3-Clause, see
+       Content\MoonSharp-LICENSE.txt), changed only where a file's top says so (the limits in
+       SoapBoxLimits.cs, and no script-file loader). -->
+  <PropertyGroup>
+    <AssemblyName>SoapBox</AssemblyName>
+    <RootNamespace>SoapBox</RootNamespace>
+    <Version>0.1.0</Version>
+    <!-- MoonSharp's .NET Standard code paths. -->
+    <DefineConstants>$(DefineConstants);DOTNET_CORE</DefineConstants>
+    <!-- MoonSharp\ is other people's code, kept as it was: its unused variables, hidden members and
+         old-style APIs aren't worth warnings. -->
+    <NoWarn>$(NoWarn);CS0162;CS0168;CS0169;CS0219;CS0414;CS0618;CS0649;CS0108;CS0659;CS0661;CS1591;CS8632</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Stacks this mod's window with other mods' windows. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- This mod's icon in the row of mod icons at the bottom-right. -->
+    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
+    <!-- Keeps clicks on the window from reaching the game's UI. -->
+    <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+    <!-- Bubble Shell's console: Soap Box lets go of the keys while you type there. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
+  </ItemGroup>
+</Project>

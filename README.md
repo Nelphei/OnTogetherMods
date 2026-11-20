@@ -80,12 +80,13 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
 | [Buddy Up](#buddy-up) | 0.2.1, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
 | [Bubble Shell](#bubble-shell) | 0.1.0, pre-release | The ` key | A dev console that drops down from the top: type commands to teleport, sit, emote, look things up, play with silly looks and more | Only you |
+| [Soap Box](#soap-box) | 0.1.0, pre-release | Click the handheld icon | A tiny games console in a window: play little games (carts) on a pastel handheld, and make your own in its code editor | Only you (others see you playing a handheld without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
 ### The icon row
 
-Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together, two playing cards for Card Table, someone riding on a friend's head for Buddy Up and a shimmering soap bubble with a `>_` prompt for Bubble Shell. Network Crash Fix has no icon, since it's always on.
+Each mod you've installed puts a small pixel-art icon in a row in the bottom-right corner: a camera for Photo Mode, two cheering friends for Emote Sync, a map pin for Teleport Spots, a palette for Name Designer, an ID card and pencil for Card Designer, a shirt for Outfit Slots, a desk for Desk Snap, someone sitting on a cloud for Focus Anywhere, music notes for Song Player, a picture for Trace Overlay, a speech bubble for Chat Range, a crossed-out eye for Quick Hide, a desk with rotors for Desk Swarm, a crown for Session Manager, a horned demon for Doom Together, two playing cards for Card Table, someone riding on a friend's head for Buddy Up, a shimmering soap bubble with a `>_` prompt for Bubble Shell and a pink handheld with bubbles rising off it for Soap Box. Network Crash Fix has no icon, since it's always on.
 
 - **Click** an icon to do what the mod's key does: open its window, start Photo Mode, or switch the mod on or off.
 - **Hover** over one to see its name, its key, and whether it's on.
@@ -125,6 +126,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
 | Buddy Up 0.2.1 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes and 0.2.1's `buddy`, `ride` and `walk` commands for Bubble Shell haven't been yet |
 | Bubble Shell 0.1.0 | **Pre-release.** Opening it and its look work (the slide, the pixel font, the colours and the bubbles). The commands haven't all been tried yet. Outside the game, the commands' typing, aliases, binds, Tab completion, history and the animated commands were checked |
+| Soap Box 0.1.0 | **Pre-release.** The window, the handheld, Bubble Pop and the code editor work. The copy saved when you change Bubble Pop, renaming carts, jumping to an error's line and typing `{ } [ ]` with AltGr haven't all been tried yet. Outside the game, the editor's typing, selecting, undo and cart files were checked, and so were the guards that stop a runaway cart |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 
@@ -433,6 +435,27 @@ A dev console, like the ones in old PC games: press the **`** key (left of 1 on 
 Only you need the mod. In the settings file, `ConsoleKey` is the key that opens it, `Height` is how far down it drops, `Opacity` how dark it is, `TextScale` how big the pixels of the text are (0 picks one for your screen), `PixelFont` switches to the game's own font, and `Bubbles` turns the bubbles off.
 
 **Credits.** The text uses [Monogram](https://datagoblin.itch.io/monogram), a free pixel font by datagoblin (CC0). It's in the mod's folder with its credits.
+
+### Soap Box
+
+> **Pre-release:** the window, Bubble Pop and the code editor work in the game; the copy saved when you change Bubble Pop, renaming carts and jumping to an error's line haven't all been tried yet.
+
+A tiny games console in a window: play little games ("carts") on a 192 x 128 screen with 16 colours, inside a pastel handheld, and make your own in its code editor. Click the handheld icon to open it.
+
+- **Playing.** Opening the window gives Soap Box the keyboard: the arrow keys or **WASD** move, **Z** or **Space** is the A button, **X** the B button, and **Esc** or **Enter** opens the menu (continue, restart, edit code, carts, close). The mouse works on the screen too, and you can click the handheld's buttons, which light up as they're pressed. Click outside the window and the keyboard goes back to the game, and the cart pauses until you click its screen again.
+- **Your character.** If you're standing when you open Soap Box, your character sits down and plays the handheld console, so other players see you gaming. If you're already sitting, nothing changes, and closing Soap Box never stands you up.
+- **Bubble Pop** comes with it. The kid on the island blows bubbles: aim with the arrows or the mouse and pop them with **Z** or a click before they float away. Pink bubbles are worth more, gold ones even more, and quick pops build a combo.
+- **Making games.** Click the cart's name in the title row (or **carts** in the menu) and pick **+ new cart**. It starts with a little demo and opens the code editor. Carts are written in [Lua](https://www.lua.org/manual/5.2/), a small and friendly language. **Ctrl+R** (or **run**) plays your code from the start, and **Esc** goes back to the game. The pencil in the title row opens the editor for the cart that's running. **?** in the editor lists every Soap Box function and the 16 colours. Your cart's own functions: `_init()` runs once, `_update()` 60 times a second and `_draw()` after it.
+- **The editor.** **Shift** with the arrow keys, or a mouse drag, selects (double-click selects a word). **Ctrl+C**, **X** and **V** copy, cut and paste (with nothing selected they take the whole line), **Ctrl+Z** and **Y** undo and redo, **Tab** and **Shift+Tab** indent, and **Enter** keeps the indentation (one step more after `then`, `do` or `function`). When a cart stops with an error, its screen says what went wrong, and **X** there takes you to the line, marked in red.
+- **Your carts.** They save by themselves, in `Documents\On-Together\Soap Box`, as `.soap` files (plain text, so they're easy to back up or pass around). The cart list opens them, renames the one you're editing and opens the folder. Carts that come with Soap Box never change: the first change you make to one saves a copy in your carts, and you carry on with that.
+- **Safe to play.** Carts can only draw on their screen and read the controls: they can't touch your files, the internet or the game. A cart stuck in a loop that never ends is stopped with a message instead of freezing the game.
+- **The window.** The title row has the cart's name (click it for the cart list), the pencil, a round button that changes the handheld's colour (pink, aqua, lilac or cream), **?** for the controls, the size (**S**, **M** or **L**) and **X** to close. Drag the title row to move the window anywhere on screen; double-click it to put it back with the other mods' windows.
+
+Drawing sprites, making maps and making sounds come in the next versions: the editor's tabs for them are already there, and `sfx()` and `music()` stay silent until then.
+
+Only you need the mod. In the settings file, `Shell` is the handheld's colour, `Size` the window's size, `SitDown` stops your character sitting down, `PauseWithoutKeys` keeps a cart running while Soap Box doesn't have the keyboard, `CartFolder` moves the folder for your carts, `LastCart` is the cart that opens next, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `ControlsSeen` set back to false shows the controls card by itself again, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
+
+**Credits.** Carts run on [MoonSharp](https://github.com/moonsharp-devs/moonsharp), a Lua interpreter by Marco Mastropaolo (BSD licence; the licence text is in the mod's folder). The text uses [Monogram](https://datagoblin.itch.io/monogram), a free pixel font by datagoblin (CC0).
 
 ## Settings
 

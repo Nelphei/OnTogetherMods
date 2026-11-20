@@ -78,6 +78,10 @@
     "BubbleShell": {
       "name": "Bubble_Shell",
       "description": "A dev console that drops down from the top (the ` key): commands to teleport, sit, emote and look things up, aliases and key binds, toys, and silly looks only you see. Soft teal pixel text and bubbles. Only you need it."
+    },
+    "SoapBox": {
+      "name": "Soap_Box",
+      "description": "A tiny games console in a window: play little Lua games (carts) on a pastel handheld, and make your own with its code editor. Comes with Bubble Pop. Only you need it."
     }
   }
 }

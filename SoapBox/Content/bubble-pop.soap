@@ -1,0 +1,367 @@
+soap box cart 1
+== info ==
+name: bubble pop
+by: soap box
+== code ==
+-- bubble pop
+-- pop the bubbles before they float away!
+-- aim with the arrows or the mouse,
+-- pop with z, space or a click.
+
+kid_x, kid_y = 68, 82
+wand_x, wand_y = 78, 81
+
+function _init()
+  best = 0
+  t = 0
+  shake = 0
+  blowing = 0
+  last_mx, last_my = -1, -1
+  clouds = {}
+  for i = 1, 4 do
+    table.insert(clouds, {x = rnd(200), y = 10 + rnd(26), s = 0.6 + rnd(0.5)})
+  end
+  waves = {}
+  for i = 1, 16 do
+    table.insert(waves, {x = rnd(200), y = 99 + flr(rnd(5)) * 5, w = 2 + flr(rnd(4))})
+  end
+  fish = {x = 0, y = 0, vx = 0, vy = 0, t = 0}
+  aim = {x = 120, y = 50}
+  title()
+end
+
+function title()
+  state = "title"
+  level = 0
+  bubbles, pops, texts = {}, {}, {}
+  combo, combo_timer = 0, 0
+end
+
+function start()
+  state = "play"
+  score, hearts, level = 0, 3, 0
+  bubbles, pops, texts = {}, {}, {}
+  spawn_timer = 20
+  combo, combo_timer = 0, 0
+end
+
+-- the kid blows a new bubble from the wand
+function blow()
+  local r = 3 + flr(rnd(5))
+  local kind = "plain"
+  local roll = rnd(1)
+  if roll < 0.06 then kind = "gold" elseif roll < 0.22 then kind = "pink" end
+  table.insert(bubbles, {
+    x = wand_x + 1, y = wand_y - r - 1, r = r, kind = kind,
+    vx = 0.1 + rnd(0.3),
+    vy = -(0.25 + rnd(0.3) + level * 0.04),
+    wob = rnd(6.28), age = 0,
+  })
+  blowing = 12
+end
+
+function _update()
+  t = t + 1
+  if blowing > 0 then blowing = blowing - 1 end
+  if shake > 0 then shake = shake - 1 end
+  for _, c in ipairs(clouds) do
+    c.x = c.x + c.s * 0.08
+    if c.x > 215 then c.x = -25 end
+  end
+  update_fish()
+  update_aim()
+
+  if state == "title" then
+    if t % 45 == 0 then blow() end
+    update_bubbles(false)
+    if btnp("a") or mousep() then start() end
+  elseif state == "play" then
+    level = score / 500
+    spawn_timer = spawn_timer - 1
+    if spawn_timer <= 0 then
+      blow()
+      spawn_timer = flr(max(16, 55 - level * 6) + rnd(20))
+    end
+    if btnp("a") or mousep() then pop_at(aim.x, aim.y) end
+    update_bubbles(true)
+    if combo_timer > 0 then combo_timer = combo_timer - 1 else combo = 0 end
+    if hearts <= 0 then
+      state = "over"
+      over_timer = 60
+      new_best = score > best
+      if new_best then best = score end
+    end
+  else
+    update_bubbles(false)
+    over_timer = over_timer - 1
+    if over_timer <= 0 and (btnp("a") or mousep()) then start() end
+  end
+  update_pops()
+end
+
+function update_aim()
+  local mx, my = mouse()
+  if mx ~= last_mx or my ~= last_my then
+    last_mx, last_my = mx, my
+    if mx >= 0 and mx < 192 and my >= 0 and my < 128 then
+      aim.x, aim.y = mx, my
+    end
+  end
+  if btn("left") then aim.x = aim.x - 2 end
+  if btn("right") then aim.x = aim.x + 2 end
+  if btn("up") then aim.y = aim.y - 2 end
+  if btn("down") then aim.y = aim.y + 2 end
+  aim.x = mid(0, aim.x, 191)
+  aim.y = mid(0, aim.y, 127)
+end
+
+function update_bubbles(counting)
+  for i = #bubbles, 1, -1 do
+    local b = bubbles[i]
+    b.age = b.age + 1
+    b.x = b.x + b.vx + sin(b.age / 20 + b.wob) * 0.3
+    b.y = b.y + b.vy
+    if b.y < -b.r - 2 or b.x > 196 + b.r then
+      table.remove(bubbles, i)
+      if counting then
+        hearts = hearts - 1
+        shake = 8
+        table.insert(texts, {x = mid(4, b.x - 10, 160), y = 14, s = "oh no!", c = 5, life = 40})
+      end
+    end
+  end
+end
+
+function under_aim(b)
+  local dx, dy = aim.x - b.x, aim.y - b.y
+  return dx * dx + dy * dy <= (b.r + 2) * (b.r + 2)
+end
+
+function pop_at(x, y)
+  local hit = false
+  for i = #bubbles, 1, -1 do
+    local b = bubbles[i]
+    if under_aim(b) then
+      table.remove(bubbles, i)
+      hit = true
+      combo = combo + 1
+      combo_timer = 45
+      local worth = 10
+      if b.kind == "pink" then worth = 20 elseif b.kind == "gold" then worth = 50 end
+      worth = worth * min(combo, 5)
+      score = score + worth
+      add_pop(b, worth)
+      sfx(0)
+    end
+  end
+  if not hit then
+    table.insert(pops, {x = x, y = y, r = 1, life = 5, c = 13, ring = true})
+  end
+end
+
+function bubble_colour(b)
+  if b.kind == "pink" then return 9 elseif b.kind == "gold" then return 7 end
+  return 3
+end
+
+function add_pop(b, worth)
+  local c = bubble_colour(b)
+  table.insert(pops, {x = b.x, y = b.y, r = b.r, life = 8, c = c, ring = true})
+  for k = 1, 6 do
+    local a = k / 6 * 6.28 + rnd(0.5)
+    table.insert(pops, {x = b.x, y = b.y, vx = cos(a) * 1.3, vy = sin(a) * 1.3, life = 12, c = c})
+  end
+  local tc = 3
+  if combo > 1 then tc = 7 end
+  table.insert(texts, {x = b.x + 4, y = b.y - 8, s = "+" .. worth, c = tc, life = 30})
+end
+
+function update_pops()
+  for i = #pops, 1, -1 do
+    local p = pops[i]
+    p.life = p.life - 1
+    if p.ring then
+      p.r = p.r + 1
+    else
+      p.x = p.x + p.vx
+      p.y = p.y + p.vy
+    end
+    if p.life <= 0 then table.remove(pops, i) end
+  end
+  for i = #texts, 1, -1 do
+    local s = texts[i]
+    s.life = s.life - 1
+    s.y = s.y - 0.3
+    if s.life <= 0 then table.remove(texts, i) end
+  end
+end
+
+function update_fish()
+  if fish.t > 0 then
+    fish.t = fish.t - 1
+    fish.x = fish.x + fish.vx
+    fish.y = fish.y + fish.vy
+    fish.vy = fish.vy + 0.08
+    if fish.y > 106 and fish.vy > 0 then fish.t = 0 end
+  elseif rnd(1) < 0.005 then
+    fish.x = 120 + rnd(60)
+    fish.y = 106
+    fish.vx = rnd(1) < 0.5 and -0.6 or 0.6
+    fish.vy = -1.7
+    fish.t = 60
+  end
+end
+
+-- drawing ---------------------------------------------------
+
+function _draw()
+  local sx, sy = 0, 0
+  if shake > 0 then sx, sy = flr(rnd(3)) - 1, flr(rnd(3)) - 1 end
+  camera(sx, sy)
+  draw_world()
+  for _, b in ipairs(bubbles) do draw_bubble(b) end
+  for _, p in ipairs(pops) do
+    if p.ring then circ(p.x, p.y, p.r, p.c) else pset(p.x, p.y, p.c) end
+  end
+  for _, s in ipairs(texts) do
+    print(s.s, s.x + 1, s.y + 1, 11)
+    print(s.s, s.x, s.y, s.c)
+  end
+  camera()
+  if state == "title" then
+    draw_title()
+  else
+    draw_hud()
+    if state == "over" then draw_over() end
+  end
+  if state ~= "over" then draw_aim() end
+end
+
+function cloud(x, y, s)
+  local a, b = flr(6 * s), flr(8 * s)
+  clip(x - 30, y - 30, 60, 31)
+  circf(x - b, y, a, 3)
+  circf(x, y - a / 2, b, 3)
+  circf(x + b, y, a, 3)
+  clip()
+end
+
+function draw_world()
+  cls(13)
+  circf(160, 26, 13, 8)
+  circf(160, 26, 11, 7)
+  for _, c in ipairs(clouds) do cloud(c.x, c.y, c.s) end
+
+  -- the sea, with waves drifting back and forth
+  rectf(0, 96, 192, 32, 12)
+  rectf(0, 114, 192, 14, 11)
+  for _, w in ipairs(waves) do
+    local x = (w.x + sin(t / 50 + w.y) * 5) % 204 - 6
+    local c = 13
+    if w.y > 112 then c = 12 end
+    line(x, w.y, x + w.w, w.y, c)
+  end
+
+  -- the island and its palm tree
+  rrectf(22, 90, 84, 14, 7, 8)
+  line(28, 103, 99, 103, 6)
+  for i = 0, 3 do
+    rectf(44 + i, 92 - i * 7, 3, 7, 4)
+    pset(44 + i, 92 - i * 7, 6)
+  end
+  local px, py = 49, 64
+  local sway = sin(t / 40) * 1.5
+  line(px, py, px - 16, py + 6 + sway, 14)
+  line(px, py - 1, px - 15, py + 4 + sway, 15)
+  line(px, py, px + 16, py + 5 - sway, 14)
+  line(px, py - 1, px + 15, py + 3 - sway, 15)
+  line(px, py, px - 10 + sway, py - 8, 15)
+  line(px, py, px + 11 + sway, py - 7, 15)
+  line(px + 1, py, px + 12 + sway, py - 6, 14)
+  line(px, py, px - 3 + sway, py - 11, 14)
+  circf(px - 2, py + 2, 1, 4)
+  circf(px + 1, py + 3, 1, 4)
+
+  -- a fish jumping now and then
+  if fish.t > 0 then spr(4, fish.x, fish.y, 1, 1, fish.vx > 0) end
+
+  -- the kid and the bubble wand
+  local frame = 1
+  if blowing > 0 then frame = 2 end
+  spr(frame, kid_x, kid_y)
+  circ(wand_x, wand_y, 2, 10)
+  line(wand_x - 2, wand_y + 2, wand_x - 3, wand_y + 3, 10)
+end
+
+function draw_bubble(b)
+  local c = bubble_colour(b)
+  circ(b.x, b.y, b.r, c)
+  pset(b.x - b.r / 2, b.y - b.r / 2, 3)
+  if b.r >= 4 then pset(b.x - b.r / 2 + 1, b.y - b.r / 2, 3) end
+  if b.kind == "gold" then pset(b.x + 1, b.y + 1, 7) end
+end
+
+function draw_aim()
+  local x, y = flr(aim.x), flr(aim.y)
+  local c = 3
+  for _, b in ipairs(bubbles) do
+    if under_aim(b) then c = 9 end
+  end
+  circ(x, y, 4, 11)
+  circ(x, y, 3, c)
+  pset(x, y, c)
+end
+
+function shadow_print(s, x, y, c, scale)
+  print(s, x + 1, y + 1, 11, scale)
+  print(s, x, y, c, scale)
+end
+
+function centre(s, y, c, scale)
+  scale = scale or 1
+  shadow_print(s, (192 - (#s * 6 - 1) * scale) / 2, y, c, scale)
+end
+
+function draw_hud()
+  local h = ""
+  for i = 1, 3 do
+    if i <= hearts then h = h .. "♥" else h = h .. "○" end
+  end
+  shadow_print(h, 4, 4, 5)
+  local s = "★ " .. score
+  shadow_print(s, 188 - (#s * 6 - 1), 4, 3)
+  if combo > 1 then
+    local m = "x" .. min(combo, 5)
+    shadow_print(m, 188 - (#m * 6 - 1), 14, 7)
+  end
+end
+
+function draw_title()
+  centre("bubble pop", 10, 3, 2)
+  if flr(t / 30) % 2 == 0 then
+    centre("press z or click to start", 32, 3)
+  end
+  centre("aim: arrows or mouse", 43, 3)
+  if best > 0 then centre("best ★ " .. best, 116, 7) end
+end
+
+function draw_over()
+  rrectf(32, 30, 128, 54, 5, 0)
+  rrect(32, 30, 128, 54, 5, 9)
+  centre("game over", 37, 9, 2)
+  local s = "★ " .. score
+  if new_best and score > 0 then s = s .. "  new best!" end
+  centre(s, 58, 3)
+  if over_timer <= 0 and flr(t / 30) % 2 == 0 then
+    centre("z or click: play again", 70, 13)
+  end
+end
+== sprites ==
+00000000009999000099990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000099999900999999000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000998888999988889900000000006660060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000981881899818818900000000066666060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000098888900988889000000000661666600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000aaaa0000aaaa8800000000066666060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000008aaaa8000aaaa0000000000006660060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000001001000010010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
