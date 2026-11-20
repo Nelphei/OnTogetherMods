@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>EmoteSync</AssemblyName>
     <RootNamespace>EmoteSync</RootNamespace>
-    <Version>0.3.5</Version>
+    <Version>0.3.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,5 +16,7 @@
     <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
     <Compile Include="..\Shared\TextBox.cs" Link="Shared\TextBox.cs" />
     <Compile Include="..\Shared\PlayerNames.cs" Link="Shared\PlayerNames.cs" />
+    <!-- The sync command in Bubble Shell's console. -->
+    <Compile Include="..\Shared\ShellLink.cs" Link="Shared\ShellLink.cs" />
   </ItemGroup>
 </Project>

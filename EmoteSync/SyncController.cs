@@ -197,6 +197,20 @@ namespace EmoteSync
             return true;
         }
 
+        // ---- For Bubble Shell's sync command (ShellCommands) ----
+
+        internal bool IsOn => _on;
+        internal bool InLobby => _lobby.InLobby;
+        internal IEnumerable<ulong> GroupIds => _group;
+
+        internal void SetOn(bool on)
+        {
+            if (_on != on)
+            {
+                Toggle();
+            }
+        }
+
         private void Toggle()
         {
             _on = !_on;

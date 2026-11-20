@@ -11,7 +11,7 @@ namespace EmoteSync
     {
         public const string PluginGuid = "nelphei.ontogether.emotesync";
         public const string PluginName = "Emote Sync";
-        public const string PluginVersion = "0.3.5";
+        public const string PluginVersion = "0.3.6";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace EmoteSync
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<SyncController>();
+
+            // The sync command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Press {Settings.ToggleKey.Value} to turn emote sync on or off.");
         }

@@ -1,3 +1,7 @@
+## 0.3.6
+
+- With Bubble Shell (the new dev console mod): `sync` says whether emote sync is on and who's in sync, and `sync on` / `sync off` switch it. Bubble Shell's `emote` and `sit` start in sync too. Not tried in the game yet.
+
 ## 0.3.5
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
