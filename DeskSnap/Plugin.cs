@@ -11,7 +11,7 @@ namespace DeskSnap
     {
         public const string PluginGuid = "nelphei.ontogether.desksnap";
         public const string PluginName = "Desk Snap";
-        public const string PluginVersion = "0.2.4";
+        public const string PluginVersion = "0.2.5";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;
@@ -33,6 +33,9 @@ namespace DeskSnap
             _host.hideFlags = HideFlags.HideAndDontSave;
             DontDestroyOnLoad(_host);
             _host.AddComponent<SnapController>();
+
+            // The snap command, for Bubble Shell's console if it's installed.
+            ShellCommands.Register();
 
             Log.LogInfo($"{PluginName} {PluginVersion} loaded. Snapping is {(Settings.Enabled.Value ? "on" : "off")}; " +
                 $"press {Settings.ToggleKey.Value} to turn it on or off.");

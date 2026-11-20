@@ -165,6 +165,48 @@ namespace DeskSnap
             }
         }
 
+        // ---- For Bubble Shell's snap command (ShellCommands) ----
+
+        internal bool On => S.Enabled.Value;
+
+        internal void SetOn(bool on)
+        {
+            if (S.Enabled.Value != on)
+            {
+                Toggle();
+            }
+        }
+
+        // Snaps you beside the nearest desk now, if you're sitting at your own desk with snapping on.
+        // Returns what to print (see Shared/ShellLink.cs: "! " is a warning, "~ " a hint).
+        internal string SnapNow()
+        {
+            bool sitting = _sitting && _me != null && _me.IsFocus && Game.IsFreeFocus(_me);
+            if (!sitting || !Game.IsAtOwnDesk(_me))
+            {
+                return "! Sit at your desk near a friend's desk first.";
+            }
+            if (!S.Enabled.Value)
+            {
+                return "! Desk Snap is off. snap on turns it on (and snaps you).";
+            }
+            if (_snapped)
+            {
+                return "~ You're already lined up. snap off puts you back where you sat down.";
+            }
+            SnapResult result = TrySnap(false, out string message);
+            string plain = message != null ? PlayerNames.WithoutTags(message) + "." : "";
+            switch (result)
+            {
+                case SnapResult.Snapped:
+                    return plain;
+                case SnapResult.AlreadyThere:
+                    return "~ You're already lined up.";
+                default:
+                    return "! " + plain;
+            }
+        }
+
         // The key: turns snapping on or off. While sitting at your desk, it also snaps you now (on)
         // or moves you back to where you sat down (off).
         private void Toggle()

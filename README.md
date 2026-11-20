@@ -67,7 +67,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Song Player](#song-player) | 0.2.4 | Sit at an instrument | Plays MIDI songs on the instrument | Only you (others hear it without the mod) |
 | [Trace Overlay](#trace-overlay) | 0.2.4 | Start drawing on a board | A see-through picture to trace on chalkboards and whiteboards | Only you (only you see it) |
 | [Focus Anywhere](#focus-anywhere) | 0.6.1, pre-release | The game's focus key | Focus on any ground or in the air, with every activity in the game, pick which of its objects show, and add objects from other activities | Only you (others see your activity without the mod) |
-| [Desk Snap](#desk-snap) | 0.2.4, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
+| [Desk Snap](#desk-snap) | 0.2.5, pre-release | Sit at your desk (F3 turns it on/off) | Your desk lines up beside a friend's, with a small gap | Only you (others see the row without the mod) |
 | [Chat Range](#chat-range) | 0.2.5, pre-release | Open chat on its Local tab | Lists who's close enough to see your local chat messages | Only you |
 | [Name Designer](#name-designer) | 0.2.5, pre-release | F4, or opens by itself at Create Session | Colour each letter of your name (and the colon after it in chat) or a session name, with a preview and 5 presets each | Only you (everyone sees the colours without the mod) |
 | [Card Designer](#card-designer) | 0.1.2, pre-release | Click the ID card icon, or **Design card** on the game's ID card | Style the lines of your ID card like in a word processor (bold, colours, highlights, sizes, emoji and symbols), with a preview of the card other players see | Only you (everyone sees your card without the mod) |
@@ -112,7 +112,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Song Player 0.2.4 | Works on its own, including the icon and hiding with the game's eye button in every window mode. Not yet checked with other players listening |
 | Trace Overlay 0.2.4 | Works, including the icon and hiding with the game's eye button in every window mode |
 | Focus Anywhere 0.6.1 | **Pre-release.** 0.1.0 worked on its own, and so do 0.3.0's icon, hiding with the game's eye button in every window mode, 0.4.0's hiding the desk and objects, and 0.5.0's objects window. 0.2.0's focusing in the air and 0.6.0's **Add item...** list haven't been tried yet. Known issue: the Zzz don't show while sleeping at a hidden desk |
-| Desk Snap 0.2.4 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet |
+| Desk Snap 0.2.5 | **Pre-release.** Snapping works on your own screen, and so do styled names in its message, 0.2.0's icon and hiding with the game's eye button in every window mode. 0.1.4 puts you at exactly your friend's height and allows rows in the air, 0.1.3 fixes other players seeing you in the wrong spot, and 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried yet, and neither has 0.2.5's `snap` command for Bubble Shell |
 | Chat Range 0.2.5 | **Pre-release.** 0.2.0's icon works, and so does hiding with the game's eye button in every window mode. The list itself and 0.2.5's `range` command for Bubble Shell haven't been tried in the game yet |
 | Name Designer 0.2.5 | **Pre-release.** Colouring your name works, and so do 0.2.0's colon colour, the icon and hiding with the game's eye button in every window mode. The Session tab, presets, 0.2.3's designing in Session Manager's name box and 0.2.4's opening beside Card Designer haven't been tried in the game yet |
 | Card Designer 0.1.2 | **Pre-release.** Opening the window on the game's ID card page works, and so does 0.1.1's Symbols tab fix. The styling tools, the game's emoji, presets, **Apply card** reaching other players and the Name Designer link haven't all been confirmed yet |
@@ -206,7 +206,7 @@ Click the mod's icon to switch it all off, for example to use BlueSage QoL's Foc
 
 ### Desk Snap
 
-> **Pre-release:** snapping beside a friend works on your own screen, and so do names with colours or other styling in the message at the top. 0.1.4 puts you at exactly your friend's height (before, starting from somewhere higher left you floating) and lets you snap in the air. 0.1.3 fixes other players seeing you in the wrong spot, with your desk turning twice, when you aren't the lobby host. 0.1.2 moves the message text into code shared with Emote Sync. None of these has been tried in the game yet.
+> **Pre-release:** snapping beside a friend works on your own screen, and so do names with colours or other styling in the message at the top. 0.1.4 puts you at exactly your friend's height (before, starting from somewhere higher left you floating) and lets you snap in the air. 0.1.3 fixes other players seeing you in the wrong spot, with your desk turning twice, when you aren't the lobby host. 0.1.2 moves the message text into code shared with Emote Sync. 0.2.5 adds the `snap` command for [Bubble Shell](#bubble-shell). None of these has been tried in the game yet.
 
 Sit down at your desk within 3 m of someone who's already at theirs, and you move into line beside them, facing the same way, at the same height, with a small gap between the desks. You go to whichever side you were closer to, and if someone's already there, to the end of the row. The mod measures each desk, so desks of every shape and size line up.
 
@@ -216,6 +216,7 @@ It also works when [Emote Sync](#emote-sync) starts your activity because a frie
 
 **F3** or the desk icon turns snapping on or off (it starts on, and the game remembers your choice). If you're sitting at your desk when you press it, it snaps you right away, or moves you back to where you sat down. It won't put you inside the ground or a wall, or next to a classroom desk. `Gap` and `Range` in the settings file change the space between desks and how close you need to sit.
 
+With [Bubble Shell](#bubble-shell), `snap` lines your desk up now, and `snap on` / `snap off` switch snapping, like the key.
 
 ### Chat Range
 

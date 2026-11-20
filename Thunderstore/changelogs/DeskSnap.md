@@ -1,3 +1,7 @@
+## 0.2.5
+
+- With Bubble Shell (the new dev console mod): `snap` lines your desk up now, and `snap on` / `snap off` switch snapping, like its key. Not tried in the game yet.
+
 ## 0.2.4
 
 - The icon row has a tray: click the gear button at its right end to open it. Icons you tuck away wait there and work just the same, and a green dot on the gear means a tucked-away mod is switched on.
