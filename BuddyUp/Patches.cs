@@ -21,6 +21,14 @@ namespace BuddyUp
                 SetMouse0Down(__instance, false);
             }
 
+            // The mod standing you up (hopping off to walk, your buddy stood up): one press of the
+            // stand-up key, so the game does it its own way.
+            if (Game.TakeStandUp())
+            {
+                __instance.IsSpaceKeyDown = true;
+                return;
+            }
+
             if (!Following.Steering)
             {
                 return;

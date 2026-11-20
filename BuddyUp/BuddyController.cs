@@ -26,6 +26,9 @@ namespace BuddyUp
         private const int MaxListed = 8;
         // Below Photo Mode's (y = 40), Emote Sync's (90), Desk Snap's (140) and Desk Swarm's (190) messages.
         private const float NoticeY = 240f;
+        // Ride clicked while something's briefly in the way (stairs, a step off the ground, a menu):
+        // keep trying this long.
+        private const float RideWaitSeconds = 3f;
 
         public static BuddyController Instance { get; private set; }
 
@@ -45,6 +48,8 @@ namespace BuddyUp
         private PlayerMovementController _move;
         private bool _wasSitting;
         private bool _gluePaused;
+        private ulong _pendingRide;
+        private float _pendingRideUntil;
 
         private bool _open;
         private IconBar.Click _iconClick;
@@ -109,6 +114,7 @@ namespace BuddyUp
         // You picked a focus activity (also a switch, and when another mod sat you down).
         public void OnSatDown(PlayerFocusController me)
         {
+            _following.NoteSatDown();
             if (_buddies.List.Count > 0 && _riding.Carrier == 0)
             {
                 _buddies.SendSit(me);
@@ -143,6 +149,14 @@ namespace BuddyUp
 
                 _buddies.Update();
 
+                // One leader per group: someone newer goes along with you, so you stop going along with them.
+                ulong newer = _buddies.GiveWayTo();
+                if (newer != 0)
+                {
+                    GiveWay(newer);
+                }
+                TryPendingRide();
+
                 // Stood up: anyone walking with you stops trying to sit down beside you.
                 bool sitting = _me != null && _me.IsFocus;
                 if (_wasSitting && !sitting)
@@ -154,7 +168,7 @@ namespace BuddyUp
 
                 if (_riding.Carrier != 0 && Game.DeskSwarmPiloting())
                 {
-                    _riding.Stop(_me, _buddies, setDown: false);
+                    _riding.Stop(_me, _buddies, Dismount.Stay);
                     Notice("Desk Swarm took off, so you got off");
                 }
                 _following.Update(_me, _move, _buddies, _riding);
@@ -220,59 +234,106 @@ namespace BuddyUp
             }
         }
 
+        // Climbs on (straight from walking with someone, too), or gets off if you're on their head.
         private void Ride(ulong id)
         {
+            _pendingRide = 0;
             if (_riding.Carrier == id)
             {
                 GetOff();
                 return;
             }
-            if (_riding.Carrier != 0)
-            {
-                _riding.Stop(_me, _buddies, setDown: false);
-            }
             _gluePaused = false;
-            string why = _riding.Start(_me, id, _buddies);
-            if (why != null)
+            string why = _riding.Start(_me, id, _buddies, out bool wait);
+            if (why == null)
+            {
+                OnRiding(id);
+            }
+            else if (wait)
+            {
+                _pendingRide = id;
+                _pendingRideUntil = Time.unscaledTime + RideWaitSeconds;
+            }
+            else
             {
                 Notice(why);
+            }
+        }
+
+        private void TryPendingRide()
+        {
+            ulong id = _pendingRide;
+            if (id == 0)
+            {
                 return;
             }
+            string why = _riding.Start(_me, id, _buddies, out bool wait);
+            if (why == null)
+            {
+                _pendingRide = 0;
+                OnRiding(id);
+            }
+            else if (!wait || Time.unscaledTime > _pendingRideUntil)
+            {
+                _pendingRide = 0;
+                Notice(why);
+            }
+        }
+
+        private void OnRiding(ulong id)
+        {
             _following.Stop(_buddies);
             Notice($"On {Game.PlayerName(id)}'s head! {Game.StandUpKey()} hops off.");
         }
 
-        // Sits you down beside your buddy, still doing your activity.
+        // Back on your feet beside your buddy, or still sitting if you were sitting when you climbed on.
         private void GetOff()
         {
             ulong carrier = _riding.Carrier;
-            _riding.Stop(_me, _buddies, setDown: true);
+            _riding.Stop(_me, _buddies, Dismount.Beside);
             if (carrier != 0)
             {
                 Notice($"Got off {Game.PlayerName(carrier)}'s head");
             }
         }
 
+        // Starts walking with them (hopping off a head first, onto your feet), or stops.
         private void Walk(ulong id)
         {
+            _pendingRide = 0;
             if (_following.Target == id)
             {
                 StopWalking();
                 return;
             }
-            if (_riding.Carrier != 0)
-            {
-                Notice("Hop off first");
-                return;
-            }
             string name = Game.PlayerName(id);
-            if (_buddies.FollowersOf(_buddies.Me).Contains(id))
+            bool wasRiding = _riding.Carrier != 0;
+            if (wasRiding)
             {
-                Notice($"{name} is already walking with you");
-                return;
+                _riding.Stop(_me, _buddies, Dismount.Stand);
             }
             _following.Start(id, _buddies);
-            Notice(_me != null && _me.IsFocus ? $"Walking with {name} once you stand up" : $"Walking with {name}");
+            Notice(wasRiding ? $"Hopped off to walk with {name}"
+                : _me != null && _me.IsFocus ? $"Walking with {name} once you stand up"
+                : $"Walking with {name}");
+        }
+
+        // Someone started riding on or walking with you while you were going along with them (maybe
+        // through others). Theirs is newer, so you stop yours: one leader per group.
+        private void GiveWay(ulong to)
+        {
+            string name = Game.PlayerName(to);
+            string what = _buddies.Carrying(to) == _buddies.Me ? $"{name} climbed onto your head" : $"{name} is walking with you";
+            if (_riding.Carrier != 0)
+            {
+                _riding.Stop(_me, _buddies, Dismount.Beside);
+                Notice($"{what}, so you got off");
+            }
+            else if (_following.Target != 0)
+            {
+                _following.Stop(_buddies);
+                Notice($"{what}, so you stopped following");
+            }
         }
 
         private void StopWalking()
@@ -312,9 +373,13 @@ namespace BuddyUp
 
         private void OnEnded(ulong id)
         {
+            if (_pendingRide == id)
+            {
+                _pendingRide = 0;
+            }
             if (_riding.Carrier == id)
             {
-                _riding.Stop(_me, _buddies, setDown: true);
+                _riding.Stop(_me, _buddies, Dismount.Beside);
             }
             if (_following.Target == id)
             {
@@ -326,7 +391,7 @@ namespace BuddyUp
         {
             if (_riding.Carrier == from)
             {
-                _riding.Stop(_me, _buddies, setDown: true);
+                _riding.Stop(_me, _buddies, Dismount.Beside);
                 Notice($"{Game.PlayerName(from)} shook you off!");
             }
         }
@@ -355,7 +420,7 @@ namespace BuddyUp
 
             List<string> riders = _buddies.RidersOf(_buddies.Me).Select(Game.PlayerName).ToList();
             _onMyHead = riders.Count > 0 ? "On your head: " + string.Join(", ", riders) : null;
-            List<string> walkers = _buddies.FollowersOf(_buddies.Me).Select(Game.PlayerName).ToList();
+            List<string> walkers = _buddies.WalkersWith(_buddies.Me).Select(Game.PlayerName).ToList();
             _withMe = walkers.Count > 0 ? "Walking with you: " + string.Join(", ", walkers) : null;
             _ridingName = _riding.Carrier != 0 ? Game.PlayerName(_riding.Carrier) : null;
         }
@@ -519,6 +584,7 @@ namespace BuddyUp
             {
                 ulong id = buddy.Key;
                 bool riding = _riding.Carrier == id;
+                bool climbing = _pendingRide == id;
                 bool walking = _following.Target == id;
                 rows.Add(r =>
                 {
@@ -527,7 +593,8 @@ namespace BuddyUp
                     float buttons = 2 * button + small + 2 * Gap;
                     _canvas.Name(new Rect(r.x, r.y, r.width - buttons - 6f, r.height), buddy.Value, White);
                     float bx = r.xMax - buttons;
-                    if (GUI.Button(new Rect(bx, r.y, button, r.height), riding ? "Get off" : "Ride", riding ? _pickedStyle : _buttonStyle))
+                    string rideText = riding ? "Get off" : climbing ? "Ride..." : "Ride";
+                    if (GUI.Button(new Rect(bx, r.y, button, r.height), rideText, riding ? _pickedStyle : _buttonStyle))
                     {
                         _clicks.Add(() => Ride(id));
                     }

@@ -11,7 +11,7 @@ namespace BuddyUp
     {
         public const string PluginGuid = "nelphei.ontogether.buddyup";
         public const string PluginName = "Buddy Up";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

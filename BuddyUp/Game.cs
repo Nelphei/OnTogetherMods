@@ -49,6 +49,7 @@ namespace BuddyUp
         private static bool _lookedForDeskSnap;
         private static Func<bool> _deskSwarmPiloting;
         private static bool _lookedForDeskSwarm;
+        private static float _standUpUntil = -1f;
 
         // Cheap to check every frame. Singletons are only looked up in the world: on the main menu
         // MonoSingleton.I searches the whole scene each time.
@@ -150,6 +151,63 @@ namespace BuddyUp
                 // Cut to the new place instead of gliding across the map.
                 scene.PlayerVCamera.PreviousStateIsValid = false;
             }
+        }
+
+        // How fast you walk with a key held, in metres a second (popsicle, turbo and the basketball
+        // court change it). See reference/Assembly-CSharp/PlayerMovementController.cs (MovePlayer).
+        public static float WalkSpeed(PlayerMovementController move)
+        {
+            GameSettings settings = ScriptableSingleton<GameSettings>.I;
+            float speed = settings.WalkSpeed;
+            if ((move.MovementState == MovementState.Idle || move.MovementState == MovementState.Walk) && !move.IsSwim)
+            {
+                TextChannelManager channel = NetworkSingleton<TextChannelManager>.I;
+                BasketBallManager ball = NetworkSingleton<BasketBallManager>.I;
+                if (ball != null && ball.IsInBasketBallCourt)
+                {
+                    speed = settings.BasketWalkSpeed;
+                }
+                else if (channel != null && channel.MainFXController != null && channel.MainFXController.IsPopsicleDouble)
+                {
+                    speed = settings.PopsicleSpeed;
+                }
+                else if (move.IsTurbo)
+                {
+                    speed = settings.TurboMovement;
+                }
+            }
+            return speed > 0.1f ? speed : 1f;
+        }
+
+        // Stands you up the way the stand-up key does (Space unless the player changed it): the
+        // input patch hands the game one press as soon as it would take it. Given up after a second
+        // (a menu stayed open), so you never stand up out of the blue later.
+        public static void StandUp()
+        {
+            _standUpUntil = Time.unscaledTime + 1f;
+        }
+
+        // For the input patch: true once, when the press should go to the game now.
+        public static bool TakeStandUp()
+        {
+            if (_standUpUntil < 0f)
+            {
+                return false;
+            }
+            PlayerFocusController me = Me;
+            if (Time.unscaledTime > _standUpUntil || me == null || !me.IsFocus || DeskSwarmPiloting())
+            {
+                // Too late, or already up (a press now would jump), or flying with Desk Swarm.
+                _standUpUntil = -1f;
+                return false;
+            }
+            TaskManager tasks = MonoSingleton<TaskManager>.I;
+            if (tasks == null || !tasks.IsReadyForFocusQuit() || me.IsSelectorOpened)
+            {
+                return false;   // the game wouldn't take it yet
+            }
+            _standUpUntil = -1f;
+            return true;
         }
 
         // Which way the camera faces, as a turn around the vertical axis. The movement keys walk

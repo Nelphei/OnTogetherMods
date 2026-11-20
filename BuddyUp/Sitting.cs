@@ -84,22 +84,25 @@ namespace BuddyUp
             return SitAt(focus, index, switching, out why);
         }
 
-        // Sits you down to ride on someone's head, in the riding activity (RideActivity, RideChoice).
-        // The ground's rules don't matter: you're moved up onto the head straight away.
-        public static SitResult SitToRide(out string why)
+        // Sits you down to ride on someone's head, in the riding activity (RideActivity, RideChoice),
+        // and says which pose that is. The ground's rules don't matter: you're moved up onto the head
+        // straight away. Wait means try again in a moment (a menu open, mid-step off the ground...).
+        public static SitResult SitToRide(out string why, out int anim)
         {
+            anim = -1;
             if (!Ready(out PlayerFocusController focus, out PlayerMovementController movement, out why))
             {
-                return SitResult.Skip;
+                return SitResult.Wait;
             }
             if (focus.IsFocus)
             {
+                anim = Game.MyAnim();
                 return SitResult.Sat;
             }
-            why = Busy(focus, movement, switching: false, groundRules: false, out _);
+            why = Busy(focus, movement, switching: false, groundRules: false, out bool wait);
             if (why != null)
             {
-                return SitResult.Skip;
+                return wait ? SitResult.Wait : SitResult.Skip;
             }
 
             GameSettings settings = ScriptableSingleton<GameSettings>.I;
@@ -134,6 +137,7 @@ namespace BuddyUp
                 return SitResult.Skip;
             }
 
+            anim = settings.AnimationStates[index];
             ForRide = true;
             try
             {
@@ -243,6 +247,7 @@ namespace BuddyUp
             {
                 return "you're in a bubble";
             }
+            // Mid-jump the game's own timers would soon swap your pose for falling, so not even to ride.
             if ((movement.MovementState != MovementState.Idle && movement.MovementState != MovementState.Walk) ||
                 (movement.GroundState != GroundState.Grounded && !movement.IsInWater))
             {

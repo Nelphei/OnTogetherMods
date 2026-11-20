@@ -53,8 +53,8 @@ namespace BuddyUp
                     "How far from your buddy you walk, in metres.",
                     new AcceptableValueRange<float>(0.6f, 3f)));
             SitTogether = config.Bind("Following", "SitTogether", true,
-                "While you walk with a buddy, sit down beside them in the same activity when they sit down. " +
-                "Standing up again is up to you. Also in the window.");
+                "While you walk with a buddy, sit down beside them in the same activity when they sit down, and " +
+                "stand up again when they do (unless you've picked another activity meanwhile). Also in the window.");
             CatchUp = config.Bind("Following", "CatchUp", true,
                 "Hop over to your buddy when you get stuck or fall far behind.");
             CatchUpDistance = config.Bind("Following", "CatchUpDistance", 25f,

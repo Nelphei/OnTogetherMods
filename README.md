@@ -78,7 +78,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Session Manager](#session-manager) | 0.1.1, pre-release | Click the crown icon while you host | Run your session: rename it, change how many can join (past 16), lock it, kick and ban players, and answer join requests | Only the host (players who join don't need it) |
 | [Doom Together](#doom-together) | 0.1.1, pre-release | Click the demon icon | Play DOOM in a window over the game (Freedoom comes with it), while your character plays a handheld console | Only you (others see you playing without the mod) |
 | [Card Table](#card-table) | 0.2.0, pre-release | Click the cards icon | Card games in a window, with pixel-art cards: Solitaire, and Go Fish at tables with other players and computer players | Only you for Solitaire; everyone at a Go Fish table |
-| [Buddy Up](#buddy-up) | 0.1.0, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
+| [Buddy Up](#buddy-up) | 0.2.0, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -122,7 +122,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Session Manager 0.1.1 | **Pre-release.** Not tried in the game yet |
 | Doom Together 0.1.1 | **Pre-release.** DOOM plays in the game, your character sits down with the handheld console, and the volume slider works. Moving the window, the controls card, saves and the rest haven't all been tried yet |
 | Card Table 0.2.0 | **Pre-release.** Solitaire works in the game; its "You won!" box hasn't been seen yet, since nobody has won a game in it so far. Go Fish hasn't been tried in the game yet. Outside the game, the Solitaire rules were checked over thousands of random games, and Go Fish's rules, computer players and tables over thousands of random games and a simulated session of four players |
-| Buddy Up 0.1.0 | **Pre-release.** Not tried in the game yet |
+| Buddy Up 0.2.0 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes haven't been yet |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 
@@ -367,18 +367,19 @@ Only you need the mod for Solitaire; everyone at a Go Fish table needs it. The S
 
 ### Buddy Up
 
-> **Pre-release:** not tried in the game yet.
+> **Pre-release:** 0.1.0's riding and walking were tried in the game; this version's fixes haven't been yet.
 
 Pair up with a friend, then ride around on their head, walk together and sit down side by side. Click the buddies icon to open the window.
 
 - **Buddying up.** The window lists everyone in your session who has Buddy Up. Click **Buddy up** next to a name and they get a **Yes** / **No** in their window (it opens by itself). Once they say yes you're buddies, until one of you clicks **x** or leaves the session. You can have more than one buddy.
-- **Riding.** Click **Ride** next to a buddy and you climb onto their head. If you're standing, you sit down up there (in a meditation pose; the focus menu still lets you pick another activity while you ride). If you're already sitting, you keep doing what you're doing, desk and all. You go wherever they go: walking, jumping, swimming and sitting down. Press **Space** (the game's stand-up key) to hop off onto your feet beside them, or click **Get off** (or right-click the icon) to sit down on the ground beside them. Riders can ride riders, so you can build a totem pole. **-** and **+** change how high you sit, for big hats. Your buddy sees who's on their head and can **Shake off** everyone.
-- **Walking together.** Click **Walk** and your character walks with your buddy by itself, **Beside** them or in a line **Behind** them, going round corners the way they did. Your own keys always win: walk off, and when you let go you head back to them. If you get stuck you jump, and if you're still stuck or fall far behind, you hop over to them. **Stop** (or right-clicking the icon) ends it.
-- **Sitting together.** While you walk with a buddy and they sit down, you walk up beside them and sit down in the same activity, facing the same way, with your desk beside theirs. If they switch activity, you switch too, unless you've picked your own. Standing up is up to you, and then you walk with them again. Untick **Sit down together** to stop this.
+- **Riding.** Click **Ride** next to a buddy and you climb onto their head, even while you're walking with them. If you're standing, you sit down up there (in a meditation pose; the focus menu still lets you pick another activity while you ride). If you're already sitting, you keep doing what you're doing, desk and all. You go wherever they go: walking, jumping, swimming and sitting down. Press **Space** (the game's stand-up key), click **Get off** or right-click the icon to hop off beside them, back the way you were: on your feet, or still doing your activity if you were sitting when you climbed on. Riders can ride riders, so you can build a totem pole. **-** and **+** change how high you sit, for big hats. Your buddy sees who's on their head and can **Shake off** everyone.
+- **Walking together.** Click **Walk** and your character walks with your buddy by itself, **Beside** them or in a line **Behind** them, going round corners the way they did. It keeps pace with them while they walk, instead of trailing behind. Click **Walk** while you're on their head and you hop off and walk. Your own keys always win: walk off, and when you let go you head back to them. If you get stuck you jump, and if you're still stuck or fall far behind, you hop over to them. **Stop** (or right-clicking the icon) ends it.
+- **One leader.** Each group has one leader at the front, and everyone else rides or walks with them. Walk with someone who's walking with someone else and you walk with the one at the front. If your buddy climbs onto your head or starts walking with you while you were riding or walking with them, you stop yours: the newest one wins.
+- **Sitting together.** While you walk with a buddy and they sit down, you walk up beside them and sit down in the same activity, facing the same way, with your desk beside theirs. If they switch activity, you switch too, and when they stand up, so do you and you walk on together, unless you've picked your own activity meanwhile. Untick **Sit down together** to stop this.
 
 Everyone sees you riding and walking, mod or not, because each player's game only moves their own character. Players without the mod may see you sitting a little behind your buddy's head while they walk; players with it see you right on top. You and your buddy both need the mod. Focus time counts the same as normal while you ride.
 
-With [Desk Snap](#desk-snap), sitting down together lines your desk up the Desk Snap way. With [Focus Anywhere](#focus-anywhere), you can sit down together on any ground. Flying your desk with [Desk Swarm](#desk-swarm) gets you off a head first.
+With [Desk Snap](#desk-snap), sitting down together lines your desk up the Desk Snap way. With [Focus Anywhere](#focus-anywhere), you can sit down together on any ground. With [Emote Sync](#emote-sync) on, its focus join counts as sitting down together, and you're moved beside your buddy. Flying your desk with [Desk Swarm](#desk-swarm) gets you off a head first, and while your buddy flies their desk, you walk along below instead of sitting down beside it.
 
 In the settings file, `RideHeight` is the riding height, `RideActivity` and `RideChoice` pick what you sit down to do when you climb on, `Walk` and `WalkGap` set where and how far from your buddy you walk, `SitTogether` is the window's switch, `CatchUp` and `CatchUpDistance` control hopping over to your buddy, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
 

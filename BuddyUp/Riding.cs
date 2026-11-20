@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace BuddyUp
 {
+    // How you get off a head.
+    internal enum Dismount
+    {
+        Stay,     // stay where you are, still sitting (Desk Swarm took off)
+        Beside,   // beside your buddy: on your feet if you climbed on standing, else still sitting
+        Stand,    // on your feet beside your buddy (you're off to walk)
+    }
+
     // Riding on a buddy's head: you sit (in the riding activity, or whatever you were already doing)
     // and your game puts you on top of their head bone every frame, so you go wherever they go and
     // bob along with their animations. Only ever your own character: your game sends your position
@@ -15,6 +23,8 @@ namespace BuddyUp
     //
     // While you sit, the game skips gravity and ignores the movement keys, and standing up puts you
     // at the stand-up spot, which this keeps beside your buddy: getting up hops you off next to them.
+    // Getting off any other way puts you back the way you were: on your feet if you were standing
+    // when you climbed on, or still sitting (beside them) if you were already sitting.
     internal sealed class Riding
     {
         // How long your buddy can be missing (loading in, teleporting) before you get off.
@@ -32,6 +42,9 @@ namespace BuddyUp
         private Vector3 _standSpot;
         private float _standYaw;
         private bool _haveStandSpot;
+        // You were standing when you climbed on, so the mod sat you down in this riding pose.
+        private bool _satToRide;
+        private int _rideAnim;
 
         // Riders in the order they're placed, and whether each other player's rider is on a head on
         // this screen (decided in LateUpdate, used again just before drawing).
@@ -53,9 +66,14 @@ namespace BuddyUp
         // Waiting to see your buddy on your screen again.
         public bool CarrierMissing => Carrier != 0 && _missingSince >= 0f;
 
-        // Climbs onto your buddy's head. Returns why not, or null when you're on.
-        public string Start(PlayerFocusController me, ulong carrier, Buddies buddies)
+        // Climbs onto your buddy's head (or over to another head). Returns why not, or null when
+        // you're on; `wait` says the reason will pass (a menu open, the stairs...).
+        //
+        // Riding on someone who goes along with you (rides on you, walks with you) is fine: yours is
+        // newer, so they make way (Buddies.GiveWayTo).
+        public string Start(PlayerFocusController me, ulong carrier, Buddies buddies, out bool wait)
         {
+            wait = false;
             if (me == null || !buddies.InLobby)
             {
                 return "Join a session first";
@@ -69,16 +87,6 @@ namespace BuddyUp
             {
                 return $"Can't see {name} here";
             }
-            // No loops: they (or anyone under them) can't be riding on you.
-            ulong below = carrier;
-            for (int i = 0; i < 16 && below != 0; i++)
-            {
-                if (below == buddies.Me)
-                {
-                    return $"{name} is riding on you";
-                }
-                below = buddies.Carrying(below);
-            }
             if (Game.DeskSwarmPiloting())
             {
                 return "Stop flying your desk first";
@@ -87,9 +95,22 @@ namespace BuddyUp
             {
                 return "Get up from the seat first";
             }
-            if (!me.IsFocus && Sitting.SitToRide(out string why) != SitResult.Sat)
+            if (!me.IsFocus)
             {
-                return $"Can't climb on: {why}";
+                SitResult sat = Sitting.SitToRide(out string why, out int anim);
+                if (sat != SitResult.Sat)
+                {
+                    wait = sat == SitResult.Wait;
+                    return $"Can't climb on: {why}";
+                }
+                _satToRide = true;
+                _rideAnim = anim;
+            }
+            else if (Carrier == 0)
+            {
+                // Already sitting: you keep your activity up there. (Moving over to another head
+                // keeps what you had.)
+                _satToRide = false;
             }
 
             Carrier = carrier;
@@ -100,9 +121,8 @@ namespace BuddyUp
             return null;
         }
 
-        // Gets off. With setDown, you sit down on the ground beside your buddy (still doing your
-        // activity); otherwise you stay where you are.
-        public void Stop(PlayerFocusController me, Buddies buddies, bool setDown)
+        // Gets off (see Dismount).
+        public void Stop(PlayerFocusController me, Buddies buddies, Dismount how)
         {
             if (Carrier == 0)
             {
@@ -111,10 +131,19 @@ namespace BuddyUp
             Carrier = 0;
             _missingSince = -1f;
             buddies.SendRide(0, 0f);
-            if (setDown && _haveStandSpot && Game.SitsFree(me))
+            if (how != Dismount.Stay && Game.SitsFree(me))
             {
-                Game.PlaceSeated(me, _standSpot, _standYaw);
-                Game.SetStandSpot(me, _standSpot, _standYaw);
+                if (_haveStandSpot)
+                {
+                    Game.PlaceSeated(me, _standSpot, _standYaw);
+                    Game.SetStandSpot(me, _standSpot, _standYaw);
+                }
+                // Still in the pose you were sat down in to ride (not something you picked since).
+                bool ridePose = _satToRide && Game.MyAnim() == _rideAnim;
+                if (how == Dismount.Stand || ridePose)
+                {
+                    Game.StandUp();
+                }
             }
             Plugin.Log.LogInfo("Got off.");
         }
@@ -159,9 +188,36 @@ namespace BuddyUp
                 }
                 else if (buddies.Rides.TryGetValue(rider, out Ride ride))
                 {
+                    if (InCircle(rider, buddies))
+                    {
+                        // Two riding on each other for a moment (one is about to get off): gluing
+                        // them would send both up into the sky.
+                        _glued.Remove(rider);
+                        continue;
+                    }
                     GlueOther(me, rider, ride, buddies, late);
                 }
             }
+        }
+
+        // True if this rider is (through others) under themselves.
+        private bool InCircle(ulong rider, Buddies buddies)
+        {
+            ulong carrier = CarrierOf(rider, buddies);
+            for (int i = 0; i < 32 && carrier != 0; i++)
+            {
+                if (carrier == rider)
+                {
+                    return true;
+                }
+                carrier = CarrierOf(carrier, buddies);
+            }
+            return false;
+        }
+
+        private ulong CarrierOf(ulong rider, Buddies buddies)
+        {
+            return rider == buddies.Me ? Carrier : buddies.Carrying(rider);
         }
 
         private void GlueMe(PlayerFocusController me, Buddies buddies, bool late)
@@ -191,12 +247,17 @@ namespace BuddyUp
                     else if (Time.unscaledTime - _missingSince > MissingSeconds)
                     {
                         Notice?.Invoke($"Lost sight of {Game.PlayerName(Carrier)}, so you got off");
-                        Stop(me, buddies, setDown: true);
+                        Stop(me, buddies, Dismount.Beside);
                     }
                 }
                 return;
             }
             _missingSince = -1f;
+            if (InCircle(buddies.Me, buddies))
+            {
+                // You and they climbed on each other: wait for one of you to get off.
+                return;
+            }
 
             float yaw = carrier.transform.eulerAngles.y;
             Vector3 spot = Game.Head(carrier).position + Vector3.up * S.RideHeight.Value;
@@ -246,11 +307,11 @@ namespace BuddyUp
         private int Depth(ulong rider, Buddies buddies)
         {
             int depth = 0;
-            ulong carrier = rider == buddies.Me ? Carrier : buddies.Carrying(rider);
+            ulong carrier = CarrierOf(rider, buddies);
             while (carrier != 0 && depth < 16)
             {
                 depth++;
-                carrier = carrier == buddies.Me ? Carrier : buddies.Carrying(carrier);
+                carrier = CarrierOf(carrier, buddies);
             }
             return depth;
         }

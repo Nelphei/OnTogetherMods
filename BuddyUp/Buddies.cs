@@ -41,9 +41,16 @@ namespace BuddyUp
     //   SIT <type> <anim> <desk>  I sat down in this free-focus activity (desk 1: my desk came out).
     //   SIT SEAT                I sat down at one of the game's seat spots.
     //   UP                      I stood up.
+    //
+    // One leader per group: everyone goes along with someone (riding on them or walking with them)
+    // or with nobody, and nobody goes along with someone who goes along with them. If that happens
+    // anyway (someone rides on or walks with a player who was going along with them), the newest
+    // one wins and the player it's aimed at stops theirs (GiveWayTo).
     internal sealed class Buddies
     {
         private const float RequestSeconds = 60f;
+        // Two rides or walks heard within this long of each other count as started together.
+        private const float TieSeconds = 1f;
 
         private static Settings S => Plugin.Settings;
 
@@ -57,6 +64,10 @@ namespace BuddyUp
         private readonly Dictionary<ulong, Ride> _rides = new Dictionary<ulong, Ride>();
         private readonly Dictionary<ulong, ulong> _follows = new Dictionary<ulong, ulong>();
         private readonly Dictionary<ulong, Sit> _sits = new Dictionary<ulong, Sit>();
+        // When we heard each player start riding on or walking with someone, and when you did.
+        private readonly Dictionary<ulong, float> _linkedAt = new Dictionary<ulong, float>();
+        private float _myLinkAt;
+        private readonly List<ulong> _circle = new List<ulong>();
         // What we last told everyone we're doing, sent again to players who arrive later.
         private string _myRide;
         private string _myFollow;
@@ -106,8 +117,110 @@ namespace BuddyUp
         // Everyone riding directly on this player's head.
         public IEnumerable<ulong> RidersOf(ulong carrier) => _rides.Where(r => r.Value.Carrier == carrier).Select(r => r.Key);
 
-        // Everyone walking with this player (not counting you).
-        public IEnumerable<ulong> FollowersOf(ulong target) => _follows.Where(f => f.Value == target).Select(f => f.Key);
+        // The head you're on and the buddy you walk with, as you told everyone (0 for none).
+        public ulong MyCarrier { get; private set; }
+        public ulong MyFollow { get; private set; }
+
+        // Who this player goes along with: the one whose head they're on, or else the one they walk
+        // with. 0 for nobody.
+        public ulong DirectLeader(ulong id)
+        {
+            if (id == Me)
+            {
+                return MyCarrier != 0 ? MyCarrier : MyFollow;
+            }
+            if (_rides.TryGetValue(id, out Ride ride))
+            {
+                return ride.Carrier;
+            }
+            return _follows.TryGetValue(id, out ulong target) ? target : 0;
+        }
+
+        // The front of this player's group: the one everyone in it goes along with, directly or
+        // through others. The player themselves if they go along with nobody, and 0 if it goes round
+        // in a circle (being sorted out: see GiveWayTo).
+        public ulong GroupLeader(ulong id)
+        {
+            ulong at = id;
+            for (int i = 0; i < 32; i++)
+            {
+                ulong next = DirectLeader(at);
+                if (next == 0)
+                {
+                    return at;
+                }
+                if (next == id)
+                {
+                    return 0;
+                }
+                at = next;
+            }
+            return 0;
+        }
+
+        // Everyone walking (not riding) in this leader's group, you included if you are.
+        public IEnumerable<ulong> WalkersWith(ulong leader)
+        {
+            foreach (ulong id in _follows.Keys)
+            {
+                if (!_rides.ContainsKey(id) && GroupLeader(id) == leader)
+                {
+                    yield return id;
+                }
+            }
+            if (MyFollow != 0 && MyCarrier == 0 && GroupLeader(Me) == leader)
+            {
+                yield return Me;
+            }
+        }
+
+        // Nobody goes along with someone who goes along with them (maybe through others). When that
+        // happens, the newest ride or walk in the circle wins (a tie goes to the higher Steam ID),
+        // and the player it's aimed at stops their own. Every game in the circle works this out the
+        // same way. Returns the player you should make way for, or 0.
+        public ulong GiveWayTo()
+        {
+            ulong me = Me;
+            ulong next = DirectLeader(me);
+            if (next == 0)
+            {
+                return 0;
+            }
+            _circle.Clear();
+            _circle.Add(me);
+            while (next != me)
+            {
+                if (next == 0 || _circle.Count > 32 || _circle.Contains(next))
+                {
+                    return 0;   // no circle through you
+                }
+                _circle.Add(next);
+                next = DirectLeader(next);
+            }
+            float latest = float.MinValue;
+            foreach (ulong id in _circle)
+            {
+                latest = Mathf.Max(latest, LinkedAt(id));
+            }
+            ulong newest = 0;
+            foreach (ulong id in _circle)
+            {
+                if (LinkedAt(id) >= latest - TieSeconds && id > newest)
+                {
+                    newest = id;
+                }
+            }
+            return DirectLeader(newest) == me ? newest : 0;
+        }
+
+        private float LinkedAt(ulong id)
+        {
+            if (id == Me)
+            {
+                return _myLinkAt;
+            }
+            return _linkedAt.TryGetValue(id, out float at) ? at : 0f;
+        }
 
         // Call every frame.
         public void Update()
@@ -173,6 +286,11 @@ namespace BuddyUp
 
         public void SendRide(ulong carrier, float height)
         {
+            if (carrier != 0 && carrier != MyCarrier)
+            {
+                _myLinkAt = Time.unscaledTime;
+            }
+            MyCarrier = carrier;
             _myRide = carrier != 0
                 ? $"RIDE {carrier} {Mathf.RoundToInt(height * 100f).ToString(CultureInfo.InvariantCulture)}"
                 : null;
@@ -186,6 +304,11 @@ namespace BuddyUp
 
         public void SendFollow(ulong target)
         {
+            if (target != 0 && target != MyFollow)
+            {
+                _myLinkAt = Time.unscaledTime;
+            }
+            MyFollow = target;
             _myFollow = target != 0 ? $"FOLLOW {target}" : null;
             _lobby.Send(_myFollow ?? "FOLLOW 0");
         }
@@ -231,6 +354,7 @@ namespace BuddyUp
             _rides.Remove(id);
             _follows.Remove(id);
             _sits.Remove(id);
+            _linkedAt.Remove(id);
             if (_buddies.Remove(id))
             {
                 Ended?.Invoke(id);
@@ -250,7 +374,9 @@ namespace BuddyUp
             _rides.Clear();
             _follows.Clear();
             _sits.Clear();
+            _linkedAt.Clear();
             _myRide = _myFollow = _mySit = null;
+            MyCarrier = MyFollow = 0;
             if (InLobby)
             {
                 _lobby.Send("HELLO");
@@ -343,6 +469,10 @@ namespace BuddyUp
                 case "FOLLOW":
                     if (words.Length >= 2 && ulong.TryParse(words[1], out ulong target) && target != 0 && target != from)
                     {
+                        if (!_follows.TryGetValue(from, out ulong old) || old != target)
+                        {
+                            _linkedAt[from] = Time.unscaledTime;
+                        }
                         _follows[from] = target;
                     }
                     else
@@ -390,6 +520,10 @@ namespace BuddyUp
             {
                 bool fresh = !_rides.TryGetValue(from, out Ride ride) || ride.Carrier != carrier;
                 _rides[from] = new Ride { Carrier = carrier, Height = Mathf.Clamp(cm / 100f, 0f, 3f) };
+                if (fresh)
+                {
+                    _linkedAt[from] = Time.unscaledTime;
+                }
                 if (fresh && carrier == Me)
                 {
                     Tell($"{Game.PlayerName(from)} climbed onto your head!");
