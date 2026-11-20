@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Game references, target framework and auto-deploy come from ..\Directory.Build.props/.targets.
+
+       Art\ is the pixel art with no Unity (cards, table, font), so it can be drawn to PNGs outside the
+       game; Deck.cs, Spread.cs, Reading.cs and TableLayout.cs are Unity-free too. -->
+  <PropertyGroup>
+    <AssemblyName>KittyTarot</AssemblyName>
+    <RootNamespace>KittyTarot</RootNamespace>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Stacks this mod's window with other mods' windows. -->
+    <Compile Include="..\Shared\PanelStack.cs" Link="Shared\PanelStack.cs" />
+    <!-- This mod's icon in the row of mod icons at the bottom-right. -->
+    <Compile Include="..\Shared\IconBar.cs" Link="Shared\IconBar.cs" />
+    <!-- Keeps clicks on the window from reaching the game's UI. -->
+    <Compile Include="..\Shared\ClickBlocker.cs" Link="Shared\ClickBlocker.cs" />
+  </ItemGroup>
+</Project>
