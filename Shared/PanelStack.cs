@@ -43,6 +43,7 @@ namespace OnTogetherMods.Shared
         public const int FocusAnywhereOrder = 90;
         // Big windows, so they go on top of the stack.
         public const int CardTableOrder = 95;
+        public const int SoapBoxOrder = 97;
         // The biggest window, so it goes on top of the stack.
         public const int DoomTogetherOrder = 100;
 

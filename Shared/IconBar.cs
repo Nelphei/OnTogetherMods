@@ -61,6 +61,7 @@ namespace OnTogetherMods.Shared
         public const int ChatRangeOrder = 80;
         public const int DoomTogetherOrder = 85;
         public const int CardTableOrder = 87;
+        public const int SoapBoxOrder = 88;
         public const int QuickHideOrder = 90;
         public const int BubbleShellOrder = 93;
         public const int SessionManagerOrder = 95;
