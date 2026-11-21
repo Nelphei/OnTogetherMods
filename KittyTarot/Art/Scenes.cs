@@ -18,7 +18,12 @@ namespace KittyTarot
             [2] = HighPriestess,
             [3] = Empress,
             [4] = Emperor,
+            [5] = Hierophant,
+            [6] = Lovers,
+            [7] = Chariot,
             [8] = Strength,
+            [9] = Hermit,
+            [10] = Wheel,
             [17] = Star,
         };
 

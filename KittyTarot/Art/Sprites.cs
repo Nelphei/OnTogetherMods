@@ -77,6 +77,101 @@ namespace KittyTarot
             ".kk..kkk..kk.",
         };
 
+        // Little faces for the Wheel of Fortune's corners. A cat: e inner ears, w fur, b blush, n nose.
+        public static readonly string[] TinyCat =
+        {
+            ".k.....k.",
+            "kek...kek",
+            "kwwkkkwwk",
+            "kwkwwwkwk",
+            "kbwwnwwbk",
+            ".kwwwwwk.",
+            "..kkkkk..",
+        };
+
+        // A round little bird looking right: b feathers, B wing, y beak.
+        public static readonly string[] TinyBird =
+        {
+            "..kkkk...",
+            ".kbbbbk..",
+            "kbbbkbbk.",
+            "kbBBbbbyk",
+            "kbBBbbbk.",
+            ".kbbbbk..",
+            "..kkkk...",
+        };
+
+        // A calf: y horns, w face, p snout.
+        public static readonly string[] TinyCalf =
+        {
+            "y.......y",
+            "kykkkkkyk",
+            "kwwwwwwwk",
+            "kwkwwwkwk",
+            ".kpppppk.",
+            ".kpkpkpk.",
+            "..kkkkk..",
+        };
+
+        // A lion cub: o mane, y face, n nose.
+        public static readonly string[] TinyLion =
+        {
+            "...kkkkk...",
+            ".kkoooookk.",
+            "kooyyyyyook",
+            "koykyyykyok",
+            "koyyyyyyyok",
+            "koyyynyyyok",
+            "kooyykyyook",
+            ".kkoooookk.",
+            "...kkkkk...",
+        };
+
+        // The Hermit's lantern with a six-pointed star in it: y glass, w the star.
+        public static readonly string[] Lantern =
+        {
+            "...kkk...",
+            "...k.k...",
+            "..kkkkk..",
+            ".kkkkkkk.",
+            ".kyywyyk.",
+            ".kwwwwwk.",
+            ".kywwwyk.",
+            ".kwwwwwk.",
+            ".kyywyyk.",
+            ".kkkkkkk.",
+            "..kkkkk..",
+        };
+
+        // A little wing, pointing left (mirror it for the right): X feathers, k outline.
+        public static readonly string[] Wing =
+        {
+            "kkk....",
+            "kXXkkk.",
+            ".kXXXXk",
+            "kXXXXXk",
+            ".kkXXXk",
+            "...kkk.",
+        };
+
+        // The Hierophant's triple crown: w white, y gold bands, r and b jewels.
+        public static readonly string[] Tiara =
+        {
+            ".....k.....",
+            "....kyk....",
+            ".....k.....",
+            "....kwk....",
+            "...kwwwk...",
+            "...kyyyk...",
+            "..kwwwwwk..",
+            "..kyrybyk..",
+            ".kwwwwwwwk.",
+            ".kwwwwwwwk.",
+            ".kyrybyryk.",
+            ".kwwwwwwwk.",
+            "kkkkkkkkkkk",
+        };
+
         // A ram's head for the Emperor's throne, facing you: w wool, f face, h horns curling down the
         // sides, e eyes, n nose.
         public static readonly string[] Ram =

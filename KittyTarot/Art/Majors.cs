@@ -201,29 +201,45 @@ namespace KittyTarot
             }
         }
 
-        // How a cat looks out of its face.
-        private enum Eyes { Open, Happy, Sleepy, Stern }
+        // How a cat looks out of its face. Iris: coloured eyes with a slit pupil, for dark cats and
+        // pointed ones.
+        private enum Eyes { Open, Happy, Sleepy, Stern, Iris }
 
         // A cat's head facing you: the box is the round of the head (an odd number of pixels across, so
-        // the face has a middle column), with the ears above it. Returns the face's middle column and the
-        // eyes' row, for adding things on top.
-        private static (int c, int eyeY) CatHead(Picture p, int left, int top, int right, int bottom, uint fur, Eyes eyes)
+        // the face has a middle column), with the ears above it. iris: the eyes' colour for Eyes.Iris;
+        // ears: the ears' fur when it differs (0 = fur); muzzle: a darker patch down the middle of the face
+        // (0 = none). Returns the face's middle column and the eyes' row, for adding things on top.
+        private static (int c, int eyeY) CatHead(Picture p, int left, int top, int right, int bottom, uint fur, Eyes eyes,
+            uint iris = Palette.Butter2, uint ears = 0, uint muzzle = 0)
         {
             int c = (left + right) / 2;
             int w = right - left, h = bottom - top;
             foreach (int side in new[] { -1, 1 })
             {
                 float outer = c + side * (w / 2f + 0.5f), tip = c + side * (w / 2f - 1), inner = c + side * (w * 0.08f);
-                p.Blob(Poly((outer, top + h * 0.4f), (tip, top - 5.5f), (inner, top + 1)), fur);
+                p.Blob(Poly((outer, top + h * 0.4f), (tip, top - 5.5f), (inner, top + 1)), ears != 0 ? ears : fur);
                 p.Fill(Poly((outer - side * 1.5f, top + 3), (tip - side * 0.3f, top - 3), (inner + side * 2.2f, top + 2)), Palette.Pink2);
             }
-            p.Blob(Ellipse(left, top, right, bottom), fur);
+            Mask head = Ellipse(left, top, right, bottom);
+            p.Blob(head, fur);
 
             int eyeY = top + (int)Math.Round(h * 0.48f);
             int gap = (int)Math.Round(w * 0.2f);
             int l = c - gap - 1, r = c + gap;   // each eye's left column; open eyes are two wide
+            if (muzzle != 0)
+            {
+                p.Fill(head.Minus(head.Edge()).And(Ellipse(c - 3, eyeY + 1, c + 3, bottom + 1)), muzzle);
+            }
             switch (eyes)
             {
+                case Eyes.Iris:
+                    foreach (int x in new[] { c - gap - 2, c + gap })
+                    {
+                        p.Fill(Rect(x, eyeY, x + 2, eyeY + 2), iris);
+                        p.Dots(Palette.Ink, (x + 1, eyeY + 1), (x + 1, eyeY + 2));
+                        p[x, eyeY] = Palette.White;
+                    }
+                    break;
                 case Eyes.Open:
                     foreach (int x in new[] { l, r })
                     {
@@ -297,14 +313,7 @@ namespace KittyTarot
             p.Fill(inside.Minus(Ellipse(14, 15, 36, 39)).Minus(Poly((16, 34), (34, 34), (38, 66), (12, 66))), Palette.Blue3);
             p.Blob(Poly((22, 36), (28, 36), (33, 67), (17, 67)), Palette.White);
             p.Fill(Line(1f, (25, 39), (25, 66)), Palette.Lav1);
-            (int c, int eyeY) = CatHead(p, 16, 20, 34, 35, Palette.Ink2, Eyes.Open);
-            foreach (int x in new[] { c - 6, c + 4 })
-            {
-                p.Fill(Rect(x - 1, eyeY, x + 3, eyeY + 2), Palette.Ink2);
-                p.Fill(Rect(x, eyeY, x + 2, eyeY + 2), Palette.Butter2);
-                p.Dots(Palette.Ink, (x + 1, eyeY + 1), (x + 1, eyeY + 2));
-                p[x, eyeY] = Palette.White;
-            }
+            (int c, _) = CatHead(p, 16, 20, 34, 35, Palette.Ink2, Eyes.Iris);
             p.Stamp(Sprites.MoonCrown, c - 6, 9, Key(('k', Palette.Ink), ('y', Palette.Butter2), ('w', Palette.White)));
 
             // Paws holding the scroll.
@@ -324,14 +333,18 @@ namespace KittyTarot
             return p;
         }
 
-        // A pillar nine pixels wide with a capital on top and a letter on it, shaded down its right side.
+        // A pillar nine pixels wide with a capital on top and maybe a letter on it, shaded down its right
+        // side.
         private static void Pillar(Picture p, int left, uint fill, uint shade, uint letter, string text)
         {
             p.Blob(Rect(left, 6, left + 8, 72), fill, Palette.Ink, border: false);
             p.Fill(Rect(left + 7, 7, left + 7, 71), shade);
             p.Blob(Rect(left - 1, 2, left + 9, 6), fill, Palette.Ink, border: false);
             p.Fill(Rect(left, 5, left + 8, 5), shade);
-            TarotFont.Draw(p, text, left + 2, 18, letter);
+            if (text.Length > 0)
+            {
+                TarotFont.Draw(p, text, left + 2, 18, letter);
+            }
         }
 
         // ---- III The Empress: a fluffy cream cat rests on pink cushions in a garden, a crown of stars over
@@ -468,6 +481,348 @@ namespace KittyTarot
             p.Blob(Ellipse(17, 60, 23, 65), Palette.Peach2);
             p.Blob(Ellipse(27, 60, 33, 65), Palette.Peach2);
             Sparkles(p, Palette.White, (17, 4), (24, 1), (31, 4));
+            return p;
+        }
+
+        // ---- V The Hierophant: a lilac-point cat in a triple crown and red robes gives a lucky-cat
+        // blessing between two grey pillars, holding a triple cross; two kittens sit before it, the crossed
+        // keys between them ----
+
+        private static Picture Hierophant()
+        {
+            var p = new Picture(W, H);
+            p.Gradient((0f, Palette.Lav1), (0.55f, Palette.Lav1), (1f, Palette.Lav2));
+            Sparkles(p, Palette.White, (12, 3), (35, 4));
+            Pillar(p, 0, Palette.Lav2, Palette.Lav3, 0, "");
+            Pillar(p, 41, Palette.Lav2, Palette.Lav3, 0, "");
+
+            // The floor: pale tiles.
+            Mask floor = Where((x, y) => y >= 58);
+            p.Fill(floor, Palette.Lav2);
+            p.Fill(floor.And(Where((x, y) => (x / 5 + (y - 58) / 4) % 2 == 0)), Palette.Lav1);
+            p.Run(0, 58, W, Palette.Lav3);
+
+            // The cat: robe and white stole, then its head and crown.
+            Mask robe = Ellipse(12, 31, 38, 47).Or(Poly((13, 39), (37, 39), (41, 66), (9, 66)));
+            p.Blob(robe, Palette.Pink4);
+            p.Blob(Line(3f, (21, 34), (19.5f, 66)).Or(Line(3f, (29, 34), (30.5f, 66))).And(robe.Minus(robe.Edge())), Palette.White);
+            foreach ((int x, int y) in new[] { (19, 45), (29, 45), (19, 53), (29, 53) })
+            {
+                p.Stamp(Sprites.Spark3, x, y, Palette.Butter3);
+            }
+            (int c, _) = CatHead(p, 17, 20, 33, 34, Palette.Cream, Eyes.Iris, iris: Palette.Blue3, ears: Palette.Lav3, muzzle: Palette.Lav2);
+            p.Stamp(Sprites.Tiara, c - 5, 8, Key(('k', Palette.Ink), ('w', Palette.White), ('y', Palette.Butter2), ('r', Palette.Pink3), ('b', Palette.Blue2)));
+
+            // A raised paw blessing like a lucky cat, toe beans showing; the other paw holds the triple cross.
+            p.Blob(Line(5f, (15, 41), (11.5f, 33)), Palette.Pink4);
+            p.Blob(Ellipse(7, 25, 14, 33), Palette.Cream);
+            p.Fill(Rect(9, 30, 12, 31), Palette.Pink2);
+            p.Dots(Palette.Pink2, (8, 28), (10, 27), (11, 27), (13, 28));
+            Mask staff = Line(2f, (40, 11), (40, 60)).Or(Line(2f, (38, 13), (42, 13))).Or(Line(2f, (37, 17), (43, 17))).Or(Line(2f, (36, 21), (44, 21)));
+            p.Blob(staff, Palette.Butter3);
+            p.Blob(Line(5f, (35, 41), (38.5f, 45)), Palette.Pink4);
+            p.Blob(Ellipse(37, 42, 42, 47), Palette.Cream);
+
+            // The crossed keys, gold and silver, and the two kittens.
+            CrossedKeys(p, 25, 64);
+            KittenBack(p, 3, 57, Palette.Peach2, Palette.Pink3, Palette.White, tailRight: false);
+            KittenBack(p, 36, 57, Palette.Lav1, Palette.White, Palette.Butter3, tailRight: true);
+            return p;
+        }
+
+        // Two keys crossed over a point: gold from top left to bottom right, silver the other way.
+        private static void CrossedKeys(Picture p, int cx, int cy)
+        {
+            foreach ((int dir, uint colour) in new[] { (-1, Palette.Lav1), (1, Palette.Butter2) })
+            {
+                float bx = cx - dir * 5.5f, by = cy - 5.5f, tx = cx + dir * 5, ty = cy + 5;
+                Mask key = Line(2.4f, (bx, by), (tx, ty))
+                    .Or(Circle(bx, by, 2.8f))
+                    .Or(Line(2.4f, (tx - dir * 2, ty), (tx - dir * 2, ty + 2.5f)));
+                p.Blob(key, colour);
+                p.Fill(Circle(bx, by, 0.9f), Palette.Ink);
+            }
+        }
+
+        // A kitten seen from behind in a little cape with dots on it: (x, y) is the top left of its head,
+        // which is eleven pixels across.
+        private static void KittenBack(Picture p, int x, int y, uint fur, uint cape, uint dots, bool tailRight)
+        {
+            int side = tailRight ? 1 : -1;
+            float root = tailRight ? x + 10 : x;
+            p.Blob(Line(2.6f, (root, y + 15), (root + side * 3, y + 12), (root + side * 3, y + 8)), fur);
+            Mask body = Poly((x + 1, y + 7), (x + 9, y + 7), (x + 12, y + 17), (x - 2, y + 17));
+            p.Blob(body, cape);
+            p.Fill(body.Minus(body.Edge()).And(Where((px, py) => (px + py * 2) % 4 == 0 && py % 3 == 0)), dots);
+            p.Blob(Poly((x - 0.5f, y + 5), (x + 0.5f, y - 3), (x + 4.5f, y + 1)).Or(Poly((x + 10.5f, y + 5), (x + 9.5f, y - 3), (x + 5.5f, y + 1))), fur);
+            p.Blob(Ellipse(x, y, x + 10, y + 9), fur);
+        }
+
+        // ---- VI The Lovers: a pink cat and a blue cat sit side by side, their tails making a heart between
+        // them; an angel cat blesses them from the clouds in front of the sun; an apple tree with a little
+        // snake on one side, a tree of flames on the other ----
+
+        private static Picture Lovers()
+        {
+            var p = new Picture(W, H);
+            p.Gradient((0f, Palette.Butter1), (0.3f, Palette.Blue1), (0.65f, Palette.Pink1), (1f, Palette.Pink1));
+            Sun(p, 25, 9, 9.5f);
+
+            // The angel: wings, robe, head and halo, on a cloud.
+            Mask wing = Poly((21, 15), (15, 8), (7, 3), (2, 5), (3, 9), (6, 12), (4, 15), (8, 18), (12, 18), (17, 21), (21, 20));
+            Mask wings = wing.Or(Mirror(wing));
+            p.Blob(wings, Palette.White);
+            foreach ((float x0, float y0, float x1, float y1) in new[] { (19f, 15f, 6f, 7f), (19f, 17f, 7f, 14f), (19f, 19f, 11f, 18f) })
+            {
+                Mask feather = Line(1f, (x0, y0), (x1, y1));
+                p.Fill(feather.Or(Mirror(feather)).And(wings.Minus(wings.Edge())), Palette.Lav2);
+            }
+            p.Blob(Poly((21, 15), (29, 15), (31, 25), (19, 25)), Palette.Pink2);
+            CatHead(p, 19, 6, 31, 17, Palette.White, Eyes.Happy);
+            Cloud(p, Palette.White, Palette.Lav2, (6, 26, 3.5f), (12, 24, 4.5f), (19, 26, 4f), (25, 24, 5f), (31, 26, 4f), (38, 24, 4.5f), (44, 26, 3.5f));
+
+            // The grass and the trees.
+            p.Fill(Where((x, y) => y >= 50), Palette.Mint2);
+            p.Run(0, 50, W, Palette.Mint3);
+
+            p.Blob(Rect(4, 36, 6, 52), Palette.Peach3);
+            Mask apples = Circle(4, 30, 7f).Or(Circle(9, 34, 5f)).Or(Circle(1, 37, 4.5f));
+            p.Blob(apples, Palette.Mint3);
+            foreach ((int x, int y) in new[] { (2, 28), (7, 31), (3, 34), (6, 25) })
+            {
+                p.Fill(Rect(x, y, x + 1, y + 1), Palette.Pink3);
+                p[x, y] = Palette.White;
+            }
+            p.Blob(Line(2.2f, (11, 27), (14, 30), (12, 33), (14, 35.5f)).Or(Circle(14.5f, 36.5f, 1.9f)), Palette.Mint2);
+            p.Dots(Palette.Ink, (15, 36));
+            p.Dots(Palette.Pink3, (15, 39));
+
+            p.Blob(Rect(43, 36, 45, 52), Palette.Peach3);
+            foreach ((float x, float y) in new[] { (44f, 23f), (40f, 28f), (48f, 28f), (37f, 33f), (44f, 31f), (50f, 34f), (41f, 36f), (47f, 37f) })
+            {
+                Mask flame = Circle(x, y + 1.5f, 2.4f).Or(Poly((x - 2.3f, y + 1.5f), (x, y - 3.5f), (x + 2.3f, y + 1.5f)));
+                p.Blob(flame, Palette.Peach2, Palette.Peach4);
+                p[(int)x, (int)y + 2] = Palette.Butter2;
+            }
+
+            // The two cats, tails first: they twist round each other between the cats and make a heart
+            // above them.
+            Mask tail = Line(2.6f, (19, 63), (28, 56), (22, 48), (25, 41), (21.5f, 37), (19.5f, 32.5f), (21, 29), (23.5f, 29), (25, 31.5f));
+            p.Blob(tail, Palette.Pink2);
+            p.Blob(Mirror(tail), Palette.Blue2);
+            p.Blob(tail.And(Where((x, y) => y >= 49 && y <= 55)), Palette.Pink2);
+            SittingCat(p, 11, 39, Palette.Pink2, Eyes.Happy);
+            SittingCat(p, 39, 39, Palette.Blue2, Eyes.Happy);
+            GroundBits(p, new[] { (24, 66), (2, 69), (45, 68) }, new[] { (29, 69), (19, 69), (48, 63) });
+            return p;
+        }
+
+        // A cat sitting up and facing you, its head's middle column at c and the top of its head (not
+        // counting the ears) at top: head 17 pixels across, body below, front paws at the bottom.
+        private static (int c, int eyeY) SittingCat(Picture p, int c, int top, uint fur, Eyes eyes, uint belly = 0)
+        {
+            Mask body = Ellipse(c - 9, top + 10, c + 9, top + 30);
+            p.Blob(body, fur);
+            if (belly != 0)
+            {
+                p.Fill(Ellipse(c - 4, top + 15, c + 4, top + 29), belly);
+            }
+            p.Blob(Ellipse(c - 6, top + 26, c - 1, top + 30), fur);
+            p.Blob(Ellipse(c + 1, top + 26, c + 6, top + 30), fur);
+            return CatHead(p, c - 8, top, c + 8, top + 14, fur, eyes);
+        }
+
+        // The mask flipped left to right across the picture's middle.
+        private static Mask Mirror(Mask m) => Where((x, y) => m[W - 1 - x, y]);
+
+        // ---- VII The Chariot: a silver tabby in blue armour with moons on its shoulders rides a golden
+        // chariot under a canopy of stars, wand in paw; a dark sphinx cat and a white one lie in front;
+        // castle towers behind ----
+
+        private static Picture Chariot()
+        {
+            var p = new Picture(W, H);
+            p.Gradient((0f, Palette.Blue1), (0.45f, Palette.Butter1), (1f, Palette.Butter1));
+
+            // Castle towers with pink roofs, and the ground.
+            foreach ((int l, int t, int r) in new[] { (-1, 22, 8), (42, 26, 51) })
+            {
+                p.Blob(Rect(l, t, r, 60), Palette.Lav1, Palette.Lav3, border: false);
+                p.Fill(Where((x, y) => y == t + 6 && x > l && x < r && x % 3 == 0).Or(Where((x, y) => y == t + 14 && x > l && x < r && x % 3 == 1)), Palette.Lav3);
+                Mask roof = Poly((l - 1, t + 0.5f), ((l + r) / 2f, t - 10), (r + 1, t + 0.5f));
+                p.Blob(roof, Palette.Pink3, Palette.Pink4, border: false);
+            }
+            p.Fill(Where((x, y) => y >= 56), Palette.Mint2);
+            p.Run(0, 56, W, Palette.Mint3);
+
+            // The canopy of stars on its poles.
+            p.Blob(Rect(9, 10, 10, 44).Or(Rect(39, 10, 40, 44)), Palette.Butter3);
+            Mask canopy = Rect(6, 4, 43, 11);
+            for (int x = 8; x <= 41; x += 5)
+            {
+                canopy = canopy.Or(Circle(x + 0.5f, 11, 2.6f));
+            }
+            p.Blob(canopy, Palette.Blue3);
+            p.Fill(canopy.Minus(canopy.Edge()).And(Where((x, y) => (x * 5 + y * 3) % 11 == 0)), Palette.White);
+            p.Fill(Rect(6, 4, 43, 5).Minus(canopy.Edge()), Palette.Blue4);
+
+            // The charioteer: armour with moons on the shoulders, head and crown, wand.
+            Mask armour = Ellipse(13, 32, 37, 50);
+            p.Blob(armour, Palette.Blue2);
+            p.Fill(armour.Minus(armour.Edge()).And(Rect(22, 34, 28, 50)), Palette.Blue1);
+            foreach (int x in new[] { 15, 30 })
+            {
+                p.Blob(Ellipse(x, 33, x + 5, 38).Minus(Ellipse(x + 2, 32, x + 7, 37)), Palette.Butter2);
+            }
+            (int c, int eyeY) = CatHead(p, 17, 19, 33, 33, Palette.White, Eyes.Open);
+            foreach ((int x, int y) in new[] { (c - 1, 20), (c + 1, 20), (c, 21), (c - 7, eyeY + 1), (c - 7, eyeY + 2), (c + 7, eyeY + 1), (c + 7, eyeY + 2) })
+            {
+                p[x, y] = Palette.Lav2;
+            }
+            p.Stamp(Sprites.Crown, c - 5, 13, Key(('k', Palette.Ink), ('y', Palette.Butter2), ('Y', Palette.Butter3), ('r', Palette.Pink3), ('b', Palette.Blue2)));
+
+            // The chariot: wheels, a golden box with a winged heart on the front, the cat's paws on its edge.
+            foreach (float x in new[] { 6.5f, 43.5f })
+            {
+                Mask rim = Circle(x, 49, 5.8f).Minus(Circle(x, 49, 3.9f));
+                Mask spokes = Line(1.2f, (x - 4, 49), (x + 4, 49)).Or(Line(1.2f, (x, 45), (x, 53)))
+                    .Or(Line(1.2f, (x - 3, 46), (x + 3, 52))).Or(Line(1.2f, (x - 3, 52), (x + 3, 46)));
+                p.Fill(spokes.And(Circle(x, 49, 4.2f)), Palette.Peach4);
+                p.Blob(rim, Palette.Peach3);
+                p.Blob(Circle(x, 49, 1.5f), Palette.Butter2);
+            }
+            Mask box = Rect(9, 41, 41, 55);
+            p.Blob(box, Palette.Butter2);
+            p.Fill(Rect(10, 52, 40, 54), Palette.Butter3);
+            p.Fill(Rect(10, 42, 40, 42), Palette.Butter1);
+            Picture wing = CardFaces.Sprite(Sprites.Wing, Sprites.Two(Palette.White));
+            p.Paste(wing, 14, 45);
+            p.Paste(wing.Mirrored(), 30, 45);
+            p.Stamp(Sprites.Heart8, 21, 44, Sprites.Two(Palette.Pink3));
+            p.Blob(Ellipse(17, 38, 22, 43), Palette.White);
+            p.Blob(Ellipse(28, 38, 33, 43), Palette.White);
+
+            // The two sphinx cats lying in front, dark and white.
+            SphinxCat(p, 13, 54, Palette.Ink2, Eyes.Iris);
+            SphinxCat(p, 37, 54, Palette.White, Eyes.Open);
+            return p;
+        }
+
+        // A cat lying like a sphinx and facing you: head (thirteen pixels across, its top at top) over
+        // its front paws, the loaf of its body behind.
+        private static void SphinxCat(Picture p, int c, int top, uint fur, Eyes eyes)
+        {
+            p.Blob(Ellipse(c - 10, top + 7, c + 10, top + 18), fur);
+            p.Blob(Ellipse(c - 7, top + 11, c - 2, top + 15), fur);
+            p.Blob(Ellipse(c + 2, top + 11, c + 7, top + 15), fur);
+            CatHead(p, c - 6, top, c + 6, top + 10, fur, eyes);
+        }
+
+        // ---- IX The Hermit: an old cat in a grey hooded cloak (ears on the hood), with long white brows and
+        // a beard, stands on a snowy peak at night holding up a lantern with a star in it, leaning on a
+        // staff ----
+
+        private static Picture Hermit()
+        {
+            var p = new Picture(W, H);
+            p.Gradient((0f, Palette.Ink2), (0.35f, Palette.Lav4), (1f, Palette.Lav4));
+            Sparkles(p, Palette.White, (40, 4), (29, 10), (44, 19), (3, 6), (18, 3));
+            p.Dots(Palette.Lav1, (11, 3), (24, 6), (35, 9), (6, 14), (47, 11), (20, 16), (45, 29), (2, 24));
+
+            // Far peaks below, then the snowy top it stands on.
+            Mask far = Poly((-2, 64), (5, 52), (11, 57), (19, 49), (28, 58), (38, 48), (46, 55), (52, 51), (52, 66), (-2, 66));
+            p.Fill(far, Palette.Lav3);
+            (int x, int y)[] tops = { (5, 52), (19, 49), (38, 48), (52, 51) };
+            p.Fill(far.And(Where((x, y) => Array.Exists(tops, k => y <= k.y + 2 + (x + y) % 2 && Math.Abs(x - k.x) <= 4))), Palette.Lav1);
+            p.Fill(far.Edge(true), Palette.Lav4);
+            Mask snow = Poly((-2, 73), (-2, 66), (10, 62), (25, 60), (40, 62), (52, 66), (52, 73));
+            p.Fill(snow, Palette.White);
+            p.Fill(snow.Minus(snow.Edge(true)).Rows(y => y >= 68), Palette.Lav1);
+            p.Fill(snow.Edge(true), Palette.Lav2);
+
+            // The lantern's glow.
+            p.Fill(Circle(9, 37, 11.5f).And(Where((x, y) => (x + y) % 2 == 0)), Palette.Lav2);
+            p.Fill(Circle(9, 37, 8.5f), Palette.Lav2);
+            p.Fill(Circle(9, 37, 8.5f).And(Where((x, y) => (x + y) % 2 == 0)), Palette.Butter1);
+            p.Fill(Circle(9, 37, 6f), Palette.Butter1);
+
+            // The staff, the cloak and hood, the head with its ears through the hood.
+            p.Blob(Line(2f, (38, 21), (40, 64)), Palette.Peach3);
+            Mask cloak = Poly((18, 28), (32, 28), (38, 61), (12, 61)).Or(Ellipse(12, 56, 38, 65));
+            p.Blob(cloak, Palette.Lav2);
+            p.Fill(cloak.Minus(cloak.Edge()).And(Where((x, y) => x >= 31 || y >= 62)), Palette.Lav3);
+            p.Blob(Ellipse(14, 15, 36, 38), Palette.Lav2);
+            (int c, int eyeY) = CatHead(p, 18, 19, 32, 32, Palette.Cream, Eyes.Sleepy, ears: Palette.Lav2);
+            p.Fill(Ellipse(14, 15, 36, 38).Edge().Rows(y => y >= 30), Palette.Ink);
+            p.Blob(Poly((c - 4, eyeY + 5), (c + 4, eyeY + 5), (c, eyeY + 14)), Palette.White);
+
+            // The paw holding the lantern up, and the paw on the staff.
+            p.Blob(Line(4.5f, (18, 38), (12.5f, 32)), Palette.Lav2);
+            p.Blob(Ellipse(8, 28, 13, 33), Palette.Lav1);
+            p.Stamp(Sprites.Lantern, 5, 32, Key(('k', Palette.Ink), ('y', Palette.Butter2), ('w', Palette.White)));
+            p.Blob(Ellipse(35, 40, 40, 45), Palette.Lav1);
+            return p;
+        }
+
+        // ---- X Wheel of Fortune: a golden wheel lettered T A R O with hearts between, a blue sphinx cat
+        // with a sword on top, a little snake going down one side and a puppy coming up the other; in the
+        // corners on clouds, a cat angel, a bird, a calf and a lion cub ----
+
+        private static Picture Wheel()
+        {
+            var p = new Picture(W, H);
+            p.Gradient((0f, Palette.Blue2), (0.22f, Palette.Blue1), (1f, Palette.Blue1));
+            Sparkles(p, Palette.White, (16, 2), (31, 1), (1, 24), (45, 22), (14, 63), (34, 63));
+
+            // The snake slides down behind the wheel's left side.
+            p.Blob(Line(3f, (12, 27), (6, 30), (4, 36), (7, 42), (3, 47), (5, 51)).Or(Circle(5, 53.5f, 2.6f)), Palette.Mint2);
+            p.Dots(Palette.Ink, (4, 53), (7, 53));
+            p.Dots(Palette.Pink3, (5, 57), (6, 57));
+
+            // The wheel: a golden ring with T A R O and hearts, a pink middle with spokes, a hub.
+            const float cx = 24.5f, cy = 41.5f;
+            p.Blob(Circle(cx, cy, 17.5f), Palette.Butter2, Palette.Ink, border: false);
+            Mask middle = Circle(cx, cy, 7.6f);
+            p.Blob(middle, Palette.Pink2);
+            for (int k = 0; k < 8; k++)
+            {
+                double angle = k * Math.PI / 4;
+                float dx = (float)Math.Cos(angle), dy = (float)Math.Sin(angle);
+                p.Fill(Line(1f, (cx, cy), (cx + dx * 7, cy + dy * 7)).And(middle.Minus(middle.Edge())), Palette.Pink3);
+            }
+            p.Blob(Circle(cx, cy, 2.4f), Palette.Butter3);
+            TarotFont.Draw(p, "T", 22, 26, Palette.Ink);
+            TarotFont.Draw(p, "A", 35, 38, Palette.Ink);
+            TarotFont.Draw(p, "R", 22, 51, Palette.Ink);
+            TarotFont.Draw(p, "O", 10, 38, Palette.Ink);
+            Hearts(p, Palette.Pink3, (14, 31), (31, 31), (14, 49), (31, 49));
+
+            // The sphinx cat on top with its sword.
+            p.Blob(Line(2f, (35, 7), (35, 20)), Palette.White);
+            p.Blob(Rect(32, 17, 38, 18), Palette.Butter3);
+            p.Blob(Ellipse(17, 13, 31, 23), Palette.Blue2);
+            CatHead(p, 18, 5, 30, 15, Palette.Blue2, Eyes.Open);
+            p.Blob(Ellipse(31, 17, 35, 21), Palette.Blue2);
+
+            // The puppy coming up the right side, paws on the rim.
+            p.Blob(Ellipse(41, 46, 49, 54), Palette.Peach2);
+            p.Blob(Ellipse(39, 46, 42, 52), Palette.Peach3);
+            p.Blob(Ellipse(48, 46, 51, 52), Palette.Peach3);
+            p.Dots(Palette.Ink, (43, 49), (47, 49), (45, 51));
+            p.Dots(Palette.Pink3, (45, 53));
+            p.Blob(Ellipse(34, 52, 38, 56), Palette.Peach2);
+            p.Blob(Ellipse(42, 54, 46, 58), Palette.Peach2);
+
+            // The four in the corners, each on a cloud.
+            Cloud(p, Palette.White, Palette.Lav2, (2, 12, 3f), (7, 11, 3.5f), (11, 13, 2.5f));
+            p.Stamp(Sprites.TinyCat, 1, 3, Key(('k', Palette.Ink), ('e', Palette.Pink2), ('w', Palette.White), ('b', Palette.Pink2), ('n', Palette.Pink4)));
+            p.Fill(Ellipse(1, 0, 9, 2).Minus(Ellipse(3, 1, 7, 1)), Palette.Butter2);
+            Cloud(p, Palette.White, Palette.Lav2, (39, 12, 2.5f), (43, 11, 3.5f), (48, 12, 3f));
+            p.Stamp(Sprites.TinyBird, 39, 3, Key(('k', Palette.Ink), ('b', Palette.Blue2), ('B', Palette.Blue3), ('y', Palette.Butter3)));
+            Cloud(p, Palette.White, Palette.Lav2, (2, 71, 3.5f), (7, 70, 4f), (12, 72, 3f));
+            p.Stamp(Sprites.TinyCalf, 1, 62, Key(('k', Palette.Ink), ('y', Palette.Butter2), ('w', Palette.White), ('p', Palette.Pink2)));
+            Cloud(p, Palette.White, Palette.Lav2, (38, 72, 3f), (43, 70, 4f), (48, 71, 3.5f));
+            p.Stamp(Sprites.TinyLion, 38, 60, Key(('k', Palette.Ink), ('o', Palette.Peach2), ('y', Palette.Butter2), ('n', Palette.Pink4)));
             return p;
         }
 
