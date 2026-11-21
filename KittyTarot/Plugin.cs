@@ -14,7 +14,7 @@ namespace KittyTarot
     {
         public const string PluginGuid = "nelphei.ontogether.kittytarot";
         public const string PluginName = "Kitty Tarot";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

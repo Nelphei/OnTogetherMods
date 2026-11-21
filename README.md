@@ -81,7 +81,7 @@ The mods haven't been tested on a Mac yet. Mac keyboards use the F keys for brig
 | [Buddy Up](#buddy-up) | 0.2.1, pre-release | Click the buddies icon | Pair up with a friend, then ride on their head, walk together and sit down side by side | You and your buddy (everyone sees it without the mod) |
 | [Bubble Shell](#bubble-shell) | 0.1.0, pre-release | The ` key | A dev console that drops down from the top: type commands to teleport, sit, emote, look things up, play with silly looks and more | Only you |
 | [Soap Box](#soap-box) | 0.1.1, pre-release | Click the handheld icon | A tiny games console in a window: play little games (carts) on a pastel handheld, and make your own in its code editor | Only you (others see you playing a handheld without the mod) |
-| [Kitty Tarot](#kitty-tarot) | 0.1.0, pre-release | Click the moon cat icon | Tarot readings in a window with a deck of pastel cat cards: shuffle, wash and cut the deck, deal or pick your cards and turn them over | Only you |
+| [Kitty Tarot](#kitty-tarot) | 0.2.0, pre-release | Click the moon cat icon | Tarot readings in a window with a deck of pastel cat cards: shuffle, wash and cut the deck, deal or pick your cards and turn them over | Only you |
 
 Every key can be changed in the mod's settings file (see [Settings](#settings)). The game itself uses no F keys. You don't need to remember them: every mod except Network Crash Fix also has an icon in the bottom-right corner of the screen (see [The icon row](#the-icon-row)).
 
@@ -128,7 +128,7 @@ The game has an eye button that hides its UI (top-right in the Normal window mod
 | Buddy Up 0.2.1 | **Pre-release.** 0.1.0's riding and walking were tried in the game; 0.2.0's fixes and 0.2.1's `buddy`, `ride` and `walk` commands for Bubble Shell haven't been yet |
 | Bubble Shell 0.1.0 | **Pre-release.** Opening it and its look work (the slide, the pixel font, the colours and the bubbles). The commands haven't all been tried yet. Outside the game, the commands' typing, aliases, binds, Tab completion, history and the animated commands were checked |
 | Soap Box 0.1.1 | **Pre-release.** The window, the handheld, Bubble Pop and the code editor work. The copy saved when you change Bubble Pop, renaming carts, opening the carts folder (done a new way in 0.1.1), jumping to an error's line and typing `{ } [ ]` with AltGr haven't all been tried yet. Outside the game, the editor's typing, selecting, undo and cart files were checked, and so were the guards that stop a runaway cart |
-| Kitty Tarot 0.1.0 | **Pre-release.** Not tried in the game yet. Outside the game, shuffling, washing, cutting, dealing, picking and saving were checked over thousands of random rounds (every card always there exactly once), and every card was drawn to a picture to check the art |
+| Kitty Tarot 0.2.0 | **Pre-release.** Not tried in the game yet. Outside the game, shuffling, washing, cutting, dealing, picking and saving were checked over thousands of random rounds (every card always there exactly once), and every card was drawn to a picture to check the art |
 
 The icon row's tray and arranging the row work, in every mod's newest version.
 
@@ -461,9 +461,11 @@ Only you need the mod. In the settings file, `Shell` is the handheld's colour, `
 
 ### Kitty Tarot
 
-> **Pre-release:** not tried in the game yet. The deck is still being drawn: Strength and The Star have their pictures so far, and the other cards show a paw print until theirs come in an update.
+> **Pre-release:** not tried in the game yet.
 
 Tarot readings in a window, with a deck of 78 pastel cat cards: the 22 major cards, and wands, cups, swords and pentacles, each suit in its own colour. Click the moon cat icon to open it. It doesn't tell you what the cards mean: you read them yourself, from the card, its spot in the spread and which way up it lies.
+
+Every card has its own pixel-art picture. The major cards are little cat scenes, close to the classic Rider-Waite pictures so you'll know them: a calico kitten stepping off a cliff for The Fool, a reaper kitty on a white pony for Death, a sleepy full moon with two cats singing up at it for The Moon. The suits' things are heart-tipped wands, teacups, little swords and star coins. On the aces a cat's paw reaches out of a cloud with the suit's thing; the court cards are kittens in feathered caps (Pages), cats riding a white pony (Knights) and crowned cats on their thrones (Queens and Kings); the number cards show their suit's things in a pattern, with a different kitten peeking up at them on each card.
 
 - **Your deck.** It starts brand new and in order, like a real one, so shuffle it first. **Shuffle** riffles it once: shuffle as often as feels right (clicking the deck does too). **Wash** spreads the cards out face down and swirls them round, which turns some of them upside down. **Cut** splits the deck into three piles: click them to stack them back up, in any order. Like real cards, a card stays the way up it lies until a wash turns it.
 - **Laying out cards.** The spread is three cards: past, present and future. **Deal** lays the top three cards on it, face down. **Pick** fans the whole deck out instead, so you choose your three cards yourself: click a card to pick it (its number shows which spot it goes to), and click it again to put it back.
@@ -471,7 +473,7 @@ Tarot readings in a window, with a deck of 78 pastel cat cards: the 22 major car
 - **Options.** Turn reversed cards off (every card shows the right way up), or read with the major cards only (the suits wait to one side until you want them back; this changes from your next reading).
 - **The window.** **?** shows how it works (it also shows by itself the first time), **M** / **L** changes the size, and **X** closes. The cards are pixel art and grow in whole pixel steps, so they stay sharp. Drag the title row to move the window anywhere on screen; double-click it to put it back with the other mods' windows. It's mouse only: the keyboard stays the game's, and your character carries on doing whatever it was doing.
 
-Planned for the next versions: the rest of the pictures, more spreads (a card of the day, a five-card cross, the horseshoe, the Celtic Cross and a year ahead), a journal of your readings and sharing a reading in chat.
+Planned for the next versions: little scenes for the number cards too, more spreads (a card of the day, a five-card cross, the horseshoe, the Celtic Cross and a year ahead), a journal of your readings and sharing a reading in chat.
 
 Only you need the mod. Your deck and the reading on the table are kept in `BepInEx\config\KittyTarot.json`, so they're waiting next time. In the settings file, `ReversedCards` and `MajorCardsOnly` are the Options, `Animations` turns off the cards gliding, shuffling and turning over, `Size` is the M / L button, `WindowX` and `WindowY` are where you dragged the window (-1 keeps it with the other windows), `HelpSeen` set back to false shows the how-it-works card by itself again, and `WindowKey` sets a key to open the window (there's none by default, since other mods use every F key).
 
