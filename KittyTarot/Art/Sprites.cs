@@ -42,6 +42,69 @@ namespace KittyTarot
             ".XX.",
         };
 
+        // A five-pointed star: k outline, y fill, w shine.
+        public static readonly string[] Star9 =
+        {
+            "....k....",
+            "...kwk...",
+            "kkkkykkkk",
+            "kwyyyyyyk",
+            ".kyyyyyk.",
+            "..kyyyk..",
+            ".kyykyyk.",
+            ".kyk.kyk.",
+            ".kk...kk.",
+        };
+
+        // A pomegranate for the High Priestess's curtain: k outline, r fruit, m leaf.
+        public static readonly string[] Pomegranate =
+        {
+            "..m..",
+            ".krk.",
+            "krrrk",
+            "krrrk",
+            ".kkk.",
+        };
+
+        // The High Priestess's crown: a full moon between two crescents. k outline, y moon, w shine.
+        public static readonly string[] MoonCrown =
+        {
+            ".kk.......kk.",
+            "kyk..kkk..kyk",
+            "ky..kwyyk..yk",
+            "ky.kyyyyyk.yk",
+            "kyk.kyyyk.kyk",
+            ".kk..kkk..kk.",
+        };
+
+        // A ram's head for the Emperor's throne, facing you: w wool, f face, h horns curling down the
+        // sides, e eyes, n nose.
+        public static readonly string[] Ram =
+        {
+            "....kkkkk....",
+            "..kkwwwwwkk..",
+            ".khkwwwwwkhk.",
+            "khhhkfffkhhhk",
+            "khkhkfffkhkhk",
+            "khkkfefefkkhk",
+            ".khkfffffkhk.",
+            "..kkkfffkkk..",
+            "....kfnfk....",
+            ".....kkk.....",
+        };
+
+        // A crown: y gold, Y its shade, r and b jewels.
+        public static readonly string[] Crown =
+        {
+            "k....k....k",
+            "kk..kyk..kk",
+            "kyk.kyk.kyk",
+            "kyykyyykyyk",
+            "kyyyyyyyyyk",
+            "kyrybyryyYk",
+            "kkkkkkkkkkk",
+        };
+
         public static readonly string[] Spark3 =
         {
             ".X.",
