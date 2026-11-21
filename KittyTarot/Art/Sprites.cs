@@ -127,6 +127,26 @@ namespace KittyTarot
             "...kkkkk...",
         };
 
+        // A little devil horn curling out to the left (mirror it for the right one): y horn.
+        public static readonly string[] Horn =
+        {
+            "k...",
+            "kk..",
+            "kyk.",
+            "kyyk",
+            "kyyk",
+        };
+
+        // A five-petalled white rose for Death's banner: w petals, y middle.
+        public static readonly string[] Rose =
+        {
+            ".kkk.",
+            "kwkwk",
+            "kwywk",
+            "kwwwk",
+            ".kkk.",
+        };
+
         // The Hermit's lantern with a six-pointed star in it: y glass, w the star.
         public static readonly string[] Lantern =
         {

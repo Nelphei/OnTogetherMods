@@ -24,6 +24,11 @@ namespace KittyTarot
             [8] = Strength,
             [9] = Hermit,
             [10] = Wheel,
+            [11] = Justice,
+            [12] = HangedMan,
+            [13] = Death,
+            [14] = Temperance,
+            [15] = Devil,
             [17] = Star,
         };
 
