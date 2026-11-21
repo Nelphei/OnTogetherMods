@@ -14,7 +14,7 @@ namespace SoapBox
     {
         public const string PluginGuid = "nelphei.ontogether.soapbox";
         public const string PluginName = "Soap Box";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static Settings Settings;

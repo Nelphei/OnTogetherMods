@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
@@ -311,21 +310,15 @@ namespace SoapBox
             }
         }
 
+        // Opens your carts folder in Explorer (or Finder on a Mac) through Unity, so the mod itself
+        // never starts a program: Thunderstore reviews new packages for code that does.
         private void OpenFolder()
         {
             string folder = S.Folder();
             try
             {
                 Directory.CreateDirectory(folder);
-                if (Application.platform == RuntimePlatform.WindowsPlayer)
-                {
-                    Process.Start("explorer.exe", "\"" + folder + "\"");
-                }
-                else
-                {
-                    // Opens Finder on a Mac.
-                    Application.OpenURL(new Uri(folder).AbsoluteUri);
-                }
+                Application.OpenURL(new Uri(folder).AbsoluteUri);
             }
             catch (Exception e)
             {

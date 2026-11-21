@@ -6,11 +6,15 @@
        Machine\ is the console itself (no Unity: the screen, font, carts, the Lua runner).
        MoonSharp\ is MoonSharp's Lua interpreter (moonsharp-devs/moonsharp, BSD-3-Clause, see
        Content\MoonSharp-LICENSE.txt), changed only where a file's top says so (the limits in
-       SoapBoxLimits.cs, and no script-file loader). -->
+       SoapBoxLimits.cs, the limited platform always, no script-file loader). Taken out of it
+       altogether: the full platforms (they ran cmd.exe for os.execute, exited the program and
+       deleted or moved files), the file and resource script loaders, and ByteCode.Dump(file).
+       Nothing that runs programs or touches files may come back: Thunderstore rejected 0.1.0,
+       most likely because the cmd.exe code was in the DLL. -->
   <PropertyGroup>
     <AssemblyName>SoapBox</AssemblyName>
     <RootNamespace>SoapBox</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <!-- MoonSharp's .NET Standard code paths. -->
     <DefineConstants>$(DefineConstants);DOTNET_CORE</DefineConstants>
     <!-- MoonSharp\ is other people's code, kept as it was: its unused variables, hidden members and

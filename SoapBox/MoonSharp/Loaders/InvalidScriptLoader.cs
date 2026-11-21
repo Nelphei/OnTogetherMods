@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Changed for Soap Box (2026-11-20): the message no longer names the file loaders, which were
+// taken out of Soap Box's copy. Everything else is MoonSharp's.
+using System;
 
 namespace MoonSharp.Interpreter.Loaders
 {
@@ -11,10 +13,7 @@ namespace MoonSharp.Interpreter.Loaders
 
 		internal InvalidScriptLoader(string frameworkname)
 		{
-			m_Error = string.Format(
-@"Loading scripts from files is not automatically supported on {0}. 
-Please implement your own IScriptLoader (possibly, extending ScriptLoaderBase for easier implementation),
-use a preexisting loader like EmbeddedResourcesScriptLoader or UnityAssetsScriptLoader or load scripts from strings.", frameworkname);
+			m_Error = string.Format("{0} carts can't load script files.", frameworkname);
 		}
 
 		public object LoadFile(string file, Table globalContext)

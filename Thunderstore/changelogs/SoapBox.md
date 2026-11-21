@@ -1,3 +1,8 @@
+## 0.1.1
+
+- Takes the code for running programs, deleting files and closing the game out of the Lua interpreter Soap Box uses. Carts never had access to it, and now it isn't in the mod at all.
+- "Open my carts folder" opens it through the game itself, so the mod never starts another program. Not tried in the game yet.
+
 ## 0.1.0
 
 - First version: a tiny games console in a window (the handheld icon), with a 192 x 128, 16-colour screen inside a pastel handheld in four colours. Its buttons light up as you press them, and you can click them too.

@@ -1,5 +1,8 @@
 ﻿#define EMIT_DEBUG_OPS
 
+// Changed for Soap Box (2026-11-20): Dump(string file) left out (see the note where it was).
+// Everything else is MoonSharp's.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -59,22 +62,8 @@ namespace MoonSharp.Interpreter.Execution.VM
 			m_CurrentSourceRef = (m_SourceRefStack.Count > 0) ? m_SourceRefStack[m_SourceRefStack.Count - 1] : null;
 		}
 
-	#if !UNITY_5 || UNITY_STANDALONE
-		public void Dump(string file)
-		{
-			StringBuilder sb = new StringBuilder();
-
-			for (int i = 0; i < Code.Count; i++)
-			{
-				if (Code[i].OpCode == OpCode.Debug)
-					sb.AppendFormat("    {0}\n", Code[i]);
-				else
-					sb.AppendFormat("{0:X8}  {1}\n", i, Code[i]);
-			}
-
-			File.WriteAllText(file, sb.ToString());
-		}
-	#endif
+		// Soap Box (2026-11-20): MoonSharp's Dump(string file), which wrote a debugging listing to a
+		// file, is left out: nothing in Soap Box writes files through the interpreter.
 
 		public int GetJumpPointForNextInstruction()
 		{

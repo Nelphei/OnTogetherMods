@@ -1,5 +1,5 @@
-﻿// Changed for Soap Box (2026-11-20): GetDefaultScriptLoader returns no loader (see the note
-// there). Everything else is MoonSharp's.
+﻿// Changed for Soap Box (2026-11-20): GetDefaultPlatform always returns the limited platform and
+// GetDefaultScriptLoader returns no loader (see the notes there). Everything else is MoonSharp's.
 using System;
 using System.Linq;
 using MoonSharp.Interpreter.Interop;
@@ -103,18 +103,10 @@ namespace MoonSharp.Interpreter.Platforms
 		{
 			AutoDetectPlatformFlags();
 
-#if ENABLE_DOTNET
+			// Soap Box (2026-11-20): always the limited platform, which refuses every 'io' and 'os'
+			// operation (files, running programs, exiting). The full platforms that could do those
+			// were taken out of Soap Box's copy of MoonSharp altogether.
 			return new LimitedPlatformAccessor();
-#else
-			if (IsRunningOnUnity)
-				return new LimitedPlatformAccessor();
-
-#if DOTNET_CORE
-			return new DotNetCorePlatformAccessor();
-#else
-			return new StandardPlatformAccessor();
-#endif
-#endif
 		}
 
 		internal static IScriptLoader GetDefaultScriptLoader()
