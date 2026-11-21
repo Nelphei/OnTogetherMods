@@ -127,6 +127,17 @@ namespace KittyTarot
             "...kkkkk...",
         };
 
+        // The Moon's crayfish climbing out of the pool, claws up: p shell.
+        public static readonly string[] Crayfish =
+        {
+            "kk...kk",
+            "kpk.kpk",
+            ".kpkpk.",
+            "..kpk..",
+            "..kpk..",
+            "...k...",
+        };
+
         // A little devil horn curling out to the left (mirror it for the right one): y horn.
         public static readonly string[] Horn =
         {

@@ -29,7 +29,12 @@ namespace KittyTarot
             [13] = Death,
             [14] = Temperance,
             [15] = Devil,
+            [16] = Tower,
             [17] = Star,
+            [18] = Moon,
+            [19] = Sun,
+            [20] = Judgement,
+            [21] = World,
         };
 
         public static bool Has(int card) => Drawn.ContainsKey(card);
