@@ -11,7 +11,30 @@ namespace KittyTarot
         private const int W = CardFaces.PictureWidth;
         private const int H = CardFaces.PictureHeight;
 
-        private static readonly Dictionary<int, Func<Picture>> Drawn = new Dictionary<int, Func<Picture>>
+        private static readonly Dictionary<int, Func<Picture>> Drawn = AllDrawn();
+
+        private static Dictionary<int, Func<Picture>> AllDrawn()
+        {
+            Dictionary<int, Func<Picture>> drawn = Majors();
+            for (int suit = 0; suit < 4; suit++)
+            {
+                int s = suit;
+                drawn[Deck.Card(s, 1)] = () => Ace(s);
+                for (int rank = 2; rank <= 10; rank++)
+                {
+                    int n = rank;
+                    drawn[Deck.Card(s, n)] = () => NumberCard(s, n);
+                }
+                for (int rank = 11; rank <= 14; rank++)
+                {
+                    int r = rank;
+                    drawn[Deck.Card(s, r)] = () => Court(s, r);
+                }
+            }
+            return drawn;
+        }
+
+        private static Dictionary<int, Func<Picture>> Majors() => new Dictionary<int, Func<Picture>>
         {
             [0] = Fool,
             [1] = Magician,

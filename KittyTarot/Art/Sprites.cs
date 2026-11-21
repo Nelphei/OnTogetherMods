@@ -127,6 +127,71 @@ namespace KittyTarot
             "...kkkkk...",
         };
 
+        // The suits' little symbols for the number cards. A heart-tipped wand with a leaf: P heart, b stick,
+        // m leaf.
+        public static readonly string[] PipWand =
+        {
+            ".kk.kk.",
+            "kPPkPPk",
+            "kPPPPPk",
+            ".kPPPk.",
+            "..kPk..",
+            "..kbk..",
+            "..kbkk.",
+            "..kbkmk",
+            "..kbkk.",
+            "..kbk..",
+            "..kbk..",
+            "..kbk..",
+            "..kkk..",
+        };
+
+        // A white teacup on a blue saucer: T tea, w china, P a heart on the side, b saucer.
+        public static readonly string[] PipCup =
+        {
+            ".kkkkkkk...",
+            "kTTTTTTTk..",
+            "kwwwwwwwkkk",
+            "kwPwPwwwk.k",
+            "kwPPPwwwkkk",
+            ".kwPwwwk...",
+            "kbbbbbbbbk.",
+            ".kkkkkkkk..",
+        };
+
+        // A little sword: w blade, y crossguard, P its jewel, p grip.
+        public static readonly string[] PipSword =
+        {
+            "...k...",
+            "..kwk..",
+            "..kwk..",
+            "..kwk..",
+            "..kwk..",
+            "..kwk..",
+            "..kwk..",
+            "..kwk..",
+            "kkkkkkk",
+            "kyyPyyk",
+            "kkkkkkk",
+            "..kpk..",
+            "..kpk..",
+            "..kkk..",
+        };
+
+        // A star coin: y gold, w the star.
+        public static readonly string[] PipCoin =
+        {
+            "..kkkkk..",
+            ".kyyyyyk.",
+            "kyyywyyyk",
+            "kywwwwwyk",
+            "kyywwwyyk",
+            "kyywywyyk",
+            "kyyyyyyyk",
+            ".kyyyyyk.",
+            "..kkkkk..",
+        };
+
         // The Moon's crayfish climbing out of the pool, claws up: p shell.
         public static readonly string[] Crayfish =
         {
